@@ -10,17 +10,17 @@ div class="row"
         div class="row my-2"
           div class="col-sm"
             h3 class="text-center main-color" Login
-        div class="row my-2"
-          div class="col-sm"
-            form method='post' action='/auth/login' id='form-login' class="main-color"
-              div class="form-group"
-                label for='input-username' Username
-                input type='text' name='username' id='input-username' class="form-control"
-              div class="form-group"
-                label for='input-password' Password
-                input type='password' name='password' id='input-password' class="form-control"
-        div class="row"
-          div class="col-sm d-grid"
-            button type='submit' id='button-login' value='login' class="btn btn-light main-bg main-color main-radius mt-2 mb-1" login
-            button type='submit' id='button-register' value='register' class="disable btn btn-light main-bg main-color main-radius mb-3 mt-1" register
+        form method='post' action='/auth/login' id='form-login' class="main-color"
+          div class="row my-2"
+            div class="col-sm"
+                div class="form-group"
+                  label for='input-username' Username
+                  input type='text' name='username' id='input-username' class="form-control"
+                div class="form-group"
+                  label for='input-password' Password
+                  input type='password' name='password' id='input-password' class="form-control"
+          div class="row"
+            div class="col-sm d-grid"
+              button type='submit' id='button-login' value='login' class="btn btn-light main-bg main-color main-radius mt-2 mb-1" login
+              button type='submit' id='button-register' value='register' class="disable btn btn-light main-bg main-color main-radius mb-3 mt-1" register
   div class="col-sm-3"
