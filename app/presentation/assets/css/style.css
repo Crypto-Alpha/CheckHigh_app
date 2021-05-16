@@ -9,10 +9,21 @@
 .main-bg{
   background-color: #D8E7FF;
 }
+.second-bg{
+  background-color: #F5F9FF;
+}
 .main-color{
   color: #414BB2;
+}
+.main-radius{
+  border-radius: 5rem;
 }
 .logo-font{
   color: #414BB2;
   font-weight:900;
+}
+.main-btn{
+  color: #414BB2;
+  background-color: #D8E7FF;
+  border-radius: 5rem;
 }
