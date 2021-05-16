@@ -3,3 +3,16 @@
   width:100%;
   display:block;
 }
+.content{
+  padding-top: 1rem;
+}
+.main-bg{
+  background-color: #D8E7FF;
+}
+.main-color{
+  color: #414BB2;
+}
+.logo-font{
+  color: #414BB2;
+  font-weight:900;
+}
