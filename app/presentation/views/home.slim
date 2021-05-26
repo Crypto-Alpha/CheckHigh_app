@@ -1,0 +1,16 @@
+div class="row"
+  div class="col-sm-8"
+    h1 class="main-color" Welcome to CheckHigh
+    h4 Check to make your scores HIGHER!
+    p This site allows you to store your assignments and checking the answer to share with teammates.
+      
+    p
+      i Please avoid sharing SECRETS at this point.
+
+    - unless current_account
+      a.btn.btn-light role="button" class="main-color main-bg main-radius" href="/auth/login"
+        | login to start !
+
+  div class="col-sm-4"
+    i class="fas fa-check-double main-color" style="font-size:14rem;"
+

@@ -2,7 +2,7 @@
 
 Web application for CheckHigh system that allows teams to share sensitive files such as configuration information, credentials, etc.
 
-Please also note the Web API that it uses: https://github.com/ISS-Security/checkhigh-api
+Please also note the Web API that it uses: https://github.com/Crypto-Alpha/CheckHigh_api
 
 ## Install
 

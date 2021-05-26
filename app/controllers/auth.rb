@@ -18,7 +18,8 @@ module CheckHigh
         routing.post do
           account = AuthenticateAccount.new(App.config).call(
             username: routing.params['username'],
-            password: routing.params['password'])
+            password: routing.params['password']
+          )
 
           SecureSession.new(session).set(:current_account, account)
           flash[:notice] = "Welcome back #{account['username']}!"
