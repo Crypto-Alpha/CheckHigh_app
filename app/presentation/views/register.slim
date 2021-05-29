@@ -1,0 +1,24 @@
+div class="row"
+  div class="col-sm-3"
+  div class="col-sm-6"
+    div class="card second-bg border-light"
+      div class="container"
+        div class="row my-2"
+          div class="col-sm"
+            h3 class="text-center main-color" Create an Account
+        form action='/auth/register' method='post' id='register-form'
+          div class="form-group"
+            label for='username_input' Username
+            input type='text' name='username' id='username_input' class="form-control"
+          div class="form-group"
+            label for='email_input' Email
+            input type='text' name='email' id='email_input' class="form-control"
+          div class="form-group"
+            label for='password_input' Password
+            input type='password' name='password' id='password_input' class="form-control"
+          div class="row"
+            div class="col-sm d-grid"
+              button type='submit' id='registration-form-submit' class='submit btn btn-light main-btn my-2' value='submit' class="btn btn-primary btn-block" register
+              a href='/auth/login' class="mb-3 mt-1 text-center main-color" I already have an account
+      div class="col-sm-4"
+  

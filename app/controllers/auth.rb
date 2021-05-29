@@ -36,11 +36,32 @@ module CheckHigh
         end
       end
 
+      @logout_route = '/auth/logout'
       routing.on 'logout' do
         routing.get do
           SecureSession.new(session).delete(:current_account)
           flash[:notice] = "You've been logged out"
           routing.redirect @login_route
+        end
+      end
+      
+      @register_route = '/auth/register'
+      routing.is 'register' do
+        routing.get do
+          view :register
+        end
+
+        routing.post do
+          account_data = JsonRequestBody.symbolize(routing.params)
+          CreateAccount.new(App.config).call(**account_data)
+
+          flash[:notice] = 'Please login with your new account information'
+          routing.redirect @login_route
+        rescue StandardError => e
+          puts "ERROR CREATING ACCOUNT: #{e.inspect}"
+          puts e.backtrace
+          flash[:error] = 'Could not create account'
+          routing.redirect @register_route
         end
       end
     end

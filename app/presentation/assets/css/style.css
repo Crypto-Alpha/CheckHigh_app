@@ -27,3 +27,11 @@
   background-color: #D8E7FF;
   border-radius: 5rem;
 }
+.second-btn{
+  color: #414BB2;
+  background-color: #D8E7FF;
+  border-color: #414BB2;
+}
+:hover{
+  color: #D8E7FF;
+}
