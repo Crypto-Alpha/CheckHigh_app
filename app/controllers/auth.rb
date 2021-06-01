@@ -6,6 +6,7 @@ require_relative './app'
 module CheckHigh
   # Web controller for CheckHigh API
   class App < Roda
+
     route('auth') do |routing| # rubocop:disable Metrics/BlockLength
       @login_route = '/auth/login'
       routing.is 'login' do
@@ -36,6 +37,7 @@ module CheckHigh
         end
       end
 
+      # GET /auth/logout
       @logout_route = '/auth/logout'
       routing.on 'logout' do
         routing.get do
@@ -46,21 +48,38 @@ module CheckHigh
       end
       
       @register_route = '/auth/register'
-      routing.is 'register' do
-        routing.get do
-          view :register
+      routing.on 'register' do
+        routing.is do 
+          # GET /auth/register
+          routing.get do
+            view :register
+          end
+
+          # POST /auth/register
+          routing.post do
+            account_data = JsonRequestBody.symbolize(routing.params)
+            VerifyRegistration.new(App.config).call(account_data)
+
+            flash[:notice] = 'Please check your email for a verification link'
+            routing.redirect '/'
+          rescue StandardError => e
+            puts "ERROR VERIFYING REGISTRATION: #{e.inspect}"
+            flash[:error] = 'Registration details are not valid'
+            routing.redirect @register_route
+          end
         end
 
-        routing.post do
-          account_data = JsonRequestBody.symbolize(routing.params)
-          CreateAccount.new(App.config).call(**account_data)
-
-          flash[:notice] = 'Please login with your new account information'
-          routing.redirect @login_route
-        rescue StandardError => e
-          puts "ERROR CREATING ACCOUNT: #{e.inspect}"
-          puts e.backtrace
-          flash[:error] = 'Could not create account'
+        # GET /auth/register/<token>
+        routing.get(String) do |registration_token|
+          # verify register token expire or not
+          new_account = RegisterToken.payload(registration_token)
+          flash.now[:notice] = "Email Verified! Please choose a new password"
+          view :register_confirm,
+            locals: { new_account: new_account,
+                      registration_token: registration_token }
+        rescue RegisterToken::ExpiredTokenError
+          flash[:error] = 'The register token has expired, please register again.'
+          response.status = 403
           routing.redirect @register_route
         end
       end
