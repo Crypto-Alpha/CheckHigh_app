@@ -10,11 +10,11 @@ nav.navbar.navbar-expand-lg.navbar-light class="main-bg"
       - if @current_account
         ul.navbar-nav.me-auto.mb-2.mb-lg-0
           li.nav-item
-            a.nav-link aria-current="page" href="/" 
+            a.nav-link aria-current="page" href="/courses" 
               span class="main-color"
                 | Course
           li.nav-item
-            a.nav-link aria-current="page" href="/"
+            a.nav-link aria-current="page" href="/share_boards"
               span class="main-color"
                 | ShareBoard
           li class="nav-item dropdown"
@@ -25,7 +25,7 @@ nav.navbar.navbar-expand-lg.navbar-light class="main-bg"
               a class="dropdown-item" href="/account/#{@current_account['username']}" account
               a class="dropdown-item" href='/auth/logout' 
                 span class="main-color"
-                | Logout
+                | logout
       - else
         ul.navbar-nav.me-auto.mb-2.mb-lg-0
           li class="nav-item"

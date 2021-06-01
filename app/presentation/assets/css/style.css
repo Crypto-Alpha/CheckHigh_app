@@ -1,3 +1,4 @@
+/* LAYOUT */
 .force-wrap {
   word-wrap:break-word;
   width:100%;
@@ -6,22 +7,44 @@
 .content{
   padding-top: 1rem;
 }
+.big-logo{
+  font-size:14rem;
+  color: #414BB2;
+}
+.srb-overflow{
+  overflow: auto;
+}
+.srb-4-block{
+  border-color: #414BB2; 
+  height: 45vh;
+}
+
+
+/* BACKGROUND */
 .main-bg{
   background-color: #D8E7FF;
 }
 .second-bg{
   background-color: #F5F9FF;
 }
+
+/* FONT */
 .main-color{
   color: #414BB2;
-}
-.main-radius{
-  border-radius: 5rem;
 }
 .logo-font{
   color: #414BB2;
   font-weight:900;
 }
+.title-font{
+  color: #414BB2;
+  font-weight:600;
+}
+.srb-icon{
+  font-size:5rem;
+}
+
+/* BUTTON */
 .main-btn{
   color: #414BB2;
   background-color: #D8E7FF;
@@ -32,6 +55,19 @@
   background-color: #D8E7FF;
   border-color: #414BB2;
 }
-:hover{
-  color: #D8E7FF;
+.to-detail-btn{
+  color:#414BB2; 
+  background-color:#F5F9FF; 
+  border-color: #D8E7FF;
+}
+
+/* TABLE */
+.main-table{
+  color: #414BB2;
+  border-color:#D8E7FF;
+}
+
+/* BORDER */
+.main-radius{
+  border-radius: 5rem;
 }
