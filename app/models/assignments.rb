@@ -4,7 +4,7 @@ require_relative 'assignment'
 
 module CheckHigh
   # Behaviors of the currently logged in account
-  class AssignmentsDetails
+  class Assignments
     attr_reader :all
 
     def initialize(assignments_list)
