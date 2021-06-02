@@ -10,7 +10,16 @@ module CheckHigh
       routing.on do
         # GET /share_board
         routing.get do
-            view :share_board
+          if @current_account.logged_in?
+            shareboard_list = GetAllShareBoardDetail.new(App.config).call(@current_account)
+
+            shareboards = ShareBoards.new(shareboard_list)
+
+            view :share_board,
+            locals: { current_user: @current_account, share_board: shareboards }
+          else
+            routing.redirect '/auth/login'
+          end
         end
       end
     end
@@ -18,7 +27,16 @@ module CheckHigh
       routing.on do
         # GET /share_boards
         routing.get do
-            view :share_boards
+          if @current_account.logged_in?
+            shareboard_list = GetAllShareBoard.new(App.config).call(@current_account)
+
+            shareboards = ShareBoards.new(shareboard_list)
+
+            view :share_boards,
+            locals: { current_user: @current_account, share_boards: shareboards }
+          else
+            routing.redirect '/auth/login'
+          end
         end
       end
     end
