@@ -17,7 +17,7 @@ module CheckHigh
 
         # POST /auth/login
         routing.post do
-          account = AuthenticateAccount.new(App.config).call(
+          account_info = AuthenticateAccount.new(App.config).call(
             username: routing.params['username'],
             password: routing.params['password']
           )
@@ -28,8 +28,7 @@ module CheckHigh
           )
 
           CurrentSession.new(session).current_account = current_account
-
-          flash[:notice] = "Welcome back #{account['username']}!"
+          flash[:notice] = "Welcome back #{current_account.username}!"
           routing.redirect '/'
         rescue AuthenticateAccount::UnauthorizedError
           flash.now[:error] = 'Username and password did not match our records'
