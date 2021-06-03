@@ -8,6 +8,7 @@ module CheckHigh
     attr_reader :all
 
     def initialize(courses_list)
+      return @all = [] if courses_list.length.zero?
       @all = courses_list.map do |course|
         Course.new(course)
       end

@@ -38,12 +38,14 @@ module CheckHigh
         # GET /courses
         routing.get do
           if @current_account.logged_in?
-            course_list = GetAllCourse.new(App.config).call(@current_account)
+            courses_list = GetAllCourses.new(App.config).call(@current_account)
+            not_belong_assignments_list = GetAllAssignments.new(App.config).call(@current_account)
 
-            courses = Courses.new(course_list)
-
+            courses = Courses.new(courses_list)
+            not_belong_assignments = Assignments.new(not_belong_assignments_list)
+            
             view :courses,
-            locals: { current_user: @current_account, courses: courses }
+            locals: { current_user: @current_account, courses: courses,  assignments: not_belong_assignments}
           else
             routing.redirect '/auth/login'
           end
