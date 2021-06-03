@@ -8,9 +8,11 @@ module CheckHigh
     attr_reader :id, :assignment_name, :links
 
     def initialize(assi_info)
+      # TODO_0603: due to the simplify_to_json problem, it catches the another data structure
       @id = assi_info['attributes']['id']
       @assignment_name = assi_info['attributes']['assignment_name']
-      @links = assi_info['attributes']['links']['href']
+      @content = assi_info['attributes']['content']
+      # @links = assi_info['attributes']['links']['href']
     end
   end
 end
