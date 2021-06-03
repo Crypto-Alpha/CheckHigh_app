@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require_relative 'assignment_detail'
+require_relative 'assignment'
 
 module CheckHigh
   # Behaviors of the currently logged in account
-  class AssignmentDetail
+  class Assignment
     attr_reader :id, :assignment_name, :links
 
     def initialize(assi_info)
