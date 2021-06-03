@@ -38,7 +38,7 @@ module CheckHigh
         # GET /share_boards
         routing.get do
           if @current_account.logged_in?
-            shareboard_list = GetAllShareBoard.new(App.config).call(@current_account)
+            shareboard_list = GetAllShareBoards.new(App.config).call(@current_account)
 
             shareboards = ShareBoards.new(shareboard_list)
 

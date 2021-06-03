@@ -1,38 +1,8 @@
+/ TODO_0603: not sure if there are more than four courses, the layout needs the line2 div class="row my-3" or not
 div class="row my-3"
-    div class="col-sm-3 d-grid"
-        a href="/share_board" type="button" class="btn btn-primary to-detail-btn"
-            i class="fas fa-clipboard srb-icon" 
-            div.mt-3 ShareBoard title
-            
-    div class="col-sm-3 d-grid"
-        a href="/share_board" type="button" class="btn btn-primary to-detail-btn"
-            i class="fas fa-clipboard srb-icon"
-            div.mt-3 ShareBoard title
-
-    div class="col-sm-3 d-grid"
-        a href="/share_board" type="button" class="btn btn-primary to-detail-btn"
-            i class="fas fa-clipboard srb-icon" 
-            div.mt-3 ShareBoard title
-
-    div class="col-sm-3 d-grid"
-        a href="/share_board" type="button" class="btn btn-primary to-detail-btn"
-            i class="fas fa-clipboard srb-icon" 
-            div.mt-3 ShareBoard title
-
-div class="row my-3"
-    div class="col-sm-3 d-grid"
-        a href="/share_board" type="button" class="btn btn-primary to-detail-btn"
-            i class="fas fa-clipboard srb-icon" 
-            div.mt-3 ShareBoard title
-
-    div class="col-sm-3 d-grid"
-        a href="/share_board" type="button" class="btn btn-primary to-detail-btn"
-            i class="fas fa-clipboard srb-icon" 
-            div.mt-3 ShareBoard title
-
-    div class="col-sm-3 d-grid"
-        a href="/share_board" type="button" class="btn btn-primary to-detail-btn"
-            i class="fas fa-clipboard srb-icon" 
-            div.mt-3 ShareBoard title
-
-    div class="col-sm-3 d-grid"
+    - share_boards.all.each_with_index do |srb, index|
+        div class="col-sm-3 d-grid"
+            / TODO_0603: a href="/share_boards/#{srb.id}" type="button" class="btn btn-primary to-detail-btn"
+            a href="/account/share_boards/#{srb.id}" type="button" class="btn btn-primary to-detail-btn"
+                i class="fas fa-clipboard srb-icon" 
+                div.mt-3 #{srb.share_board_name}
