@@ -4,15 +4,14 @@ require_relative 'assignment'
 
 module CheckHigh
   # Behaviors of the currently logged in account
+  # It is use to show the assignments name and id (no content) (in Course)
   class Assignment
-    attr_reader :id, :assignment_name, :links
+    attr_reader :id, :assignment_name, :links, :upload_time
 
     def initialize(assi_info)
-      # TODO_0603: due to the simplify_to_json problem, it catches the another data structure
       @id = assi_info['attributes']['id']
       @assignment_name = assi_info['attributes']['assignment_name']
-      @content = assi_info['attributes']['content']
-      # @links = assi_info['attributes']['links']['href']
+      @upload_time = assi_info['attributes']['upload_time']
     end
   end
 end

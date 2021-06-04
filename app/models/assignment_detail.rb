@@ -4,6 +4,7 @@ require_relative 'assignment_detail'
 
 module CheckHigh
   # Behaviors of the currently logged in account
+  # It is use to show the assignments name, id and content (in ShareBoard)
   class AssignmentDetail
     attr_reader :id, :assignment_name, :content
 
