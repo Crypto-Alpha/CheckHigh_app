@@ -22,8 +22,8 @@ class RegisterToken
   class InvalidTokenError < StandardError; end # rubocop:disable Layout/EmptyLineBetweenDefs
 
   # Create a token from a Hash payload
-  # default expiration set to 5 minutes for debugging  
-  def self.create(payload, expiration = FIVE_MINS)
+  # default expiration set to 1 hour for debugging  
+  def self.create(payload, expiration = ONE_HOUR)
   #def self.create(payload, expiration = ONE_WEEK)
     contents = { 'payload' => payload, 'exp' => expires(expiration) }
     tokenize(contents)

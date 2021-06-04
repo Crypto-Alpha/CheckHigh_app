@@ -7,7 +7,7 @@ module CheckHigh
   # Web controller for CheckHigh API
   class App < Roda
 
-    route('auth') do |routing| # rubocop:disable Metrics/BlockLength
+    route('auth') do |routing| 
       @login_route = '/auth/login'
       routing.is 'login' do
         # GET /auth/login
@@ -17,13 +17,18 @@ module CheckHigh
 
         # POST /auth/login
         routing.post do
-          account = AuthenticateAccount.new(App.config).call(
+          account_info = AuthenticateAccount.new(App.config).call(
             username: routing.params['username'],
             password: routing.params['password']
           )
 
-          SecureSession.new(session).set(:current_account, account)
-          flash[:notice] = "Welcome back #{account['username']}!"
+          current_account = CurrentAccount.new(
+            account_info[:account],
+            account_info[:auth_token]
+          )
+
+          CurrentSession.new(session).current_account = current_account
+          flash[:notice] = "Welcome back #{current_account.username}!"
           routing.redirect '/'
         rescue AuthenticateAccount::UnauthorizedError
           flash.now[:error] = 'Username and password did not match our records'
@@ -41,7 +46,7 @@ module CheckHigh
       @logout_route = '/auth/logout'
       routing.on 'logout' do
         routing.get do
-          SecureSession.new(session).delete(:current_account)
+          CurrentSession.new(session).delete
           flash[:notice] = "You've been logged out"
           routing.redirect @login_route
         end
