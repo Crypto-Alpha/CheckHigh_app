@@ -22,7 +22,7 @@ module CheckHigh
 
       # response.parse['attributes']
       account_info = JSON.parse(response.to_s)['attributes']
-      
+
       {
         account: account_info['account']['attributes'],
         auth_token: account_info['auth_token']

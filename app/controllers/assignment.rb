@@ -41,8 +41,7 @@ module CheckHigh
 
             assignments = Assignments.new(assignment_list)
 
-            view :assignments,
-            locals: { current_user: @current_account, assignments: assignments }
+            view :assignments, locals: { current_user: @current_account, assignments: assignments }
           else
             routing.redirect '/auth/login'
           end

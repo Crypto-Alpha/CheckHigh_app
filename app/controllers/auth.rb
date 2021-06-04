@@ -6,8 +6,7 @@ require_relative './app'
 module CheckHigh
   # Web controller for CheckHigh API
   class App < Roda
-
-    route('auth') do |routing| 
+    route('auth') do |routing|
       @login_route = '/auth/login'
       routing.is 'login' do
         # GET /auth/login
@@ -51,10 +50,10 @@ module CheckHigh
           routing.redirect @login_route
         end
       end
-      
+
       @register_route = '/auth/register'
       routing.on 'register' do
-        routing.is do 
+        routing.is do
           # GET /auth/register
           routing.get do
             view :register
@@ -78,10 +77,8 @@ module CheckHigh
         routing.get(String) do |registration_token|
           # verify register token expire or not
           new_account = RegisterToken.payload(registration_token)
-          flash.now[:notice] = "Email Verified! Please choose a new password"
-          view :register_confirm,
-            locals: { new_account: new_account,
-                      registration_token: registration_token }
+          flash.now[:notice] = 'Email Verified! Please choose a new password'
+          view :register_confirm, locals: { new_account: new_account, registration_token: registration_token }
         rescue RegisterToken::ExpiredTokenError
           flash[:error] = 'The register token has expired, please register again.'
           response.status = 403

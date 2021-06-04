@@ -42,8 +42,7 @@ module CheckHigh
 
             shareboards = ShareBoards.new(shareboard_list)
 
-            view :share_boards,
-            locals: { current_user: @current_account, share_boards: shareboards }
+            view :share_boards, locals: { current_user: @current_account, share_boards: shareboards }
           else
             routing.redirect '/auth/login'
           end

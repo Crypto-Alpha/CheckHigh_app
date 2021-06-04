@@ -8,7 +8,8 @@ module CheckHigh
     attr_reader :all
 
     def initialize(assignments_list)
-      return @all = [] if assignments_list.length.zero?
+      @all = [] if assignments_list.length.zero?
+
       @all = assignments_list.map do |assi|
         Assignment.new(assi)
       end

@@ -42,10 +42,9 @@ module CheckHigh
             not_belong_assignments_list = GetAllAssignments.new(App.config).call(@current_account)
 
             courses = Courses.new(courses_list)
-            not_belong_assignments = Assignments.new(not_belong_assignments_list)
-            
-            view :courses,
-            locals: { current_user: @current_account, courses: courses,  assignments: not_belong_assignments}
+            not_belong_assi = Assignments.new(not_belong_assignments_list)
+
+            view :courses, locals: { current_user: @current_account, courses: courses, assignments: not_belong_assi }
           else
             routing.redirect '/auth/login'
           end
