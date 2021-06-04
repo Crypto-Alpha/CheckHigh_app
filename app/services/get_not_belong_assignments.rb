@@ -2,15 +2,15 @@
 
 require 'http'
 
-# Returns all assignments belonging to an Course
-class GetAllAssignments
+# Returns all assignments belonging to an account but not belonging to any courses
+class GetNotBelongAssignments
   def initialize(config)
     @config = config
   end
 
-  def call(current_account, course_id)
+  def call(current_account)
     response = HTTP.auth("Bearer #{current_account.auth_token}")
-                   .get("#{@config.API_URL}/courses/#{course_id}/assignments")
+                   .get("#{@config.API_URL}/assignments")
 
     response.code == 200 ? JSON.parse(response.to_s)['data'] : nil
   end
