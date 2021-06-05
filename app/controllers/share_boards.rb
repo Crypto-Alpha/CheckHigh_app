@@ -14,7 +14,6 @@ module CheckHigh
           if @current_account.logged_in?
             srb_assi_list = GetAllAssignments.new(App.config).call(@current_account, "share_boards", share_board_id)
             srb_assi = AssignmentsDetail.new(srb_assi_list)
-            binding.irb
             view :share_board_check, locals: { current_user: @current_account, assignments: srb_assi }
           else
             routing.redirect '/auth/login'
