@@ -6,32 +6,22 @@ require_relative './app'
 module CheckHigh
   # Web controller for CheckHigh API
   class App < Roda
-    # route('share_board') do |routing|
-    #   routing.on do
-    #     # GET /share_board
-    #     routing.get do
-    #       if @current_account.logged_in?
-    #         shareboard_list = GetAllShareBoardDetail.new(App.config).call(@current_account, id)
-
-    #         shareboards = ShareBoards.new(shareboard_list)
-
-    #         view :share_board,
-    #         locals: { current_user: @current_account, share_board: shareboards }
-    #       else
-    #         routing.redirect '/auth/login'
-    #       end
-    #     end
-    #   end
-    # end
-
-    # route('share_board') do |routing|
-    #   routing.on do
-    #     # GET /share_board
-    #     routing.get do
-    #       view :share_board
-    #     end
-    #   end
-    # end
+    # TODO_0605: not sure how to write the next route path eg. share_boards/[id]/check
+    route('share_board') do |routing|
+      routing.on do
+        # GET /share_board/[share_board_id]
+        routing.get String do |share_board_id|
+          if @current_account.logged_in?
+            srb_assi_list = GetAllAssignments.new(App.config).call(@current_account, "share_boards", share_board_id)
+            srb_assi = AssignmentsDetail.new(srb_assi_list)
+            binding.irb
+            view :share_board_check, locals: { current_user: @current_account, assignments: srb_assi }
+          else
+            routing.redirect '/auth/login'
+          end
+        end
+      end
+    end
 
     route('share_boards') do |routing|
       routing.on do
@@ -46,7 +36,6 @@ module CheckHigh
             routing.redirect '/auth/login'
           end
         end
-
         # GET /share_boards
         routing.get do
           if @current_account.logged_in?
