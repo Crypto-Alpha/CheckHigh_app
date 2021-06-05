@@ -6,12 +6,13 @@ module CheckHigh
   # Behaviors of the currently logged in account
   # It is use to show the assignments name, id and content (in ShareBoard)
   class AssignmentDetail
-    attr_reader :id, :assignment_name, :content
+    attr_reader :id, :assignment_name, :content, :upload_time
 
     def initialize(assi_info)
       @id = assi_info['attributes']['id']
       @assignment_name = assi_info['attributes']['assignment_name']
       @content = assi_info['attributes']['content']
+      @upload_time = assi_info['attributes']['upload_time']
     end
   end
 end
