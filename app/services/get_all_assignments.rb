@@ -8,9 +8,10 @@ class GetAllAssignments
     @config = config
   end
 
-  def call(current_account, course_id)
+  # get_type: course_assi, srb_assi
+  def call(current_account, get_type, id)
     response = HTTP.auth("Bearer #{current_account.auth_token}")
-                   .get("#{@config.API_URL}/courses/#{course_id}/assignments")
+                   .get("#{@config.API_URL}/#{get_type}/#{id}/assignments")
 
     response.code == 200 ? JSON.parse(response.to_s)['data'] : nil
   end

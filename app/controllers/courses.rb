@@ -11,7 +11,7 @@ module CheckHigh
         # GET /courses/[course_id]
         routing.get String do |course_id|
           if @current_account.logged_in?
-            course_assi_list = GetAllAssignments.new(App.config).call(@current_account, course_id)
+            course_assi_list = GetAllAssignments.new(App.config).call(@current_account, "courses", course_id)
             course_assi = Assignments.new(course_assi_list)
             
             view :course, locals: { current_user: @current_account, assignments: course_assi }

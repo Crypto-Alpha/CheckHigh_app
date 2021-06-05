@@ -24,17 +24,29 @@ module CheckHigh
     #   end
     # end
 
-    route('share_board') do |routing|
-      routing.on do
-        # GET /share_board
-        routing.get do
-          view :share_board
-        end
-      end
-    end
+    # route('share_board') do |routing|
+    #   routing.on do
+    #     # GET /share_board
+    #     routing.get do
+    #       view :share_board
+    #     end
+    #   end
+    # end
 
     route('share_boards') do |routing|
       routing.on do
+        # GET /share_boards/[share_board_id]
+        routing.get String do |share_board_id|
+          if @current_account.logged_in?
+            srb_assi_list = GetAllAssignments.new(App.config).call(@current_account, "share_boards", share_board_id)
+            srb_assi = Assignments.new(srb_assi_list)
+            
+            view :share_board, locals: { current_user: @current_account, assignments: srb_assi }
+          else
+            routing.redirect '/auth/login'
+          end
+        end
+
         # GET /share_boards
         routing.get do
           if @current_account.logged_in?
