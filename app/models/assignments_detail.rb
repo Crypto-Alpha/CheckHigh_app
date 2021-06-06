@@ -4,7 +4,8 @@ require_relative 'assignment_detail'
 
 module CheckHigh
   # Behaviors of the currently logged in account
-  class AssignmentsDetails
+  # It is use to show the assignments name, id and content (in ShareBoard)
+  class AssignmentsDetail
     attr_reader :all
 
     def initialize(assignments_list)
