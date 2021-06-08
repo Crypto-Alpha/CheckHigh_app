@@ -6,8 +6,7 @@ require_relative './app'
 module CheckHigh
   # Web controller for CheckHigh API
   class App < Roda
-
-    route('auth') do |routing| # rubocop:disable Metrics/BlockLength
+    route('auth') do |routing|
       @login_route = '/auth/login'
       routing.is 'login' do
         # GET /auth/login
@@ -17,13 +16,18 @@ module CheckHigh
 
         # POST /auth/login
         routing.post do
-          account = AuthenticateAccount.new(App.config).call(
+          account_info = AuthenticateAccount.new(App.config).call(
             username: routing.params['username'],
             password: routing.params['password']
           )
 
-          SecureSession.new(session).set(:current_account, account)
-          flash[:notice] = "Welcome back #{account['username']}!"
+          current_account = CurrentAccount.new(
+            account_info[:account],
+            account_info[:auth_token]
+          )
+
+          CurrentSession.new(session).current_account = current_account
+          flash[:notice] = "Welcome back #{current_account.username}!"
           routing.redirect '/'
         rescue AuthenticateAccount::UnauthorizedError
           flash.now[:error] = 'Username and password did not match our records'
@@ -41,15 +45,15 @@ module CheckHigh
       @logout_route = '/auth/logout'
       routing.on 'logout' do
         routing.get do
-          SecureSession.new(session).delete(:current_account)
+          CurrentSession.new(session).delete
           flash[:notice] = "You've been logged out"
           routing.redirect @login_route
         end
       end
-      
+
       @register_route = '/auth/register'
       routing.on 'register' do
-        routing.is do 
+        routing.is do
           # GET /auth/register
           routing.get do
             view :register
@@ -73,10 +77,8 @@ module CheckHigh
         routing.get(String) do |registration_token|
           # verify register token expire or not
           new_account = RegisterToken.payload(registration_token)
-          flash.now[:notice] = "Email Verified! Please choose a new password"
-          view :register_confirm,
-            locals: { new_account: new_account,
-                      registration_token: registration_token }
+          flash.now[:notice] = 'Email Verified! Please choose a new password'
+          view :register_confirm, locals: { new_account: new_account, registration_token: registration_token }
         rescue RegisterToken::ExpiredTokenError
           flash[:error] = 'The register token has expired, please register again.'
           response.status = 403

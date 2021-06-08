@@ -7,7 +7,7 @@ div class="row"
     p
       i Please avoid sharing SECRETS at this point.
 
-    - unless current_account
+    - unless current_account.logged_in?
       a.btn.btn-light role="button" class="main-btn" href="/auth/login"
         | login to start !
 

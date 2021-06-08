@@ -1,94 +1,41 @@
-div class="row my-3"
-    div class="col-sm-3 d-grid"
-        a href="/course" type="button" class="btn btn-primary to-detail-btn"
-            div class="container"
-                div class="row my-2"
-                    div class="col-sm-2"
-                        i class="fas fa-folder" 
-                    div class="col-sm-10 text-start" SOA
-    div class="col-sm-3 d-grid "
-        a href="/course" type="button" class="btn btn-primary to-detail-btn" 
-            div class="container"
-                div class="row my-2"
-                    div class="col-sm-2"
-                        i class="fas fa-folder" 
-                    div class="col-sm-10 text-start" USER EXPER
-    div class="col-sm-3 d-grid"
-        a href="/course" type="button" class="btn btn-primary to-detail-btn" 
-            div class="container"
-                div class="row my-2"
-                    div class="col-sm-2"
-                        i class="fas fa-folder" 
-                    div class="col-sm-10 text-start" Web
-    div class="col-sm-3 d-grid"
-        a href="/course" type="button" class="btn btn-primary to-detail-btn" 
-            div class="container"
-                div class="row my-2"
-                    div class="col-sm-2"
-                        i class="fas fa-folder" 
-                    div class="col-sm-10 text-start" 如果是中文
-div class="row my-3"
-    div class="col-sm-3 d-grid"
-        a href="/course" type="button" class="btn btn-primary to-detail-btn" 
-            div class="container"
-                div class="row my-2"
-                    div class="col-sm-2"
-                        i class="fas fa-folder" 
-                    div class="col-sm-10 text-start" BAFT
-    div class="col-sm-3 d-grid"
-        a href="/course" type="button" class="btn btn-primary to-detail-btn" 
-            div class="container"
-                div class="row my-2"
-                    div class="col-sm-2"
-                        i class="fas fa-folder" 
-                    div class="col-sm-10 text-start" BACS
-    div class="col-sm-3 d-grid"
-        a href="/course" type="button" class="btn btn-primary to-detail-btn" 
-            div class="container"
-                div class="row my-2"
-                    div class="col-sm-2"
-                        i class="fas fa-folder" 
-                    div class="col-sm-10 text-start" SECSEV
-    div class="col-sm-3 d-grid"
 div class="row"
-    table class="table table-striped main-table"
-        thead
-            tr
-            th scope="col"
-                | #
-            th scope="col"
-                | Filename
-            th scope="col"
-                | Content
-            th scope="col"
-                | Upload Time
-        tbody
-            tr
-            th scope="row"
-                | 1
-            td
-                | BACS hw-14
-            td
-                | mediation statistical ...
-            td
-                | 2018-11-30
-            tr
-            th scope="row"
-                | 2
-            td
-                | BA hw-0
-            td
-                | lajslfjalkdj ...
-            td
-                | 2020-02-28
-            tr
-            th scope="row"
-                | 2
-            td
-                | SECSEV week-18
-            td
-                | demoaljdsflj ...
-            td
-                | 2021-05-30
-            tr
-            
+    - courses.all.each_with_index do |course, index|
+        div class="col-sm-3 d-grid my-2"
+            a href="/courses/#{course.id}" type="button" class="btn btn-primary to-detail-btn"
+                div class="container"
+                    div class="row my-2"
+                        div class="col-sm-2"
+                            i class="fas fa-folder" 
+                        div class="col-sm-10 text-start" #{course.course_name}
+div class="row"
+    div class="col"
+        table class="table table-striped main-table"
+            thead
+                tr
+                th scope="col" #
+                th scope="col" filename
+                th scope="col" upload time
+                th scope="col" 
+            tbody
+                - assignments.all.each_with_index do |assi, index|
+                    tr
+                    th.align-middle scope="row" #{index+1}
+                    td.align-middle 
+                        a.main-color href="/assignment/#{assi.id}" #{assi.assignment_name}
+                    td.align-middle #{assi.upload_time}
+                    td.text-end 
+                        button type="button" class="btn btn-outline-primary btn-sm main-color" style="border-color:transparent;border-radius:50%;"
+                            i class="fas fa-pen"
+                        button type="button" class="btn btn-outline-primary btn-sm main-color" style="border-color:transparent;border-radius:50%;"
+                            i class="fas fa-folder"
+                        button type="button" class="btn btn-outline-primary btn-sm main-color" style="border-color:transparent;border-radius:50%;"
+                            i class="fas fa-clipboard"
+                        button type="button" class="btn btn-outline-danger btn-sm main-color" style="border-color:transparent;border-radius:50%;"
+                            i class="fas fa-trash-alt"
+button type="button" class="btn btn-primary main-btn" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius:50%; border-color:transparent; height: 3.5rem; width: 3.5rem; position: fixed; bottom: 5vh; right: 5vh;"
+    i class="fas fa-plus"
+ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1"
+    li
+        a class="dropdown-item" href="#"add a new course 
+        a class="dropdown-item" href="#"add a new assignment
+    
