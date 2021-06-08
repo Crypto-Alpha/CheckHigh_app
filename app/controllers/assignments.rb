@@ -8,6 +8,7 @@ module CheckHigh
   class App < Roda
     route('assignments') do |routing|
       routing.redirect '/auth/login' unless @current_account.logged_in?
+      @courses_route = '/courses'
 
       # GET /assignments/[assignment_id]
       routing.get(String) do |assignment_id|
@@ -16,6 +17,25 @@ module CheckHigh
 
         view :assignment,
           locals: { current_user: @current_account, assignment: assignment_detail }
+      end
+
+      # POST /assignments
+      routing.post do
+        routing.redirect '/auth/login' unless @current_account.logged_in?
+        puts "ASSIGNMENT: #{routing.params}"
+        # TODO: form data
+
+        CreateNewAssignment.new(App.config).call(
+          current_account: @current_account,
+          assi_data: assi_data.to_h
+        )
+
+        flash[:notice] = 'Add new lonely assignments'
+      rescue StandardError => e
+        puts "FAILURE Creating Lonely Assignment: #{e.inspect}"
+        flash[:error] = 'Could not create Lonely Assignment'
+      ensure
+        routing.redirect @courses_route
       end
     end
   end
