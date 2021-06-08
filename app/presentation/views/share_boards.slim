@@ -1,38 +1,19 @@
-div class="row my-3"
-    div class="col-sm-3 d-grid"
-        a href="/share_board" type="button" class="btn btn-primary to-detail-btn"
-            i class="fas fa-clipboard srb-icon" 
-            div.mt-3 ShareBoard title
-            
-    div class="col-sm-3 d-grid"
-        a href="/share_board" type="button" class="btn btn-primary to-detail-btn"
-            i class="fas fa-clipboard srb-icon"
-            div.mt-3 ShareBoard title
+div class="row"
+    - share_boards.all.each_with_index do |srb, index|
+        div class="col-sm-3 d-grid my-2"
+            a href="/share_boards/#{srb.id}" type="button" class="btn btn-primary to-detail-btn"
+                i class="fas fa-clipboard srb-icon" 
+                div.mt-3 #{srb.share_board_name}
+button type="button" class="btn btn-primary main-btn" data-bs-toggle="modal" data-bs-target="#newSrbModal" style="border-radius:50%; border-color:transparent; height: 3.5rem; width: 3.5rem; position: fixed; bottom: 5vh; right: 5vh;"
+    i class="fas fa-plus"
 
-    div class="col-sm-3 d-grid"
-        a href="/share_board" type="button" class="btn btn-primary to-detail-btn"
-            i class="fas fa-clipboard srb-icon" 
-            div.mt-3 ShareBoard title
-
-    div class="col-sm-3 d-grid"
-        a href="/share_board" type="button" class="btn btn-primary to-detail-btn"
-            i class="fas fa-clipboard srb-icon" 
-            div.mt-3 ShareBoard title
-
-div class="row my-3"
-    div class="col-sm-3 d-grid"
-        a href="/share_board" type="button" class="btn btn-primary to-detail-btn"
-            i class="fas fa-clipboard srb-icon" 
-            div.mt-3 ShareBoard title
-
-    div class="col-sm-3 d-grid"
-        a href="/share_board" type="button" class="btn btn-primary to-detail-btn"
-            i class="fas fa-clipboard srb-icon" 
-            div.mt-3 ShareBoard title
-
-    div class="col-sm-3 d-grid"
-        a href="/share_board" type="button" class="btn btn-primary to-detail-btn"
-            i class="fas fa-clipboard srb-icon" 
-            div.mt-3 ShareBoard title
-
-    div class="col-sm-3 d-grid"
+div class="modal fade" id="newSrbModal" tabindex="-1" aria-labelledby="newSrbModalLabel" aria-hidden="true"
+  div class="modal-dialog"
+    div class="modal-content"
+      div class="modal-header"
+        h5 class="modal-title" id="newSrbModalLabel" New ShareBoard
+        button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+      div class="modal-body" ...
+      div class="modal-footer"
+        button type="button" class="btn btn-secondary" data-bs-dismiss="modal" Close
+        button type="button" class="btn btn-primary" Submit
