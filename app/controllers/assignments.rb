@@ -24,6 +24,11 @@ module CheckHigh
         routing.redirect '/auth/login' unless @current_account.logged_in?
         puts "ASSIGNMENT: #{routing.params}"
         # TODO: form data
+        assi_data = Form::NewAssignmentDetail.new.call(routing.params)
+        if assi_data.failure?
+          flash[:error] = Form.message_values(assi_data)
+          routing.halt
+        end
 
         CreateNewAssignment.new(App.config).call(
           current_account: @current_account,

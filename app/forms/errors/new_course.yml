@@ -1,0 +1,4 @@
+en:
+  errors:
+    course_name: 'Course name must be filled'
+    links: 'URL must be in proper format'

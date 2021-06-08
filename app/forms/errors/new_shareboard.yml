@@ -1,0 +1,4 @@
+en:
+  errors:
+    share_board_name: 'Share board name must be filled'
+    links: 'URL must be in proper format'

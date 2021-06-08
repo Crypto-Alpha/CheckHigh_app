@@ -17,7 +17,13 @@ module CheckHigh
         # POST /auth/login
         routing.post do
           # TODO: form login credentials
-          # credentials
+          credentials = Form::LoginCredentials.new.call(routing.params)
+
+          if credentials.failure?
+            flash[:error] = 'Please enter both username and password'
+            routing.redirect @login_route
+          end
+
           authenticated = AuthenticateAccount.new(App.config)
             .call(**credentials.values)
 
@@ -61,8 +67,14 @@ module CheckHigh
 
           # POST /auth/register
           routing.post do
-            account_data = JsonRequestBody.symbolize(routing.params)
-            VerifyRegistration.new(App.config).call(account_data)
+            registration = Form::Registration.new.call(routing.params)
+
+            if registration.failure?
+              flash[:error] = Form.validation_errors(registration)
+              routing.redirect @register_route
+            end
+
+            VerifyRegistration.new(App.config).call(registration)
 
             flash[:notice] = 'Please check your email for a verification link'
             routing.redirect '/'
