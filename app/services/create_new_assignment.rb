@@ -27,4 +27,12 @@ class CreateNewAssignment
 
     response.code == 201 ? JSON.parse(response.body.to_s) : raise
   end
+
+  def call(current_account:, assigment_data:)
+    config_url = "#{api_url}/assignments"
+    response = HTTP.auth("Bearer #{current_account.auth_token}")
+                   .post(config_url, json: assignment_data)
+
+    response.code == 201 ? JSON.parse(response.body.to_s) : raise
+  end
 end
