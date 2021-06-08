@@ -2,6 +2,7 @@
 
 require 'roda'
 require 'slim'
+require 'slim/include'
 
 module CheckHigh
   # Base class for CheckHigh Web Application

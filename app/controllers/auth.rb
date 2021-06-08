@@ -16,14 +16,14 @@ module CheckHigh
 
         # POST /auth/login
         routing.post do
-          account_info = AuthenticateAccount.new(App.config).call(
-            username: routing.params['username'],
-            password: routing.params['password']
-          )
+          # TODO: form login credentials
+          # credentials
+          authenticated = AuthenticateAccount.new(App.config)
+            .call(**credentials.values)
 
-          current_account = CurrentAccount.new(
-            account_info[:account],
-            account_info[:auth_token]
+          current_account = Account.new(
+            authenticated[:account],
+            authenticated[:auth_token]
           )
 
           CurrentSession.new(session).current_account = current_account
