@@ -17,7 +17,7 @@ module CheckHigh
           # GET /share_boards/[share_board_id]
           routing.get do
             srb_assi_list = GetAllAssignments.new(App.config).call(@current_account, "share_boards", share_board_id)
-            srb_assi = AssignmentsDetail.new(srb_assi_list)
+            srb_assi = Assignments.new(srb_assi_list)
             view :share_board, locals: { current_user: @current_account, assignments: srb_assi }
 
           rescue StandardError => e

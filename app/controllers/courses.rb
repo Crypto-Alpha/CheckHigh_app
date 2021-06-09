@@ -15,7 +15,7 @@ module CheckHigh
           @course_route = "#{@courses_route}/#{course_id}" 
 
           # GET /courses/[course_id]
-          routing.get String do |course_id|
+          routing.get do
             course_assi_list = GetAllAssignments.new(App.config).call(@current_account, "courses", course_id)
             course_assi = Assignments.new(course_assi_list)
 
