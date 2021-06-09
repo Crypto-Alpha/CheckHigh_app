@@ -44,6 +44,11 @@ module CheckHigh
           routing.post('collaborators') do
             action = routing.params['action']
             #TODO: form data
+            collaborator_info = Form::CollaboratorEmail.new.call(routing.params)
+            if collaborator_info.failure?
+              flash[:error] = Form.validation_errors(collaborator_info)
+              routing.halt
+            end
 
             task_list = {
               'add' => { service: AddCollaborator,
@@ -68,7 +73,12 @@ module CheckHigh
           # POST /share_boards/[share_board_id]/assignments/
           routing.post('assignments') do
             # TODO: form data
-            
+            assignment_data = Form::NewAsignmentDetail.new.call(routing.params)
+            if assignment_data.failure?
+              flash[:error] = Form.message_values(assignment_data)
+              routing.halt
+            end
+
             CreateNewAssignment.new(App.config).call_for_shareboard(
               current_account: @current_account,
               share_board_id: share_board_id,
@@ -99,7 +109,11 @@ module CheckHigh
           routing.redirect '/auth/login' unless @current_account.logged_in?
           puts "SHAREBOARD: #{routing.params}"
           # TODO: form data
-
+          share_board_data = Form::NewShareBoard.new.call(routing.params)
+          if share_board_data.failure?
+            flash[:error] = Form.message_values(share_board_data)
+            routing.halt
+          end
           CreateNewShareBoard.new(App.config).call(
             current_account: @current_account,
             share_board_data: share_board_data.to_h

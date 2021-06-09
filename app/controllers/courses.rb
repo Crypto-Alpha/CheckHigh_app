@@ -29,7 +29,12 @@ module CheckHigh
           # POST /courses/[course_id]/assignments/
           routing.post('assignments') do
             # TODO: form data
-            
+            assignment_data = Form::NewAsignmentDetail.new.call(routing.params)
+            if assignment_data.failure?
+              flash[:error] = Form.message_values(assignment_data)
+              routing.halt
+            end
+
             CreateNewAssignment.new(App.config).call_for_course(
               current_account: @current_account,
               course_id: course_id,
@@ -62,6 +67,11 @@ module CheckHigh
           routing.redirect '/auth/login' unless @current_account.logged_in?
           puts "COURSE: #{routing.params}"
           # TODO: form data
+          course_data = Form::NewCourse.new.call(routing.params)
+          if course_data.failure?
+            flash[:error] = Form.message_values(course_data)
+            routing.halt
+          end
 
           CreateNewCourse.new(App.config).call(
             current_account: @current_account,
