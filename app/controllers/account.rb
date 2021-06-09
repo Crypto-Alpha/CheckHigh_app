@@ -26,7 +26,7 @@ module CheckHigh
           CreateAccount.new(App.config).call(
             email: new_account['email'],
             username: new_account['username'],
-            password: routing.params['password']
+            password: passwords['password']
           )
           flash[:notice] = 'Account created! Please login'
           routing.redirect '/auth/login'
