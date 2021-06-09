@@ -9,7 +9,7 @@ module CheckHigh
 
       params do
         required(:course_name).filled
-        optional(:links).maybe(format?: URI::DEFAULT_PARSER.make_regexp)
+        required(:links).filled(format?: URI::DEFAULT_PARSER.make_regexp)
       end
     end
   end
