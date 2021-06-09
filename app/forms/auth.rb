@@ -17,7 +17,7 @@ module CheckHigh
       params do
         required(:username).filled(format?: USERNAME_REGEX, min_size?: 4)
         required(:email).filled(format?: EMAIL_REGEX)
-        optional(:email).filled
+        optional(:verification_url).filled
       end
     end
 
