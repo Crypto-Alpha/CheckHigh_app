@@ -16,10 +16,12 @@ module CheckHigh
 
           # GET /courses/[course_id]
           routing.get do
+            crs_details = GetCourseDetail.new(App.config).call(@current_account, course_id)
+            crs = Course.new(crs_details)
             course_assi_list = GetAllAssignments.new(App.config).call(@current_account, "courses", course_id)
             course_assi = Assignments.new(course_assi_list)
 
-            view :course, locals: { current_user: @current_account, assignments: course_assi }
+            view :course, locals: { current_user: @current_account, assignments: course_assi, course: crs }
           rescue StandardError => e
             puts "#{e.inspect}\n#{e.backtrace}"
             flash[:error] = 'Course not found'

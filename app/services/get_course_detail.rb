@@ -3,7 +3,7 @@
 require 'http'
 
 # Returns all courses belonging to an account
-class GetAllCourseDetail
+class GetCourseDetail
   def initialize(config)
     @config = config
   end
