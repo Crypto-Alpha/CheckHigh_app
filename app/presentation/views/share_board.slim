@@ -1,6 +1,6 @@
 div class="row"
     div class="col-sm-6"
-        h5.title-font Riley ShareBoard1
+        h5.title-font #{share_board.share_board_name}
     div class="col-sm-6 text-end"
         button type="button" class="btn btn-outline-primary btn-sm main-color" style="border-color:transparent;border-radius:50%;"
             i class="fas fa-pen"
@@ -41,7 +41,7 @@ div class="row mt-2"
                 td
                 td
                 td.text-end
-                    a type="button" class="btn btn-outline-primary main-btn" href="/share_board/25" style="border-color:transparent;"
+                    a type="button" class="btn btn-outline-primary main-btn" href="/share_boards/#{share_board.id}/check" style="border-color:transparent;"
                         i class="fas fa-check-double" 
                         span  go Check to High
 
