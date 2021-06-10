@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative 'account'
+require_relative 'course'
 require_relative 'share_board'
 
 module CheckHigh
@@ -8,11 +10,13 @@ module CheckHigh
   class AssignmentDetail
     attr_reader :id, :assignment_name, :upload_time,
                 :content,
-                :share_board # full details
+                :owner, :course, :share_board, :policies # full details
 
-    def initialize(info)
-      process_attributes(info['attributes'])
-      process_included(info['include'])
+    def initialize(assi_info)
+      process_attributes(assi_info['attributes'])
+      process_relationships(assi_info['relationships'])
+      process_policies(assi_info['policies'])
+      # process_included(info['include'])
     end
 
     private
@@ -24,8 +28,20 @@ module CheckHigh
       @content = attributes['content']
     end
 
-    def process_included(included)
-      @share_board = ShareBoard.new(included['share_board'])
+    def process_relationships(relationships)
+      return unless relationships
+
+      @owner = Account.new(relationships['owner'])
+      @course = Course.new(relationships['course'])
+      @share_board = ShareBoard.new(relationships['share_board'])
     end
+
+    def process_policies(policies)
+      @policies = OpenStruct.new(policies)
+    end
+
+    # def process_included(included)
+    #   @share_board = ShareBoard.new(included['share_board'])
+    # end
   end
 end

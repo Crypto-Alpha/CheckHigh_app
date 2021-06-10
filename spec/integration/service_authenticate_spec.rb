@@ -22,7 +22,8 @@ describe 'Test Service Objects' do
              .to_return(body: @api_account.to_json,
                         headers: { 'content-type' => 'application/json' })
 
-      account = CheckHigh::AuthenticateAccount.new(app.config).call(**@credentials)
+      auth = CheckHigh::AuthenticateAccount.new(app.config).call(**@credentials)
+      account = auth[:account]['attributes']
       _(account).wont_be_nil
       _(account['username']).must_equal @api_account[:attributes][:username]
       _(account['email']).must_equal @api_account[:attributes][:email]

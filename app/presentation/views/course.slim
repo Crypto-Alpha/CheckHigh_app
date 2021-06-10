@@ -1,6 +1,6 @@
 div class="row"
     div class="col-sm-8"
-        h5.title-font BAFT
+        h5.title-font #{course.course_name}
     div class="col-sm-4 text-end"
         button type="button" class="btn btn-outline-primary btn-sm main-color" style="border-color:transparent;border-radius:50%;"
             i class="fas fa-pen"
@@ -17,11 +17,11 @@ div class="row"
                 th scope="col" upload time
                 th scope="col" 
             tbody
-                - assignments.all.each_with_index do |assi, index|
+                - course.assignments.each_with_index do |assi, index|
                     tr
                     th.align-middle scope="row" #{index+1}
                     td.align-middle 
-                        a.main-color href="/assignment/#{assi.id}" #{assi.assignment_name}
+                        a.main-color href="/assignments/#{assi.id}" #{assi.assignment_name}
                     td.align-middle #{assi.upload_time}
                     td.text-end 
                         button type="button" class="btn btn-outline-primary btn-sm main-color" style="border-color:transparent;border-radius:50%;"

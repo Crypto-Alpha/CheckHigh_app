@@ -14,29 +14,27 @@ module CheckHigh
         routing.on(String) do |share_board_id|
           @share_board_route = "#{@share_boards_route}/#{share_board_id}"
 
-          # GET /share_boards/[share_board_id]
-          routing.get do
+          # GET /share_boards/[share_board_id]/check
+          routing.on('check') do
             srb_assi_list = GetAllAssignments.new(App.config).call(@current_account, "share_boards", share_board_id)
             srb_assi = AssignmentsDetail.new(srb_assi_list)
-            view :share_board, locals: { current_user: @current_account, assignments: srb_assi }
-
-          rescue StandardError => e
-            puts "#{e.inspect}\n#{e.backtrace}"
-            flash[:error] = 'ShareBoard not found'
-            routing.redirect @share_boards_route
-          end
-
-          # TODO_0605: not sure how to write the next route path eg. share_boards/[id]/check
-          # Not sure if it will work or not...
-          # GET /share_boards/[share_board_id]/check
-          routing.post('check') do
-            # 應該要透過上一頁的check_high button送assignment資料到check頁面然後秀出來
-            srb_assi = routing.params['check_high']
+            
             view :share_board_check, locals: { current_user: @current_account, assignments: srb_assi }
-
           rescue StandardError => e
             puts "#{e.inspect}\n#{e.backtrace}"
             flash[:error] = 'Cannot check your assignments!'
+            routing.redirect @share_boards_route
+          end
+
+          # GET /share_boards/[share_board_id]
+          routing.get do
+            srb_details = GetShareBoardDetail.new(App.config).call(@current_account, share_board_id)
+            srb = ShareBoard.new(srb_details)
+            
+            view :share_board, locals: { current_user: @current_account, share_board: srb }
+          rescue StandardError => e
+            puts "#{e.inspect}\n#{e.backtrace}"
+            flash[:error] = 'ShareBoard not found'
             routing.redirect @share_boards_route
           end
 
