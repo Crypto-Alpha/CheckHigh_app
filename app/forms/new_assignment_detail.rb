@@ -8,9 +8,9 @@ module CheckHigh
       config.messages.load_paths << File.join(__dir__, 'errors/new_assignment_detail.yml')
 
       params do
-        required(:assignment_name).filled(max_size?: 256, format?: FILENAME_REGEX)
-        required(:assignment_name_valid?).filled
-        required(:content).filled(:string)
+        required(:filename).filled(max_size?: 256, format?: FILENAME_REGEX)
+        required(:tempfile).filled
+        # not knowing what to test
       end
     end
   end

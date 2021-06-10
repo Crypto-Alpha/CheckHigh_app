@@ -29,7 +29,7 @@ module CheckHigh
           # POST /courses/[course_id]/assignments/
           routing.post('assignments') do
             # TODO: form data
-            assignment_data = Form::NewAsignmentDetail.new.call(routing.params)
+            assignment_data = Form::NewAssignmentDetail.new.call(routing.params)
             if assignment_data.failure?
               flash[:error] = Form.message_values(assignment_data)
               routing.halt
@@ -78,7 +78,7 @@ module CheckHigh
             course_data: course_data.to_h
           )
 
-          flash[:notice] = 'Add assignments to your new course'
+          flash[:notice] = 'Add a new course'
         rescue StandardError => e
           puts "FAILURE Creating Course: #{e.inspect}"
           flash[:error] = 'Could not create course'

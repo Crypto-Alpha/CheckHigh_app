@@ -12,7 +12,7 @@ class CreateNewAssignment
     @config.API_URL
   end
 
-  def call_for_course(current_account:, course_id:, assigment_data:)
+  def call_for_course(current_account:, course_id:, assignment_data:)
     config_url = "#{api_url}/courses/#{course_id}/assignments"
     response = HTTP.auth("Bearer #{current_account.auth_token}")
                    .post(config_url, json: assignment_data)
@@ -20,7 +20,7 @@ class CreateNewAssignment
     response.code == 201 ? JSON.parse(response.body.to_s) : raise
   end
 
-  def call_for_shareboard(current_account:, share_board_id:, assigment_data:)
+  def call_for_shareboard(current_account:, share_board_id:, assignment_data:)
     config_url = "#{api_url}/share_boards/#{share_board_id}/assignments"
     response = HTTP.auth("Bearer #{current_account.auth_token}")
                    .post(config_url, json: assignment_data)
@@ -28,7 +28,7 @@ class CreateNewAssignment
     response.code == 201 ? JSON.parse(response.body.to_s) : raise
   end
 
-  def call(current_account:, assigment_data:)
+  def call(current_account:, assignment_data:)
     config_url = "#{api_url}/assignments"
     response = HTTP.auth("Bearer #{current_account.auth_token}")
                    .post(config_url, json: assignment_data)

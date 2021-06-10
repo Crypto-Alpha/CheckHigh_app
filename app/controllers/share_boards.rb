@@ -71,16 +71,23 @@ module CheckHigh
           # POST /share_boards/[share_board_id]/assignments/
           routing.post('assignments') do
             # TODO: form data
-            assignment_data = Form::NewAsignmentDetail.new.call(routing.params)
+            params = routing.params["file"]
+            assignment_data = Form::NewAssignmentDetail.new.call(params)
             if assignment_data.failure?
               flash[:error] = Form.message_values(assignment_data)
               routing.halt
             end
 
+            # read the content out
+            assignment_details = {
+              assignment_name: assignment_data[:filename],
+              content: assignment_data[:tempfile].read.force_encoding('UTF-8')
+            }
+
             CreateNewAssignment.new(App.config).call_for_shareboard(
               current_account: @current_account,
               share_board_id: share_board_id,
-              assignment_data: assignment_data.to_h
+              assignment_data: assignment_details
             )
 
             flash[:notice] = 'Your assignment was added'
@@ -117,7 +124,7 @@ module CheckHigh
             share_board_data: share_board_data.to_h
           )
 
-          flash[:notice] = 'Add assignments and collaborators to your new share board'
+          flash[:notice] = 'Add a new share board'
         rescue StandardError => e
           puts "FAILURE Creating share board: #{e.inspect}"
           flash[:error] = 'Could not create share board'
