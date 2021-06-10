@@ -30,10 +30,8 @@ module CheckHigh
           routing.get do
             srb_details = GetShareBoardDetail.new(App.config).call(@current_account, share_board_id)
             srb = ShareBoard.new(srb_details)
-            srb_assi_list = GetAllAssignments.new(App.config).call(@current_account, "share_boards", share_board_id)
-            srb_assi = Assignments.new(srb_assi_list)
-            view :share_board, locals: { current_user: @current_account, assignments: srb_assi, share_board: srb }
-
+            
+            view :share_board, locals: { current_user: @current_account, share_board: srb }
           rescue StandardError => e
             puts "#{e.inspect}\n#{e.backtrace}"
             flash[:error] = 'ShareBoard not found'

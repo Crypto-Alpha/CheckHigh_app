@@ -17,7 +17,7 @@ div class="row"
                 th scope="col" upload time
                 th scope="col" 
             tbody
-                - assignments.all.each_with_index do |assi, index|
+                - course.assignments.each_with_index do |assi, index|
                     tr
                     th.align-middle scope="row" #{index+1}
                     td.align-middle 
