@@ -46,6 +46,8 @@ div class="row mt-2"
                         span  go Check to High
 
     div class="col-sm-4" style="background-color: #F5F9FF;"
+        - if share_board.collaborators.empty?
+            span class="small" There are no collaborators yet
         table class="table table-striped main-table" 
             thead
                 tr
@@ -55,21 +57,15 @@ div class="row mt-2"
             tbody
                 tr
                 th scope="row" owner 
-                td.align-middle Soumya
+                td.align-middle #{share_board.owner.username}
                 td.text-end 
-                tr
-                th scope="row" collaborator 
-                td.align-middle Yan-Yu
-                td.text-end 
-                        button type="button" class="btn btn-outline-danger btn-sm main-color" style="border-color:transparent;border-radius:50%;"
-                            i class="fas fa-user-slash"
-                tr
-                th scope="row" collaborator 
-                td.align-middle Yan-Yu
-                td.text-end
-                        button type="button" class="btn btn-outline-danger btn-sm main-color" style="border-color:transparent;border-radius:50%;"
-                            i class="fas fa-user-slash"
-
+                - share_board.collaborators.each do |collaborator|
+                    tr
+                    th scope="row" collaborator 
+                    td.align-middle #{collaborator.username}
+                    td.text-end 
+                            button type="button" class="btn btn-outline-danger btn-sm main-color" style="border-color:transparent;border-radius:50%;"
+                                i class="fas fa-user-slash"
 button type="button" class="btn btn-primary main-btn" data-bs-toggle="modal" data-bs-target="#newAssiModal" style="border-radius:50%; border-color:transparent; height: 3.5rem; width: 3.5rem; position: fixed; bottom: 5vh; right: 5vh;"
     i class="fas fa-plus"
 
