@@ -1,17 +1,20 @@
 # frozen_string_literal: true
 
+require_relative 'account'
 require_relative 'course'
+require_relative 'share_board'
 
 module CheckHigh
   # Behaviors of the currently logged in account
   # It is use to show the assignments name and id (no content) (in Course)
   class Assignment
     attr_reader :id, :assignment_name, :links, :upload_time, # basic info
-                :course # full details
+                :owner, :course, :share_board, :policies # full details
 
-    def initialize(info)
-      process_attributes(info['attributes'])
-      process_included(info['include'])
+    def initialize(assi_info)
+      process_attributes(assi_info['attributes'])
+      process_relationships(assi_info['relationships'])
+      process_policies(assi_info['policies'])
     end
 
     private
@@ -22,8 +25,16 @@ module CheckHigh
       @upload_time = attributes['upload_time']
     end
 
-    def process_included(included)
-      @course = Course.new(included['course'])
+    def process_relationships(relationships)
+      return unless relationships
+
+      @owner = Account.new(relationships['owner'])
+      @course = Course.new(relationships['course'])
+      @share_board = ShareBoard.new(relationships['share_board'])
+    end
+
+    def process_policies(policies)
+      @policies = OpenStruct.new(policies)
     end
   end
 end

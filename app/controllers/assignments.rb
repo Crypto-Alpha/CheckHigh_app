@@ -8,15 +8,23 @@ module CheckHigh
   class App < Roda
     route('assignments') do |routing|
       routing.redirect '/auth/login' unless @current_account.logged_in?
-      @courses_route = '/courses'
+        @courses_route = '/courses'
+        @assignments_route = '/assignments'
 
-      # GET /assignments/[assignment_id]
-      routing.get(String) do |assignment_id|
-        assignment = GetAssignmentDetail.new(App.config).call(@current_account, assignment_id)
-        assignment_detail = AssignmentDetail.new(assignment)
+      routing.on(String) do |assignment_id|
+        @assignment_route = "#{@assignments_route}/#{assignment_id}"
+        
+        # GET /assignments/[assignment_id]
+        routing.get do
+          assignment = GetAssignmentDetail.new(App.config).call(@current_account, assignment_id)
+          assignment_detail = AssignmentDetail.new(assignment)
 
-        view :assignment,
-          locals: { current_user: @current_account, assignment: assignment_detail }
+          view :assignment, locals: { current_user: @current_account, assignment: assignment_detail }
+        rescue StandardError => e
+          puts "#{e.inspect}\n#{e.backtrace}"
+          flash[:error] = 'Assignment not found'
+          routing.redirect @courses_route
+        end
       end
 
       # POST /assignments
