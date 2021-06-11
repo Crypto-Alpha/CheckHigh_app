@@ -2,15 +2,14 @@ div class="row"
   div class="col-sm-6"
     h5.title-font #{share_board.share_board_name}
   div class="col-sm-6 text-end"
-    button type="button" class="btn btn-outline-primary btn-sm main-color" style="border-color:transparent;border-radius:50%;"
+    button type="button" class="btn btn-outline-primary btn-sm action-btn"
       i class="fas fa-pen"
-    button type="button" class="btn btn-outline-danger btn-sm main-color" style="border-color:transparent;border-radius:50%;"
-      i class="fas fa-trash-alt"
     - if share_board.policies.can_add_collaborators
-      button type="button" class="btn btn-outline-primary btn-sm main-color" data-bs-toggle="modal" data-bs-target="#newCollaboratorModal" style="border-color:transparent;border-radius:50%;"
+      button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#newCollaboratorModal"
         i class="fas fa-user-plus"
       include :collaborator_new_partial
-
+    button type="button" class="btn btn-outline-danger btn-sm action-btn"
+      i class="fas fa-trash-alt"
 
 div class="row mt-2"
   div class="col-sm-8" 
@@ -29,13 +28,13 @@ div class="row mt-2"
             a.main-color href="/assignments/#{assi.id}" #{assi.assignment_name}
           td.align-middle #{assi.owner_name}
           td.text-end 
-            button type="button" class="btn btn-outline-primary btn-sm main-color" style="border-color:transparent;border-radius:50%;"
+            button type="button" class="btn btn-outline-primary btn-sm action-btn"
               i class="fas fa-pen"
-            button type="button" class="btn btn-outline-primary btn-sm main-color" style="border-color:transparent;border-radius:50%;"
+            button type="button" class="btn btn-outline-primary btn-sm action-btn"
               i class="fas fa-folder"
-            button type="button" class="btn btn-outline-primary btn-sm main-color" style="border-color:transparent;border-radius:50%;"
+            button type="button" class="btn btn-outline-primary btn-sm action-btn"
               i class="fas fa-clipboard"
-            button type="button" class="btn btn-outline-danger btn-sm main-color" style="border-color:transparent;border-radius:50%;"
+            button type="button" class="btn btn-outline-danger btn-sm action-btn"
               i class="fas fa-trash-alt"
       tfoot
         tr
@@ -43,11 +42,11 @@ div class="row mt-2"
         td
         td
         td.text-end
-          a type="button" class="btn btn-outline-primary main-btn" href="/share_boards/#{share_board.id}/check" style="border-color:transparent;"
+          a type="button" class="btn btn-outline-primary main-btn" href="/share_boards/#{share_board.id}/check"
               i class="fas fa-check-double" 
               span  go Check to High
 
-  div class="col-sm-4" style="background-color: #F5F9FF;"
+  div class="col-sm-4 second-bg"
     - if share_board.collaborators.empty?
       span class="small" There are no collaborators yet
     table class="table table-striped main-table" 
@@ -71,9 +70,9 @@ div class="row mt-2"
                 form role="form" method="post" action="/share_boards/#{share_board.id}/collaborators"
                   input type="hidden" name="action" value="remove"
                   input type="hidden" name="email" value="#{collaborator.email}"
-                  button type="submit" class="btn btn-outline-danger btn-sm main-color" style="border-color:transparent;border-radius:50%;"
+                  button type="submit" class="btn btn-outline-danger btn-sm action-btn"
                     span class="fas fa-user-slash"
 
-button type="button" class="btn btn-primary main-btn" data-bs-toggle="modal" data-bs-target="#newAssiModal" style="border-radius:50%; border-color:transparent; height: 3.5rem; width: 3.5rem; position: fixed; bottom: 5vh; right: 5vh;"
+button type="button" class="btn btn-primary modal-btn" data-bs-toggle="modal" data-bs-target="#newAssiModal"
   i class="fas fa-plus"
 include :assignment_new_partial
