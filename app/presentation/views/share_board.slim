@@ -1,80 +1,79 @@
 div class="row"
-    div class="col-sm-6"
-        h5.title-font #{share_board.share_board_name}
-    div class="col-sm-6 text-end"
-        button type="button" class="btn btn-outline-primary btn-sm main-color" style="border-color:transparent;border-radius:50%;"
-            i class="fas fa-pen"
-        button type="button" class="btn btn-outline-danger btn-sm main-color" style="border-color:transparent;border-radius:50%;"
-          i class="fas fa-trash-alt"
-        - if share_board.policies.can_add_collaborators
-          button type="button" class="btn btn-outline-primary btn-sm main-color" data-bs-toggle="modal" data-bs-target="#newCollaboratorModal" style="border-color:transparent;border-radius:50%;"
-            i class="fas fa-user-plus"
-include :collaborator_new_partial
+  div class="col-sm-6"
+    h5.title-font #{share_board.share_board_name}
+  div class="col-sm-6 text-end"
+    button type="button" class="btn btn-outline-primary btn-sm main-color" style="border-color:transparent;border-radius:50%;"
+      i class="fas fa-pen"
+    button type="button" class="btn btn-outline-danger btn-sm main-color" style="border-color:transparent;border-radius:50%;"
+      i class="fas fa-trash-alt"
+    - if share_board.policies.can_add_collaborators
+      button type="button" class="btn btn-outline-primary btn-sm main-color" data-bs-toggle="modal" data-bs-target="#newCollaboratorModal" style="border-color:transparent;border-radius:50%;"
+        i class="fas fa-user-plus"
+      include :collaborator_new_partial
 
 
 div class="row mt-2"
-    div class="col-sm-8" 
-        table class="table table-striped main-table"
-            thead
-                tr
-                th scope="col" #
-                th scope="col" filename
-                th scope="col" author
-                th scope="col" 
-            tbody
-                - share_board.assignments.each_with_index do |assi, index|
-                    tr
-                    th.align-middle scope="row" #{index+1}
-                    td.align-middle 
-                        a.main-color href="/assignments/#{assi.id}" #{assi.assignment_name}
-                    td.align-middle #{assi.owner_name}
-                    td.text-end 
-                        button type="button" class="btn btn-outline-primary btn-sm main-color" style="border-color:transparent;border-radius:50%;"
-                            i class="fas fa-pen"
-                        button type="button" class="btn btn-outline-primary btn-sm main-color" style="border-color:transparent;border-radius:50%;"
-                            i class="fas fa-folder"
-                        button type="button" class="btn btn-outline-primary btn-sm main-color" style="border-color:transparent;border-radius:50%;"
-                            i class="fas fa-clipboard"
-                        button type="button" class="btn btn-outline-danger btn-sm main-color" style="border-color:transparent;border-radius:50%;"
-                            i class="fas fa-trash-alt"
-            tfoot
-                tr
-                th 
-                td
-                td
-                td.text-end
-                    a type="button" class="btn btn-outline-primary main-btn" href="/share_boards/#{share_board.id}/check" style="border-color:transparent;"
-                        i class="fas fa-check-double" 
-                        span  go Check to High
+  div class="col-sm-8" 
+    table class="table table-striped main-table"
+      thead
+        tr
+        th scope="col" #
+        th scope="col" filename
+        th scope="col" author
+        th scope="col" 
+      tbody
+        - share_board.assignments.each_with_index do |assi, index|
+          tr
+          th.align-middle scope="row" #{index+1}
+          td.align-middle 
+            a.main-color href="/assignments/#{assi.id}" #{assi.assignment_name}
+          td.align-middle #{assi.owner_name}
+          td.text-end 
+            button type="button" class="btn btn-outline-primary btn-sm main-color" style="border-color:transparent;border-radius:50%;"
+              i class="fas fa-pen"
+            button type="button" class="btn btn-outline-primary btn-sm main-color" style="border-color:transparent;border-radius:50%;"
+              i class="fas fa-folder"
+            button type="button" class="btn btn-outline-primary btn-sm main-color" style="border-color:transparent;border-radius:50%;"
+              i class="fas fa-clipboard"
+            button type="button" class="btn btn-outline-danger btn-sm main-color" style="border-color:transparent;border-radius:50%;"
+              i class="fas fa-trash-alt"
+      tfoot
+        tr
+        th 
+        td
+        td
+        td.text-end
+          a type="button" class="btn btn-outline-primary main-btn" href="/share_boards/#{share_board.id}/check" style="border-color:transparent;"
+              i class="fas fa-check-double" 
+              span  go Check to High
 
-    div class="col-sm-4" style="background-color: #F5F9FF;"
-        - if share_board.collaborators.empty?
-            span class="small" There are no collaborators yet
-        table class="table table-striped main-table" 
-            thead
-                tr
-                th scope="col" role
-                th scope="col" name
-                th scope="col" 
-            tbody
-                tr
-                th scope="row" owner 
-                td.align-middle #{share_board.owner.username}
-                td.text-end 
-                - share_board.collaborators.each do |collaborator|
-                    tr
-                    th scope="row" collaborator 
-                    td.align-middle #{collaborator.username}
-                    td.text-end 
-                      - if share_board.policies.can_remove_collaborators
-                        span class="float-end"
-                          form role="form" method="post" action="/share_boards/#{share_board.id}/collaborators"
-                            input type="hidden" name="action" value="remove"
-                            input type="hidden" name="email" value="#{collaborator.email}"
-                            button type="submit" class="btn btn-outline-danger btn-sm main-color" style="border-color:transparent;border-radius:50%;"
-                              span class="fas fa-user-slash"
+  div class="col-sm-4" style="background-color: #F5F9FF;"
+    - if share_board.collaborators.empty?
+      span class="small" There are no collaborators yet
+    table class="table table-striped main-table" 
+      thead
+        tr
+        th scope="col" role
+        th scope="col" name
+        th scope="col" 
+      tbody
+        tr
+        th scope="row" owner 
+        td.align-middle #{share_board.owner.username}
+        td.text-end 
+        - share_board.collaborators.each do |collaborator|
+          tr
+          th scope="row" collaborator 
+          td.align-middle #{collaborator.username}
+          td.text-end 
+            - if share_board.policies.can_remove_collaborators
+              span class="float-end"
+                form role="form" method="post" action="/share_boards/#{share_board.id}/collaborators"
+                  input type="hidden" name="action" value="remove"
+                  input type="hidden" name="email" value="#{collaborator.email}"
+                  button type="submit" class="btn btn-outline-danger btn-sm main-color" style="border-color:transparent;border-radius:50%;"
+                    span class="fas fa-user-slash"
 
 button type="button" class="btn btn-primary main-btn" data-bs-toggle="modal" data-bs-target="#newAssiModal" style="border-radius:50%; border-color:transparent; height: 3.5rem; width: 3.5rem; position: fixed; bottom: 5vh; right: 5vh;"
-    i class="fas fa-plus"
-
+  i class="fas fa-plus"
 include :assignment_new_partial
