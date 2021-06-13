@@ -19,23 +19,25 @@ div class="row mt-2"
         th scope="col" #
         th scope="col" filename
         th scope="col" author
-        th scope="col" 
+        th scope="col" upload time
+        / th scope="col" 
       tbody
         - share_board.assignments.each_with_index do |assi, index|
           tr
           th.align-middle scope="row" #{index+1}
           td.align-middle 
             a.main-color href="/assignments/#{assi.id}" #{assi.assignment_name}
-          td.align-middle #{assi.owner_name}
-          td.text-end 
-            button type="button" class="btn btn-outline-primary btn-sm action-btn"
-              i class="fas fa-pen"
-            button type="button" class="btn btn-outline-primary btn-sm action-btn"
-              i class="fas fa-folder"
-            button type="button" class="btn btn-outline-primary btn-sm action-btn"
-              i class="fas fa-clipboard"
-            button type="button" class="btn btn-outline-danger btn-sm action-btn"
-              i class="fas fa-trash-alt"
+          td.align-middle #{assi.owner.username}
+          td.align-middle #{assi.upload_time}
+          / td.text-end 
+          /   button type="button" class="btn btn-outline-primary btn-sm action-btn"
+          /     i class="fas fa-pen"
+          /   button type="button" class="btn btn-outline-primary btn-sm action-btn"
+          /     i class="fas fa-folder"
+          /   button type="button" class="btn btn-outline-primary btn-sm action-btn"
+          /     i class="fas fa-clipboard"
+          /   button type="button" class="btn btn-outline-danger btn-sm action-btn"
+          /     i class="fas fa-trash-alt"
       tfoot
         tr
         th 

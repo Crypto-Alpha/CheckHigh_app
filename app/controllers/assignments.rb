@@ -8,12 +8,12 @@ module CheckHigh
   class App < Roda
     route('assignments') do |routing|
       routing.redirect '/auth/login' unless @current_account.logged_in?
-        @courses_route = '/courses'
+        @home_route = '/'
         @assignments_route = '/assignments'
 
       routing.on(String) do |assignment_id|
         @assignment_route = "#{@assignments_route}/#{assignment_id}"
-        
+
         # GET /assignments/[assignment_id]
         routing.get do
           assignment = GetAssignmentDetail.new(App.config).call(@current_account, assignment_id)
@@ -23,7 +23,7 @@ module CheckHigh
         rescue StandardError => e
           puts "#{e.inspect}\n#{e.backtrace}"
           flash[:error] = 'Assignment not found'
-          routing.redirect @courses_route
+          routing.redirect @home_route
         end
       end
 
@@ -31,7 +31,6 @@ module CheckHigh
       routing.post do
         routing.redirect '/auth/login' unless @current_account.logged_in?
         puts "ASSIGNMENT: #{routing.params}"
-        # TODO: form data
         assi_data = Form::NewAssignmentDetail.new.call(routing.params)
         if assi_data.failure?
           flash[:error] = Form.message_values(assi_data)
@@ -48,7 +47,7 @@ module CheckHigh
         puts "FAILURE Creating Lonely Assignment: #{e.inspect}"
         flash[:error] = 'Could not create Lonely Assignment'
       ensure
-        routing.redirect @courses_route
+        routing.redirect @home_route
       end
     end
   end

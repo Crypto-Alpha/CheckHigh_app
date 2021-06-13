@@ -18,7 +18,7 @@ module CheckHigh
           routing.on('check') do
             srb_assi_list = GetAllAssignments.new(App.config).call(@current_account, "share_boards", share_board_id)
             srb_assi = AssignmentsDetail.new(srb_assi_list)
-            
+
             view :share_board_check, locals: { current_user: @current_account, assignments: srb_assi }
           rescue StandardError => e
             puts "#{e.inspect}\n#{e.backtrace}"
@@ -30,7 +30,7 @@ module CheckHigh
           routing.get do
             srb_details = GetShareBoardDetail.new(App.config).call(@current_account, share_board_id)
             srb = ShareBoard.new(srb_details)
-            
+
             view :share_board, locals: { current_user: @current_account, share_board: srb }
           rescue StandardError => e
             puts "#{e.inspect}\n#{e.backtrace}"
@@ -41,7 +41,7 @@ module CheckHigh
           # POST /share_boards/[share_board_id]/collaborators
           routing.post('collaborators') do
             action = routing.params['action']
-            #TODO: form data
+
             collaborator_info = Form::CollaboratorEmail.new.call(routing.params)
             if collaborator_info.failure?
               flash[:error] = Form.validation_errors(collaborator_info)
@@ -71,7 +71,7 @@ module CheckHigh
           # POST /share_boards/[share_board_id]/assignments/
           routing.post('assignments') do
             # TODO: form data
-            params = routing.params["file"]
+            params = routing.params['file']
             assignment_data = Form::NewAssignmentDetail.new.call(params)
             if assignment_data.failure?
               flash[:error] = Form.message_values(assignment_data)
@@ -91,9 +91,9 @@ module CheckHigh
             )
 
             flash[:notice] = 'Your assignment was added'
-          rescue StandardError => error
-            puts error.inspect
-            puts error.backtrace
+          rescue StandardError => e
+            puts e.inspect
+            puts e.backtrace
             flash[:error] = 'Could not add assignment'
           ensure
             routing.redirect @share_board_route

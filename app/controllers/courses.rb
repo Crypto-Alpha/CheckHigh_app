@@ -18,7 +18,7 @@ module CheckHigh
           routing.get do
             crs_details = GetCourseDetail.new(App.config).call(@current_account, course_id)
             crs = Course.new(crs_details)
-            
+
             view :course, locals: { current_user: @current_account, course: crs }
           rescue StandardError => e
             puts "#{e.inspect}\n#{e.backtrace}"
@@ -42,15 +42,14 @@ module CheckHigh
             )
 
             flash[:notice] = 'Your assignment was added'
-          rescue StandardError => error
-            puts error.inspect
-            puts error.backtrace
+          rescue StandardError => e
+            puts e.inspect
+            puts e.backtrace
             flash[:error] = 'Could not add assignment'
           ensure
             routing.redirect @course_route
           end
         end
-
 
         # GET /courses
         routing.get do
@@ -63,7 +62,7 @@ module CheckHigh
         end
 
         # POST /courses
-        routing.post do 
+        routing.post do
           routing.redirect '/auth/login' unless @current_account.logged_in?
           puts "COURSE: #{routing.params}"
           # TODO: form data

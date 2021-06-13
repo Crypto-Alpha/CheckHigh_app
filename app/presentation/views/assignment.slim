@@ -1,17 +1,41 @@
 div class="row"
-  div class="col-sm-4"
-    h4 #{assignment.assignment_name}
-  div class="col-sm-4" #{assignment.upload_time}
-  div class="col-sm-4 text-end"
-    button type="button" class="btn btn-outline-primary btn-sm action-btn"
-      i class="fas fa-pen"
-    button type="button" class="btn btn-outline-primary btn-sm action-btn"
-      i class="fas fa-folder"
-    button type="button" class="btn btn-outline-primary btn-sm action-btn"
-      i class="fas fa-clipboard"
-    button type="button" class="btn btn-outline-danger btn-sm action-btn"
-      i class="fas fa-trash-alt"
-div class="row"
+  div.col.second-bg
+    table class="table table-striped main-table" 
+        thead
+          tr
+          th scope="col" 
+            h4 #{assignment.assignment_name}
+          th scope="col" class="text-end"
+            button type="button" class="btn btn-outline-primary btn-sm action-btn"
+              i class="fas fa-pen"
+            button type="button" class="btn btn-outline-primary btn-sm action-btn"
+              i class="fas fa-folder"
+            button type="button" class="btn btn-outline-primary btn-sm action-btn"
+              i class="fas fa-clipboard"
+            button type="button" class="btn btn-outline-danger btn-sm action-btn"
+              i class="fas fa-trash-alt"
+        tbody
+          tr
+          th scope="row" Author: 
+          td.align-middle #{assignment.owner.username}
+          tr
+          th scope="row" Course: 
+          - if assignment.course 
+            td.align-middle #{assignment.course.course_name}
+          - else 
+            td.align-middle
+          tr
+          th scope="row" ShareBoards: 
+          - if assignment.share_boards
+            - assignment.share_boards.each do |srb|
+              td.align-middle #{srb.share_board_name}
+          - else 
+            td.align-middle
+          tr
+          th scope="row" Upload at: 
+          td.align-middle #{assignment.upload_time}
+div class="row mt-3"
   div class="col"
-    == assignment.content
+    .card.assi-block
+      == assignment.content
 
