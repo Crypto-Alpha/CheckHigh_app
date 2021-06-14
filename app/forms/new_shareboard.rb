@@ -9,7 +9,6 @@ module CheckHigh
 
       params do
         required(:share_board_name).filled
-        required(:links).filled(format?: URI::DEFAULT_PARSER.make_regexp)
       end
     end
   end

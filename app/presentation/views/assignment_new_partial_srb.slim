@@ -1,10 +1,10 @@
-div class="modal fade" id="newAssiModal" tabindex="-1" aria-labelledby="newAssiModalLabel" aria-hidden="true"
+div class="modal fade" id="newAssiForSrbModal" tabindex="-1" aria-labelledby="newAssiModalForSrbLabel" aria-hidden="true"
   div class="modal-dialog"
     div class="modal-content"
       div class="modal-header"
-        h5 class="modal-title" id="newAssiModalLabel" Upload Assignment
+        h5 class="modal-title" id="newAssiForSrbModalLabel" Upload Assignment
         button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-      form role="form" enctype="multipart/form-data" action="/assignments" method='post' id='new-assignment-form'
+      form role="form" enctype="multipart/form-data" action="/share_boards/#{share_board.id}/assignments" method='post' id='new-assignment-for-srb-form'
         div class="modal-body"
             div class="form-group"
               label for='formFile' class="form-label"
@@ -12,5 +12,5 @@ div class="modal fade" id="newAssiModal" tabindex="-1" aria-labelledby="newAssiM
 
         div class="modal-footer"
           button type="button" class="btn btn-secondary" data-bs-dismiss="modal" Close
-          button type="submit" class="btn btn-primary submit" id="assignment-form-submit" value="submit" Upload
+          button type="submit" class="btn btn-primary submit" id="srb-assign-form-submit" value="submit" Upload
 

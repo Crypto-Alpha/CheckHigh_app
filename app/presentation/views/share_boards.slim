@@ -11,9 +11,14 @@ div class="modal fade" id="newSrbModal" tabindex="-1" aria-labelledby="newSrbMod
   div class="modal-dialog"
     div class="modal-content"
       div class="modal-header"
-        h5 class="modal-title" id="newSrbModalLabel" New ShareBoard
+        h5 class="modal-title" id="newSrbModalLabel" Add a new ShareBoard!
         button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-      div class="modal-body" ...
-      div class="modal-footer"
-        button type="button" class="btn btn-secondary" data-bs-dismiss="modal" Close
-        button type="button" class="btn btn-primary" Submit
+      form role="form" action="/share_boards" method='post' id='new-shareboard-form'
+        div class="modal-body"
+            div class="form-group"
+              label for='name_input' Shareboard Name
+              input class='form-control' name="share_board_name" type="text" placeholder="ShareBoard name required"
+        div class="modal-footer"
+          button type="button" class="btn btn-secondary" data-bs-dismiss="modal" Close
+          button type="submit" class="btn btn-primary" id="shareboard-add-submit" value="submit" Create
+

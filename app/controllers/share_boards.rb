@@ -70,7 +70,6 @@ module CheckHigh
 
           # POST /share_boards/[share_board_id]/assignments/
           routing.post('assignments') do
-            # TODO: form data
             params = routing.params['file']
             assignment_data = Form::NewAssignmentDetail.new.call(params)
             if assignment_data.failure?
