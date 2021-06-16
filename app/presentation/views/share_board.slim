@@ -29,15 +29,64 @@ div class="row mt-2"
             a.main-color href="/assignments/#{assi.id}" #{assi.assignment_name}
           td.align-middle #{assi.owner.username}
           td.align-middle #{assi.upload_time}
-          / td.text-end 
-          /   button type="button" class="btn btn-outline-primary btn-sm action-btn"
-          /     i class="fas fa-pen"
-          /   button type="button" class="btn btn-outline-primary btn-sm action-btn"
-          /     i class="fas fa-folder"
-          /   button type="button" class="btn btn-outline-primary btn-sm action-btn"
-          /     i class="fas fa-clipboard"
-          /   button type="button" class="btn btn-outline-danger btn-sm action-btn"
-          /     i class="fas fa-trash-alt"
+          - if @current_account.username == assi.owner.username
+            td.text-end 
+              button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#RenameAssiModal"
+                i class="fas fa-pen"
+              div id="RenameAssiModal" class="modal fade" role="dialog"
+                div class="modal-dialog"
+                  div class="modal-content"
+                    div class="modal-header"
+                      h4 Rename your assignment
+                      button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    form role="form" action="/assignments/#{assi.id}/rename_assignment" method='post' id='rename-assi-form'
+                      div class="modal-body"
+                        div class="form-group"
+                          input type="hidden" name="redirect_route" value="/share_boards/#{share_board.id}" 
+                          label for='rename_input' New assignment name:
+                          input type='text' name='new_name' id='rename_assi_input' class="form-control" placeholder="New name of assignment"
+                      div class="modal-footer"
+                        button type='submit' class="btn btn-primary submit" value='submit' Rename
+                        button type="button" class="btn btn-secondary" data-bs-dismiss="modal" Cancel
+              
+              button type="button" class="btn btn-outline-primary btn-sm action-btn" id="dropdownCourses" data-bs-toggle="dropdown"
+                i class="fas fa-folder"
+              ul class="dropdown-menu" aria-labelledby="dropdownCourses"
+                li
+                  - courses.all.each_with_index do |course, index|
+                    a class="dropdown-item" href="#changeCrs_#{index}" #{course.course_name}
+                    form role="form" action="/courses/#{course.id}/assignments/#{assi.id}/move_course" method='post' id="changeCrs_#{index}"
+                      div class="form-group"
+                        input type="hidden" name="redirect_route" value="/share_boards/#{share_board.id}" 
+                        button type='submit' class="btn btn-primary submit" id='change-course-form-submit' value='submit' Move
+                        button type="button" class="btn btn-secondary" data-bs-dismiss="modal" Cancel
+              button type="button" class="btn btn-outline-danger btn-sm action-btn" data-bs-toggle="dropdown"
+                i class="fas fa-clipboard"
+              ul class="dropdown-menu" aria-labelledby="dropdownShareBoards"
+                li
+                  - share_boards.all.each_with_index do |srb, index|
+                    - if share_board.share_board_name == srb.share_board_name then next
+                    - else
+                      a class="dropdown-item" href="#AddtoSrb_#{index}" #{srb.share_board_name}
+                      form role="form" action="/share_boards/#{srb.id}/assignments/#{assi.id}" method='post' id="AddtoSrb_#{index}"
+                        div class="form-group"
+                          input type="hidden" name="redirect_route" value="/share_boards/#{share_board.id}" 
+                          button type='submit' class="btn btn-primary submit" id='add2srb-form-submit' value='submit' Add
+                          button type="button" class="btn btn-secondary" data-bs-dismiss="modal" Cancel
+               
+              button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#DeleteAssiModal"
+                i class="fas fa-trash-alt"
+              div id="DeleteAssiModal" class="modal fade" role="dialog"
+                div class="modal-dialog"
+                  div class="modal-content"
+                    div class="modal-header"
+                      h4 Delete #{assi.assignment_name}?  
+                      button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    form role="form" action="/assignments/#{assi.id}/deletion" method='post' id='delete-assi-form'
+                      div class="modal-footer"
+                        input type="hidden" name="redirect_route" value="/share_boards/#{share_board.id}" 
+                        button type='submit' class="btn btn-primary submit" value='submit' Delete
+                        button type="button" class="btn btn-secondary" data-bs-dismiss="modal" Cancel
       tfoot
         tr
         th 

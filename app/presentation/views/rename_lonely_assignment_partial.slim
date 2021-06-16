@@ -1,0 +1,14 @@
+div id="RenameLonelyAssiModal" class="modal fade" role="dialog"
+  div class="modal-dialog"
+    div class="modal-content"
+      div class="modal-header"
+        h4 Rename your assignment
+        button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+      form role="form" action="/assignments/#{assi.id}/lonely_assignments" method='post' id='rename-loenly-assi-form'
+        div class="modal-body"
+          div class="form-group"
+            label for='rename_input' New assingment name:
+            input type='text' name='new_name' id='rename_lonely_assi_input' class="form-control" placeholder="New name of assignment"
+        div class="modal-footer"
+          button type='submit' class="btn btn-primary submit" id='rename-lonely-assi-form-submit' value='submit' Rename
+          button type="button" class="btn btn-secondary" data-bs-dismiss="modal" Cancel

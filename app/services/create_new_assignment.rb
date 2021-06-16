@@ -35,4 +35,12 @@ class CreateNewAssignment
 
     response.code == 201 ? JSON.parse(response.body.to_s) : raise
   end
+
+  def add_exist_assi_to_shareboard(current_account:, share_board_id:, assignment_id:)
+    config_url = "#{api_url}/share_boards/#{share_board_id}/assignments/#{assignment_id}"
+    response = HTTP.auth("Bearer #{current_account.auth_token}")
+                   .post(config_url)
+
+    response.code == 201 ? JSON.parse(response.body.to_s) : raise
+  end
 end

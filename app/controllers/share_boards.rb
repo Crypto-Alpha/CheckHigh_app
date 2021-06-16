@@ -31,7 +31,12 @@ module CheckHigh
             srb_details = GetShareBoardDetail.new(App.config).call(@current_account, share_board_id)
             srb = ShareBoard.new(srb_details)
 
-            view :share_board, locals: { current_user: @current_account, share_board: srb }
+            courses_list = GetAllCourses.new(App.config).call(@current_account)
+            share_board_list = GetAllShareBoards.new(App.config).call(@current_account)
+            courses = Courses.new(courses_list)
+            share_boards = ShareBoards.new(share_board_list) 
+
+            view :share_board, locals: { current_user: @current_account, share_board: srb , share_boards: share_boards, courses: courses}
           rescue StandardError => e
             puts "#{e.inspect}\n#{e.backtrace}"
             flash[:error] = 'ShareBoard not found'
@@ -68,34 +73,56 @@ module CheckHigh
             routing.redirect @share_board_route
           end
 
-          # POST /share_boards/[share_board_id]/assignments/
-          routing.post('assignments') do
-            params = routing.params['file']
-            assignment_data = Form::NewAssignmentDetail.new.call(params)
-            if assignment_data.failure?
-              flash[:error] = Form.message_values(assignment_data)
-              routing.halt
+          routing.on('assignments') do
+            routing.on(String) do |assignment_id|
+              routing.post do
+                redirect_route = routing.params["redirect_route"]
+                # POST /share_boards/[share_board_id]/assignments/[assignment_id]
+                CreateNewAssignment.new(App.config).add_exist_assi_to_shareboard(
+                  current_account: @current_account,
+                  share_board_id: share_board_id,
+                  assignment_id: assignment_id
+                )
+
+                flash[:notice] = 'Your assignment was added'
+              rescue StandardError => e
+                puts e.inspect
+                puts e.backtrace
+                flash[:error] = 'Could not add assignment, you might have already added this assignment before.'
+              ensure
+                routing.redirect redirect_route 
+              end
             end
 
-            # read the content out
-            assignment_details = {
-              assignment_name: assignment_data[:filename],
-              content: assignment_data[:tempfile].read.force_encoding('UTF-8')
-            }
+            # POST /share_boards/[share_board_id]/assignments
+            routing.post do
+              params = routing.params['file']
+              assignment_data = Form::NewAssignmentDetail.new.call(params)
+              if assignment_data.failure?
+                flash[:error] = Form.message_values(assignment_data)
+                routing.halt
+              end
 
-            CreateNewAssignment.new(App.config).call_for_shareboard(
-              current_account: @current_account,
-              share_board_id: share_board_id,
-              assignment_data: assignment_details
-            )
+              # read the content out
+              assignment_details = {
+                assignment_name: assignment_data[:filename],
+                content: assignment_data[:tempfile].read.force_encoding('UTF-8')
+              }
 
-            flash[:notice] = 'Your assignment was added'
-          rescue StandardError => e
-            puts e.inspect
-            puts e.backtrace
-            flash[:error] = 'Could not add assignment'
-          ensure
-            routing.redirect @share_board_route
+              CreateNewAssignment.new(App.config).call_for_shareboard(
+                current_account: @current_account,
+                share_board_id: share_board_id,
+                assignment_data: assignment_details
+              )
+
+              flash[:notice] = 'Your assignment was added'
+            rescue StandardError => e
+              puts e.inspect
+              puts e.backtrace
+              flash[:error] = 'Could not add assignment.'
+            ensure
+              routing.redirect @share_board_route
+            end
           end
         end
 

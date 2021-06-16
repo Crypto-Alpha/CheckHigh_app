@@ -2,4 +2,3 @@ en:
   errors:
     assignment_name: 'provide filename with up to 255 legal characters'
     assignment_name_valid?: 'filename has illegal characters (e.g., & | \\ / <tab>'
-    content: 'provide content for assignment'
