@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Service to remove collaborator to project
+# Service to remove collaborator to shareboard
 class RemoveCollaborator
   class CollaboratorNotRemoved < StandardError; end
 

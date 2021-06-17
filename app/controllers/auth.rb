@@ -20,7 +20,7 @@ module CheckHigh
       routing.is 'login' do
         # GET /auth/login
         routing.get do
-          view :login, locals: {gh_oauth_url: gh_oauth_url(App.config)}
+          view :login, locals: { gh_oauth_url: gh_oauth_url(App.config) }
         end
 
         # POST /auth/login
@@ -70,7 +70,7 @@ module CheckHigh
           CurrentSession.new(session).current_account = current_account
 
           flash[:notice] = "Welcome #{current_account.username}!"
-          routing.redirect '/projects'
+          routing.redirect '/'
         rescue AuthorizeGithubAccount::UnauthorizedError
           flash[:error] = 'Could not login with Github'
           response.status = 403
