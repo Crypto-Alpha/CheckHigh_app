@@ -1,15 +1,10 @@
 div class="modal fade" id="newCourseModal" tabindex="-1" aria-labelledby="newCourseModalLabel" aria-hidden="true"
   div class="modal-dialog"
     div class="modal-content"
-      div class="modal-header"
-        h5 class="modal-title" id="newCourseModalLabel" Add a new Course!
-        button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
       form role="form" action="/courses" method='post' id='new-course-form'
-        div class="modal-body"
-            div class="form-group"
-              label for='name_input' Course Name
-              input class='form-control' name="course_name" type="text" placeholder="Course name required"
-        div class="modal-footer"
-          button type="button" class="btn btn-secondary" data-bs-dismiss="modal" Close
-          button type="submit" class="btn btn-primary" id="course-add-submit" value="submit" Create
+        div class="modal-body main-color"
+          div class="form-group"
+            label.mb-2 for='name_input' Add a new Course!
+            input class='form-control form-control-sm' name="course_name" type="text" placeholder="course name"
+            button.my-2.float-end type="submit" class="btn btn-outline-primary btn-sm main-btn" id="course-add-submit" value="submit" Create
 
