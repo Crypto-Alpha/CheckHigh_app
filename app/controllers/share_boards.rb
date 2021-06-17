@@ -127,8 +127,7 @@ module CheckHigh
 
                 flash[:notice] = 'Your assignment was added'
               rescue StandardError => e
-                puts e.inspect
-                puts e.backtrace
+                puts "FAILURE Creating Assignment: #{e.inspect}"
                 flash[:error] = 'Could not add assignment, you might have already added this assignment before.'
               ensure
                 routing.redirect redirect_route 
@@ -158,8 +157,7 @@ module CheckHigh
 
               flash[:notice] = 'Your assignment was added'
             rescue StandardError => e
-              puts e.inspect
-              puts e.backtrace
+              puts "FAILURE Creating Share Board: #{e.inspect}"
               flash[:error] = 'Could not add assignment.'
             ensure
               routing.redirect @share_board_route
