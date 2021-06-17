@@ -31,8 +31,8 @@ module CheckHigh
 
           flash[:notice] = "You've renamed an assignment"
         rescue StandardError => e
-          puts "FAILURE Renaming Lonely Assignment: #{e.inspect}"
-          flash[:error] = 'Could not rename a Lonely Assignment'
+          puts "FAILURE Renaming Assignment: #{e.inspect}"
+          flash[:error] = 'Could not rename a Assignment'
         ensure
           routing.redirect redirect_route
         end

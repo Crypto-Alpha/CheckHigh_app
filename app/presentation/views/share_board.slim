@@ -2,15 +2,43 @@ div class="row"
   div class="col-sm-6"
     h5.title-font #{share_board.share_board_name}
   div class="col-sm-6 text-end"
-    button type="button" class="btn btn-outline-primary btn-sm action-btn"
-      i class="fas fa-pen"
+    - if share_board.policies.can_edit
+      button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#RenameSrbModal"
+        i class="fas fa-pen"
+      div id="RenameSrbModal" class="modal fade" role="dialog"
+        div class="modal-dialog"
+          div class="modal-content"
+            div class="modal-header"
+              h4 Rename your share board
+              button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+            form role="form" action="/share_boards/#{share_board.id}" method='post' id='rename-srb-form'
+              div class="modal-body"
+                div class="form-group"
+                  input type="hidden" name="redirect_route" value="/share_boards/#{share_board.id}" 
+                    label for='rename_input' New share board name:
+                    input type='text' name='new_name' id='rename_srb_input' class="form-control" placeholder="New name of share board"
+              div class="modal-footer"
+                button type='submit' class="btn btn-primary submit" value='submit' Rename
+                button type="button" class="btn btn-secondary" data-bs-dismiss="modal" Cancel
     - if share_board.policies.can_add_collaborators
       button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#newCollaboratorModal"
         i class="fas fa-user-plus"
       include :collaborator_new_partial
-    button type="button" class="btn btn-outline-danger btn-sm action-btn"
-      i class="fas fa-trash-alt"
-
+    - if share_board.policies.can_delete
+      button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#DeleteSrbModal"
+        i class="fas fa-trash-alt"
+      div id="DeleteSrbModal" class="modal fade" role="dialog"
+        div class="modal-dialog"
+          div class="modal-content"
+            div class="modal-header"
+              h4 Delete #{share_board.share_board_name}?  
+              button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+            form role="form" action="/share_boards/#{share_board.id}/deletion" method='post' id='delete-srb-form'
+              div class="modal-footer"
+                input type="hidden" name="redirect_route" value="/share_boards" 
+                button type='submit' class="btn btn-primary submit" value='submit' Delete
+                button type="button" class="btn btn-secondary" data-bs-dismiss="modal" Cancel
+  
 div class="row mt-2"
   div class="col-sm-8" 
     table class="table table-striped main-table"
