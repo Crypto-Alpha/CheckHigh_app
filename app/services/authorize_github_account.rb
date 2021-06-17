@@ -2,7 +2,7 @@
 
 require 'http'
 
-module Credence
+module CheckHigh
   # Returns an authenticated user, or nil
   class AuthorizeGithubAccount
     # Errors emanating from Github

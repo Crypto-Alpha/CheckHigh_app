@@ -2,7 +2,7 @@
 
 require 'http'
 
-# Returns all projects belonging to an account
+# Returns all details belonging to an account
 class GetAccountDetails
   # Error for accounts that cannot be created
   class InvalidAccount < StandardError
