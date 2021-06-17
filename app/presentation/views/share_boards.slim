@@ -4,16 +4,21 @@ div class="row"
             a href="/share_boards/#{srb.id}" type="button" class="btn btn-primary to-detail-btn"
                 i class="fas fa-clipboard srb-icon" 
                 div.mt-3 #{srb.share_board_name}
-button type="button" class="btn btn-primary main-btn" data-bs-toggle="modal" data-bs-target="#newSrbModal" style="border-radius:50%; border-color:transparent; height: 3.5rem; width: 3.5rem; position: fixed; bottom: 5vh; right: 5vh;"
+button type="button" class="btn btn-primary modal-btn" data-bs-toggle="modal" data-bs-target="#newSrbModal"
     i class="fas fa-plus"
 
 div class="modal fade" id="newSrbModal" tabindex="-1" aria-labelledby="newSrbModalLabel" aria-hidden="true"
   div class="modal-dialog"
     div class="modal-content"
       div class="modal-header"
-        h5 class="modal-title" id="newSrbModalLabel" New ShareBoard
+        h5 class="modal-title" id="newSrbModalLabel" Add a new ShareBoard!
         button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-      div class="modal-body" ...
-      div class="modal-footer"
-        button type="button" class="btn btn-secondary" data-bs-dismiss="modal" Close
-        button type="button" class="btn btn-primary" Submit
+      form role="form" action="/share_boards" method='post' id='new-shareboard-form'
+        div class="modal-body"
+            div class="form-group"
+              label for='name_input' Shareboard Name
+              input class='form-control' name="share_board_name" type="text" placeholder="ShareBoard name required"
+        div class="modal-footer"
+          button type="button" class="btn btn-secondary" data-bs-dismiss="modal" Close
+          button type="submit" class="btn btn-primary" id="shareboard-add-submit" value="submit" Create
+

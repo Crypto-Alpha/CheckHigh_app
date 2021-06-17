@@ -8,8 +8,7 @@ module CheckHigh
       config.messages.load_paths << File.join(__dir__, 'errors/new_course.yml')
 
       params do
-        required(:course_name).filled
-        required(:links).filled(format?: URI::DEFAULT_PARSER.make_regexp)
+        required(:course_name).filled(max_size?: 256, format?: FILENAME_REGEX)
       end
     end
   end

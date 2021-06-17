@@ -18,6 +18,13 @@
   border-color: #414BB2; 
   height: 45vh;
 }
+.srb-2-block{
+  border-color: #414BB2; 
+  height: 90vh;
+}
+.assi-block{
+  border-color: #414BB2; 
+}
 
 
 /* BACKGROUND */
@@ -48,6 +55,7 @@
 .main-btn{
   color: #414BB2;
   background-color: #D8E7FF;
+  border-color: transparent;
   border-radius: 5rem;
 }
 .second-btn{
@@ -59,6 +67,22 @@
   color:#414BB2; 
   background-color:#F5F9FF; 
   border-color: #D8E7FF;
+}
+.action-btn{
+  border-color:transparent;
+  border-radius:50%;
+  color: #414BB2;
+}
+.modal-btn{
+  color: #414BB2;
+  background-color: #D8E7FF;
+  border-radius:50%; 
+  border-color:transparent; 
+  height: 3.5rem; 
+  width: 3.5rem; 
+  position: fixed; 
+  bottom: 5vh; 
+  right: 5vh;
 }
 
 /* TABLE */

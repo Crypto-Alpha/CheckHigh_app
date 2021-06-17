@@ -16,57 +16,97 @@ module CheckHigh
 
           # GET /courses/[course_id]
           routing.get do
-            course_assi_list = GetAllAssignments.new(App.config).call(@current_account, "courses", course_id)
-            course_assi = Assignments.new(course_assi_list)
+            crs_details = GetCourseDetail.new(App.config).call(@current_account, course_id)
+            crs = Course.new(crs_details)
 
-            view :course, locals: { current_user: @current_account, assignments: course_assi }
+            courses_list = GetAllCourses.new(App.config).call(@current_account)
+            share_board_list = GetAllShareBoards.new(App.config).call(@current_account)
+            courses = Courses.new(courses_list)
+            share_boards = ShareBoards.new(share_board_list) 
+
+            view :course, locals: { current_user: @current_account, course: crs, courses: courses, share_boards: share_boards }
           rescue StandardError => e
             puts "#{e.inspect}\n#{e.backtrace}"
             flash[:error] = 'Course not found'
             routing.redirect @courses_route
           end
 
-          # POST /courses/[course_id]/assignments/
-          routing.post('assignments') do
-            # TODO: form data
-            assignment_data = Form::NewAsignmentDetail.new.call(routing.params)
-            if assignment_data.failure?
-              flash[:error] = Form.message_values(assignment_data)
-              routing.halt
+          routing.on('assignments') do
+            routing.on(String) do |assignment_id|
+              # POST /courses/[course_id]/assignments/[assignment_id]/move_course
+              routing.post('move_course') do
+                redirect_route = routing.params["redirect_route"]
+                MoveAssiToCourse.new(App.config).call(@current_account, assignment_id, course_id)
+                flash[:notice] = "You've moved your assignment to new course."
+              rescue StandardError => e
+                puts "FAILURE Moving an assignment to a new course: #{e.inspect}"
+                flash[:error] = 'Could not move an assignment to new course'
+              ensure
+                routing.redirect redirect_route
+              end
+
+              # POST /courses/[course_id]/assignments/[assignment_id]/move_lonely_assignment
+              # remove assignment from this course
+              routing.post('move_lonely_assignment') do
+                redirect_route = routing.params["redirect_route"]
+                RemoveAssiFromCourse.new(App.config).call(@current_account, assignment_id, course_id)
+                flash[:notice] = "You've removed your assignment from this course."
+              rescue StandardError => e
+                puts "FAILURE Moving an assignment to lonely assingments: #{e.inspect}"
+                flash[:error] = 'Could not move an assignment to lonely assignments'
+              ensure
+                routing.redirect redirect_route
+              end
             end
 
-            CreateNewAssignment.new(App.config).call_for_course(
-              current_account: @current_account,
-              course_id: course_id,
-              assignment_data: assignment_data.to_h
-            )
+            # POST /courses/[course_id]/assignments/
+            routing.post do 
+              params = routing.params['file']
+              assignment_data = Form::NewAssignmentDetail.new.call(params)
+              if assignment_data.failure?
+                flash[:error] = Form.message_values(assignment_data)
+                routing.halt
+              end
 
-            flash[:notice] = 'Your assignment was added'
-          rescue StandardError => error
-            puts error.inspect
-            puts error.backtrace
-            flash[:error] = 'Could not add assignment'
-          ensure
-            routing.redirect @course_route
+              # read the content out
+              assignment_details = {
+                assignment_name: assignment_data[:filename],
+                content: assignment_data[:tempfile].read.force_encoding('UTF-8')
+              }
+
+              CreateNewAssignment.new(App.config).call_for_course(
+                current_account: @current_account,
+                course_id: course_id,
+                assignment_data: assignment_details
+              )
+
+              flash[:notice] = 'Your assignment was added'
+            rescue StandardError => e
+              puts e.inspect
+              puts e.backtrace
+              flash[:error] = 'Could not add assignment'
+            ensure
+              routing.redirect @course_route
+            end
           end
         end
-
 
         # GET /courses
         routing.get do
           courses_list = GetAllCourses.new(App.config).call(@current_account)
+          share_board_list = GetAllShareBoards.new(App.config).call(@current_account) 
           not_belong_assignments_list = GetNotBelongAssignments.new(App.config).call(@current_account)
           courses = Courses.new(courses_list)
           not_belong_assi = Assignments.new(not_belong_assignments_list)
+          share_boards = ShareBoards.new(share_board_list) 
 
-          view :courses, locals: { current_user: @current_account, courses: courses, assignments: not_belong_assi }
+          view :courses, locals: { current_user: @current_account, courses: courses, assignments: not_belong_assi, share_boards: share_boards }
         end
 
         # POST /courses
-        routing.post do 
+        routing.post do
           routing.redirect '/auth/login' unless @current_account.logged_in?
           puts "COURSE: #{routing.params}"
-          # TODO: form data
           course_data = Form::NewCourse.new.call(routing.params)
           if course_data.failure?
             flash[:error] = Form.message_values(course_data)
@@ -78,7 +118,7 @@ module CheckHigh
             course_data: course_data.to_h
           )
 
-          flash[:notice] = 'Add assignments to your new course'
+          flash[:notice] = 'Add a new course'
         rescue StandardError => e
           puts "FAILURE Creating Course: #{e.inspect}"
           flash[:error] = 'Could not create course'

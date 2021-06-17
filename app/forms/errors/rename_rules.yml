@@ -1,0 +1,4 @@
+en:
+  errors:
+    new_name: 'provide a new name with up to 255 legal characters'
+    new_name_valid?: 'new name has illegal characters (e.g., & | \\ / <tab>'

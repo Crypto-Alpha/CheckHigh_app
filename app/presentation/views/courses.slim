@@ -1,41 +1,87 @@
 div class="row"
-    - courses.all.each_with_index do |course, index|
-        div class="col-sm-3 d-grid my-2"
-            a href="/courses/#{course.id}" type="button" class="btn btn-primary to-detail-btn"
-                div class="container"
-                    div class="row my-2"
-                        div class="col-sm-2"
-                            i class="fas fa-folder" 
-                        div class="col-sm-10 text-start" #{course.course_name}
+  - courses.all.each_with_index do |course, index|
+    div class="col-sm-3 d-grid my-2"
+      a href="/courses/#{course.id}" type="button" class="btn btn-primary to-detail-btn"
+        div class="container"
+          div class="row my-2"
+            div class="col-sm-2"
+              i class="fas fa-folder" 
+            div class="col-sm-10 text-start" #{course.course_name}
 div class="row"
-    div class="col"
-        table class="table table-striped main-table"
-            thead
-                tr
-                th scope="col" #
-                th scope="col" filename
-                th scope="col" upload time
-                th scope="col" 
-            tbody
-                - assignments.all.each_with_index do |assi, index|
-                    tr
-                    th.align-middle scope="row" #{index+1}
-                    td.align-middle 
-                        a.main-color href="/assignments/#{assi.id}" #{assi.assignment_name}
-                    td.align-middle #{assi.upload_time}
-                    td.text-end 
-                        button type="button" class="btn btn-outline-primary btn-sm main-color" style="border-color:transparent;border-radius:50%;"
-                            i class="fas fa-pen"
-                        button type="button" class="btn btn-outline-primary btn-sm main-color" style="border-color:transparent;border-radius:50%;"
-                            i class="fas fa-folder"
-                        button type="button" class="btn btn-outline-primary btn-sm main-color" style="border-color:transparent;border-radius:50%;"
-                            i class="fas fa-clipboard"
-                        button type="button" class="btn btn-outline-danger btn-sm main-color" style="border-color:transparent;border-radius:50%;"
-                            i class="fas fa-trash-alt"
-button type="button" class="btn btn-primary main-btn" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius:50%; border-color:transparent; height: 3.5rem; width: 3.5rem; position: fixed; bottom: 5vh; right: 5vh;"
-    i class="fas fa-plus"
+  div class="col"
+    table class="table table-striped main-table"
+      thead
+        tr
+        th scope="col" #
+        th scope="col" filename
+        th scope="col" upload time
+        th scope="col" 
+      tbody
+        - assignments.all.each_with_index do |assi, index|
+          tr
+          th.align-middle scope="row" #{index+1}
+          td.align-middle 
+            a.main-color href="/assignments/#{assi.id}" #{assi.assignment_name}
+          td.align-middle #{assi.upload_time}
+          td.text-end 
+            button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#RenameAssiModal_#{index}"
+              i class="fas fa-pen"
+            div id="RenameAssiModal_#{index}" class="modal fade" role="dialog"
+              div class="modal-dialog"
+                div class="modal-content"
+                  div class="modal-header"
+                    h4 Rename your assignment
+                    button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                  form role="form" action="/assignments/#{assi.id}/rename_assignment" method='post' id='rename-assi-form'
+                    div class="modal-body"
+                      div class="form-group"
+                        input type="hidden" name="redirect_route" value="/courses" 
+                        label for='rename_input' New assignment name:
+                        input type='text' name='new_name' id='rename_assi_input' class="form-control" placeholder="New name of assignment"
+                    div class="modal-footer"
+                      button type='submit' class="btn btn-primary submit" value='submit' Rename
+                      button type="button" class="btn btn-secondary" data-bs-dismiss="modal" Cancel
+            button type="button" class="btn btn-outline-primary btn-sm action-btn" id="dropdownCourses" data-bs-toggle="dropdown"
+              i class="fas fa-folder"
+            ul class="dropdown-menu" aria-labelledby="dropdownCourses"
+              li
+                - courses.all.each_with_index do |course, index|
+                  a class="dropdown-item" href="#changeCrs_#{index}" #{course.course_name}
+                  form role="form" action="/courses/#{course.id}/assignments/#{assi.id}/move_course" method='post' id="changeCrs_#{index}"
+                    div class="form-group"
+                      input type="hidden" name="redirect_route" value="/courses" 
+                      button type='submit' class="btn btn-primary submit" id='change-course-form-submit' value='submit' Move
+                      button type="button" class="btn btn-secondary" data-bs-dismiss="modal" Cancel
+            button type="button" class="btn btn-outline-danger btn-sm action-btn" data-bs-toggle="dropdown"
+              i class="fas fa-clipboard"
+            ul class="dropdown-menu" aria-labelledby="dropdownShareBoards"
+              li
+                - share_boards.all.each_with_index do |share_board, index|
+                  a class="dropdown-item" href="#AddtoSrb_#{index}" #{share_board.share_board_name}
+                  form role="form" action="/share_boards/#{share_board.id}/assignments/#{assi.id}" method='post' id="AddtoSrb_#{index}"
+                    div class="form-group"
+                      input type="hidden" name="redirect_route" value="/courses" 
+                      button type='submit' class="btn btn-primary submit" id='add2srb-form-submit' value='submit' Add
+                      button type="button" class="btn btn-secondary" data-bs-dismiss="modal" Cancel
+            button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#DeleteAssiModal_#{index}"
+              i class="fas fa-trash-alt"
+            div id="DeleteAssiModal_#{index}" class="modal fade" role="dialog"
+              div class="modal-dialog"
+                div class="modal-content"
+                  div class="modal-header"
+                    h4 Delete #{assi.assignment_name}?  
+                    button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                  form role="form" action="/assignments/#{assi.id}/deletion" method='post' id='delete-assi-form'
+                    div class="modal-footer"
+                      input type="hidden" name="redirect_route" value="/courses" 
+                      button type='submit' class="btn btn-primary submit" value='submit' Delete
+                      button type="button" class="btn btn-secondary" data-bs-dismiss="modal" Cancel
+button type="button" class="btn btn-primary modal-btn" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"
+  i class="fas fa-plus"
 ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1"
-    li
-        a class="dropdown-item" href="#"add a new course 
-        a class="dropdown-item" href="#"add a new assignment
+  li
+    a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#newCourseModal"add a new course 
+    a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#newAssiModal"add a new assignment 
     
+include :course_new_partial
+include :assignment_new_partial

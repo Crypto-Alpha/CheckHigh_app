@@ -8,8 +8,7 @@ module CheckHigh
       config.messages.load_paths << File.join(__dir__, 'errors/new_shareboard.yml')
 
       params do
-        required(:share_board_name).filled
-        required(:links).filled(format?: URI::DEFAULT_PARSER.make_regexp)
+        required(:share_board_name).filled(max_size?: 256, format?: FILENAME_REGEX)
       end
     end
   end
