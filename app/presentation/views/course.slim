@@ -2,10 +2,36 @@ div class="row"
   div class="col-sm-8"
     h5.title-font #{course.course_name}
   div class="col-sm-4 text-end"
-    button type="button" class="btn btn-outline-primary btn-sm action-btn"
+    button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#RenameCrsModal"
       i class="fas fa-pen"
-    button type="button" class="btn btn-outline-danger btn-sm action-btn"
+    div id="RenameCrsModal" class="modal fade" role="dialog"
+      div class="modal-dialog"
+        div class="modal-content"
+          div class="modal-header"
+            h4 Rename your course
+            button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+          form role="form" action="/courses/#{course.id}" method='post' id='rename-crs-form'
+            div class="modal-body"
+              div class="form-group"
+                input type="hidden" name="redirect_route" value="/courses/#{course.id}" 
+                  label for='rename_input' New course name:
+                  input type='text' name='new_name' id='rename_crs_input' class="form-control" placeholder="New name of course"
+            div class="modal-footer"
+              button type='submit' class="btn btn-primary submit" value='submit' Rename
+              button type="button" class="btn btn-secondary" data-bs-dismiss="modal" Cancel
+    button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#DeleteCrsModal"
       i class="fas fa-trash-alt"
+    div id="DeleteCrsModal" class="modal fade" role="dialog"
+      div class="modal-dialog"
+        div class="modal-content"
+          div class="modal-header"
+            h4 Delete #{course.course_name}?  
+            button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+          form role="form" action="/courses/#{course.id}/deletion" method='post' id='delete-crs-form'
+            div class="modal-footer"
+              input type="hidden" name="redirect_route" value="/courses" 
+              button type='submit' class="btn btn-primary submit" value='submit' Delete
+              button type="button" class="btn btn-secondary" data-bs-dismiss="modal" Cancel
 
 div class="row"
   div class="col"

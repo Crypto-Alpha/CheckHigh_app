@@ -14,6 +14,47 @@ module CheckHigh
         routing.on(String) do |share_board_id|
           @share_board_route = "#{@share_boards_route}/#{share_board_id}"
 
+          routing.is do
+            # GET /share_boards/[share_board_id]
+            routing.get do
+              srb_details = GetShareBoardDetail.new(App.config).call(@current_account, share_board_id)
+              srb = ShareBoard.new(srb_details)
+
+              courses_list = GetAllCourses.new(App.config).call(@current_account)
+              share_board_list = GetAllShareBoards.new(App.config).call(@current_account)
+              courses = Courses.new(courses_list)
+              share_boards = ShareBoards.new(share_board_list) 
+
+              view :share_board, locals: { current_user: @current_account, share_board: srb , share_boards: share_boards, courses: courses}
+            rescue StandardError => e
+              puts "#{e.inspect}\n#{e.backtrace}"
+              flash[:error] = 'ShareBoard not found'
+              routing.redirect @share_boards_route
+            end
+
+            # POST /share_boards/[share_board_id]
+            routing.post do
+              puts "SHARE BOARD NEW NAME: #{routing.params}"
+              redirect_route = routing.params['redirect_route']
+              name_validation = Form::RenameRules.new.call(routing.params)
+              if name_validation.failure?
+                flash[:error] = Form.message_values(routing.params)
+                routing.halt
+              end
+
+              new_name = { "new_name" => routing.params['new_name'] }
+              RenameShareBoard.new(App.config).call(@current_account, share_board_id, new_name)
+
+              flash[:notice] = "You've renamed a share board"
+            rescue StandardError => e
+              puts "#{e.inspect}\n#{e.backtrace}"
+              flash[:error] = 'Could not rename a share board'
+            ensure
+              routing.redirect redirect_route
+            end
+          end
+
+
           # GET /share_boards/[share_board_id]/check
           routing.on('check') do
             srb_assi_list = GetAllAssignments.new(App.config).call(@current_account, "share_boards", share_board_id)
@@ -26,22 +67,22 @@ module CheckHigh
             routing.redirect @share_boards_route
           end
 
-          # GET /share_boards/[share_board_id]
-          routing.get do
-            srb_details = GetShareBoardDetail.new(App.config).call(@current_account, share_board_id)
-            srb = ShareBoard.new(srb_details)
+          # POST /share_boards/[share_board_id]/deletion
+          # remove a share board 
+          routing.on('deletion') do
+            routing.post do
+              redirect_route = routing.params["redirect_route"]
+              RemoveShareBoard.new(App.config).call(@current_account, share_board_id)
 
-            courses_list = GetAllCourses.new(App.config).call(@current_account)
-            share_board_list = GetAllShareBoards.new(App.config).call(@current_account)
-            courses = Courses.new(courses_list)
-            share_boards = ShareBoards.new(share_board_list) 
-
-            view :share_board, locals: { current_user: @current_account, share_board: srb , share_boards: share_boards, courses: courses}
-          rescue StandardError => e
-            puts "#{e.inspect}\n#{e.backtrace}"
-            flash[:error] = 'ShareBoard not found'
-            routing.redirect @share_boards_route
+              flash[:notice] = "You've removed a shrae board"
+            rescue StandardError => e
+              puts "FAILURE Removing a share board: #{e.inspect}"
+              flash[:error] = 'Could not remove a share board'
+            ensure
+              routing.redirect redirect_route
+            end
           end
+
 
           # POST /share_boards/[share_board_id]/collaborators
           routing.post('collaborators') do
