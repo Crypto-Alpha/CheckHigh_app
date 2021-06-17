@@ -6,7 +6,7 @@ require_relative './app'
 module CheckHigh
   # Web controller for CheckHigh API
   class App < Roda
-    route('courses') do |routing|      
+    route('courses') do |routing|
       routing.on do
         routing.redirect '/auth/login' unless @current_account.logged_in?
         @courses_route = '/courses'
@@ -121,8 +121,7 @@ module CheckHigh
 
               flash[:notice] = 'Your assignment was added'
             rescue StandardError => e
-              puts e.inspect
-              puts e.backtrace
+              puts "ERROR CREATING ASSIGNMENT: #{e.inspect}"
               flash[:error] = 'Could not add assignment'
             ensure
               routing.redirect @course_route
