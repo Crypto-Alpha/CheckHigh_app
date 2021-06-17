@@ -1,0 +1,4 @@
+en:
+  errors:
+    course_name: 'Course name must be filled'
+    course_name_valid?: 'Course name has illegal characters (e.g., & | \\ / <tab>'

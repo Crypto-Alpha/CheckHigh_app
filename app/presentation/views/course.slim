@@ -1,48 +1,123 @@
 div class="row"
-    div class="col-sm-8"
-        h5.title-font BAFT
-    div class="col-sm-4 text-end"
-        button type="button" class="btn btn-outline-primary btn-sm main-color" style="border-color:transparent;border-radius:50%;"
-            i class="fas fa-pen"
-        button type="button" class="btn btn-outline-danger btn-sm main-color" style="border-color:transparent;border-radius:50%;"
-            i class="fas fa-trash-alt"
+  div class="col-sm-8"
+    h5.title-font #{course.course_name}
+  div class="col-sm-4 text-end"
+    button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#RenameCrsModal"
+      i class="fas fa-pen"
+    div id="RenameCrsModal" class="modal fade" role="dialog"
+      div class="modal-dialog"
+        div class="modal-content"
+          div class="modal-header"
+            h4 Rename your course
+            button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+          form role="form" action="/courses/#{course.id}" method='post' id='rename-crs-form'
+            div class="modal-body"
+              div class="form-group"
+                input type="hidden" name="redirect_route" value="/courses/#{course.id}" 
+                  label for='rename_input' New course name:
+                  input type='text' name='new_name' id='rename_crs_input' class="form-control" placeholder="New name of course"
+            div class="modal-footer"
+              button type='submit' class="btn btn-primary submit" value='submit' Rename
+              button type="button" class="btn btn-secondary" data-bs-dismiss="modal" Cancel
+    button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#DeleteCrsModal"
+      i class="fas fa-trash-alt"
+    div id="DeleteCrsModal" class="modal fade" role="dialog"
+      div class="modal-dialog"
+        div class="modal-content"
+          div class="modal-header"
+            h4 Delete #{course.course_name}?  
+            button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+          form role="form" action="/courses/#{course.id}/deletion" method='post' id='delete-crs-form'
+            div class="modal-footer"
+              input type="hidden" name="redirect_route" value="/courses" 
+              button type='submit' class="btn btn-primary submit" value='submit' Delete
+              button type="button" class="btn btn-secondary" data-bs-dismiss="modal" Cancel
 
 div class="row"
-    div class="col"
-        table class="table table-striped main-table"
-            thead
-                tr
-                th scope="col" #
-                th scope="col" filename
-                th scope="col" upload time
-                th scope="col" 
-            tbody
-                - assignments.all.each_with_index do |assi, index|
-                    tr
-                    th.align-middle scope="row" #{index+1}
-                    td.align-middle 
-                        a.main-color href="/assignment/#{assi.id}" #{assi.assignment_name}
-                    td.align-middle #{assi.upload_time}
-                    td.text-end 
-                        button type="button" class="btn btn-outline-primary btn-sm main-color" style="border-color:transparent;border-radius:50%;"
-                            i class="fas fa-pen"
-                        button type="button" class="btn btn-outline-primary btn-sm main-color" style="border-color:transparent;border-radius:50%;"
-                            i class="fas fa-folder"
-                        button type="button" class="btn btn-outline-primary btn-sm main-color" style="border-color:transparent;border-radius:50%;"
-                            i class="fas fa-clipboard"
-                        button type="button" class="btn btn-outline-danger btn-sm main-color" style="border-color:transparent;border-radius:50%;"
-                            i class="fas fa-trash-alt"
-button type="button" class="btn btn-primary main-btn" data-bs-toggle="modal" data-bs-target="#newCrsAssiModal" style="border-radius:50%; border-color:transparent; height: 3.5rem; width: 3.5rem; position: fixed; bottom: 5vh; right: 5vh;"
-    i class="fas fa-plus"
+  div class="col"
+    table class="table table-striped main-table"
+      thead
+        tr
+        th scope="col" #
+        th scope="col" filename
+        th scope="col" upload time
+        th scope="col" 
+      tbody
+        - course.assignments.each_with_index do |assi, index|
+          tr
+          th.align-middle scope="row" #{index+1}
+          td.align-middle 
+            a.main-color href="/assignments/#{assi.id}" #{assi.assignment_name}
+          td.align-middle #{assi.upload_time}
+          td.text-end 
+            button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#RenameAssiModal_#{index}"
+              i class="fas fa-pen"
+            div id="RenameAssiModal_#{index}" class="modal fade" role="dialog"
+              div class="modal-dialog"
+                div class="modal-content"
+                  div class="modal-header"
+                    h4 Rename your assignment
+                    button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                  form role="form" action="/assignments/#{assi.id}/rename_assignment" method='post' id='rename-assi-form'
+                    div class="modal-body"
+                      div class="form-group"
+                        input type="hidden" name="redirect_route" value="/courses/#{course.id}" 
+                        label for='rename_input' New assignment name:
+                        input type='text' name='new_name' id='rename_assi_input' class="form-control" placeholder="New name of assignment"
+                    div class="modal-footer"
+                      button type='submit' class="btn btn-primary submit" value='submit' Rename
+                      button type="button" class="btn btn-secondary" data-bs-dismiss="modal" Cancel
+            button type="button" class="btn btn-outline-primary btn-sm action-btn" id="dropdownCourses" data-bs-toggle="dropdown"
+              i class="fas fa-folder"
+            ul class="dropdown-menu" aria-labelledby="dropdownCourses"
+              li
+                - courses.all.each_with_index do |crs, index|
+                  - if course.course_name == crs.course_name then next
+                  - else
+                    a class="dropdown-item" href="#changeCrs_#{index}" #{crs.course_name}
+                    form role="form" action="/courses/#{crs.id}/assignments/#{assi.id}/move_course" method='post' id="changeCrs_#{index}"
+                      div class="form-group"
+                        input type="hidden" name="redirect_route" value="/courses/#{course.id}" 
+                        button type='submit' class="btn btn-primary submit" id='change-course-form-submit' value='submit' Move
+                        button type="button" class="btn btn-secondary" data-bs-dismiss="modal" Cancel
+            button type="button" class="btn btn-outline-danger btn-sm action-btn" data-bs-toggle="dropdown"
+              i class="fas fa-clipboard"
+            ul class="dropdown-menu" aria-labelledby="dropdownShareBoards"
+              li
+                - share_boards.all.each_with_index do |share_board, idx|
+                  a class="dropdown-item" href="#AddtoSrb_#{idx}" #{share_board.share_board_name}
+                  form role="form" action="/share_boards/#{share_board.id}/assignments/#{assi.id}" method='post' id="AddtoSrb_#{idx}"
+                    div class="form-group"
+                      input type="hidden" name="redirect_route" value="/courses/#{course.id}" 
+                      button type='submit' class="btn btn-primary submit" id='add2srb-form-submit' value='submit' Add
+                      button type="button" class="btn btn-secondary" data-bs-dismiss="modal" Cancel
+            button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#MoveLonelyAssiModal_#{index}"
+              i class="fas fa-minus"
+            div id="MoveLonelyAssiModal_#{index}" class="modal fade" role="dialog"
+              div class="modal-dialog"
+                div class="modal-content"
+                  div class="modal-header"
+                    h4 Remove your assignment from #{course.course_name}?  
+                    button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                  form role="form" action="/courses/#{course.id}/assignments/#{assi.id}/move_lonely_assignment" method='post' id='move-lonely-assi-form'
+                    div class="modal-footer"
+                      input type="hidden" name="redirect_route" value="/courses/#{course.id}" 
+                      button type='submit' class="btn btn-primary submit" value='submit' Remove
+                      button type="button" class="btn btn-secondary" data-bs-dismiss="modal" Cancel
+            button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#DeleteAssiModal_#{index}"
+              i class="fas fa-trash-alt"
+            div id="DeleteAssiModal_#{index}" class="modal fade" role="dialog"
+              div class="modal-dialog"
+                div class="modal-content"
+                  div class="modal-header"
+                    h4 Delete #{assi.assignment_name}?  
+                    button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                  form role="form" action="/assignments/#{assi.id}/deletion" method='post' id='delete-assi-form'
+                    div class="modal-footer"
+                      input type="hidden" name="redirect_route" value="/courses/#{course.id}" 
+                      button type='submit' class="btn btn-primary submit" value='submit' Delete
+                      button type="button" class="btn btn-secondary" data-bs-dismiss="modal" Cancel
+button type="button" class="btn btn-primary modal-btn" data-bs-toggle="modal" data-bs-target="#newAssiForCrsModal"
+  i class="fas fa-plus"
 
-div class="modal fade" id="newCrsAssiModal" tabindex="-1" aria-labelledby="newCrsAssiModalLabel" aria-hidden="true"
-  div class="modal-dialog"
-    div class="modal-content"
-      div class="modal-header"
-        h5 class="modal-title" id="newCrsAssiModalLabel" Upload Assignment
-        button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-      div class="modal-body" ...
-      div class="modal-footer"
-        button type="button" class="btn btn-secondary" data-bs-dismiss="modal" Close
-        button type="button" class="btn btn-primary" Upload
-    
+include :assignment_new_partial_crs

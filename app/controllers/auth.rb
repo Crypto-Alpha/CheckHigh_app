@@ -16,14 +16,20 @@ module CheckHigh
 
         # POST /auth/login
         routing.post do
-          account_info = AuthenticateAccount.new(App.config).call(
-            username: routing.params['username'],
-            password: routing.params['password']
-          )
+          # TODO: form login credentials
+          credentials = Form::LoginCredentials.new.call(routing.params)
 
-          current_account = CurrentAccount.new(
-            account_info[:account],
-            account_info[:auth_token]
+          if credentials.failure?
+            flash[:error] = 'Please enter both username and password'
+            routing.redirect @login_route
+          end
+
+          authenticated = AuthenticateAccount.new(App.config)
+            .call(**credentials.values)
+
+          current_account = Account.new(
+            authenticated[:account],
+            authenticated[:auth_token]
           )
 
           CurrentSession.new(session).current_account = current_account
@@ -61,14 +67,20 @@ module CheckHigh
 
           # POST /auth/register
           routing.post do
-            account_data = JsonRequestBody.symbolize(routing.params)
-            VerifyRegistration.new(App.config).call(account_data)
+            registration = Form::Registration.new.call(routing.params)
+
+            if registration.failure?
+              flash[:error] = Form.validation_errors(registration)
+              routing.redirect @register_route
+            end
+
+            VerifyRegistration.new(App.config).call(registration.to_h)
 
             flash[:notice] = 'Please check your email for a verification link'
             routing.redirect '/'
           rescue StandardError => e
-            puts "ERROR VERIFYING REGISTRATION: #{e.inspect}"
-            flash[:error] = 'Registration details are not valid'
+            puts "ERROR VERIFYING REGISTRATION: #{routing.params}\n#{e.inspect}"
+            flash[:error] = 'Please use English characters for username only'
             routing.redirect @register_route
           end
         end
