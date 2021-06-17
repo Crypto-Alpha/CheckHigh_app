@@ -12,23 +12,62 @@ module CheckHigh
         @courses_route = '/courses'
 
         routing.on(String) do |course_id|
-          @course_route = "#{@courses_route}/#{course_id}" 
+          @course_route = "#{@courses_route}/#{course_id}"
 
-          # GET /courses/[course_id]
-          routing.get do
-            crs_details = GetCourseDetail.new(App.config).call(@current_account, course_id)
-            crs = Course.new(crs_details)
+          routing.is do
+            # GET /courses/[course_id]
+            routing.get do
+              crs_details = GetCourseDetail.new(App.config).call(@current_account, course_id)
+              crs = Course.new(crs_details)
 
-            courses_list = GetAllCourses.new(App.config).call(@current_account)
-            share_board_list = GetAllShareBoards.new(App.config).call(@current_account)
-            courses = Courses.new(courses_list)
-            share_boards = ShareBoards.new(share_board_list)
+              courses_list = GetAllCourses.new(App.config).call(@current_account)
+              share_board_list = GetAllShareBoards.new(App.config).call(@current_account)
+              courses = Courses.new(courses_list)
+              share_boards = ShareBoards.new(share_board_list) 
 
-            view :course, locals: { current_user: @current_account, course: crs, courses: courses, share_boards: share_boards }
-          rescue StandardError => e
-            puts "#{e.inspect}\n#{e.backtrace}"
-            flash[:error] = 'Course not found'
-            routing.redirect @courses_route
+              view :course, locals: { current_user: @current_account, course: crs, courses: courses, share_boards: share_boards }
+            rescue StandardError => e
+              puts "#{e.inspect}\n#{e.backtrace}"
+              flash[:error] = 'Course not found'
+              routing.redirect @courses_route
+            end
+
+            # POST /courses/[course_id]
+            routing.post do
+              puts "COURSE NEW NAME: #{routing.params}"
+              redirect_route = routing.params['redirect_route']
+              name_validation = Form::RenameRules.new.call(routing.params)
+              if name_validation.failure?
+                flash[:error] = Form.message_values(routing.params)
+                routing.halt
+              end
+
+              new_name = { "new_name" => routing.params['new_name'] }
+              RenameCourse.new(App.config).call(@current_account, course_id, new_name)
+
+              flash[:notice] = "You've renamed a course"
+            rescue StandardError => e
+              puts "#{e.inspect}\n#{e.backtrace}"
+              flash[:error] = 'Could not rename a course'
+            ensure
+              routing.redirect redirect_route
+            end
+          end
+
+          # POST /courses/[course_id]/deletion
+          # remove a course
+          routing.on('deletion') do
+            routing.post do
+              redirect_route = routing.params["redirect_route"]
+              RemoveCourse.new(App.config).call(@current_account, course_id)
+
+              flash[:notice] = "You've removed a course"
+            rescue StandardError => e
+              puts "FAILURE Removing a course: #{e.inspect}"
+              flash[:error] = 'Could not remove a course'
+            ensure
+              routing.redirect redirect_route
+            end
           end
 
           routing.on('assignments') do
