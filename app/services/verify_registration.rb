@@ -20,6 +20,7 @@ module CheckHigh
 
       response = HTTP.post("#{@config.API_URL}/auth/register",
                            json: registration_data)
+      puts response
       raise(VerificationError) unless response.code == 202
 
       JSON.parse(response.to_s)
