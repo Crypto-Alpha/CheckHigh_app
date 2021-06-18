@@ -1,17 +1,87 @@
 div class="row"
-    div class="col-sm-4"
-        h4 #{assignment.assignment_name}
-    div class="col-sm-4" #{assignment.upload_time}
-    div class="col-sm-4 text-end"
-        button type="button" class="btn btn-outline-primary btn-sm main-color" style="border-color:transparent;border-radius:50%;"
-            i class="fas fa-pen"
-        button type="button" class="btn btn-outline-primary btn-sm main-color" style="border-color:transparent;border-radius:50%;"
-            i class="fas fa-folder"
-        button type="button" class="btn btn-outline-primary btn-sm main-color" style="border-color:transparent;border-radius:50%;"
-            i class="fas fa-clipboard"
-        button type="button" class="btn btn-outline-danger btn-sm main-color" style="border-color:transparent;border-radius:50%;"
-            i class="fas fa-trash-alt"
-div class="row"
-    div class="col"
+  div.col.second-bg
+    table class="table table-striped main-table" 
+        thead
+          tr
+          th scope="col" 
+            h4 #{assignment.assignment_name}
+          th scope="col" class="text-end"
+            - if assignment.policies.can_edit
+              button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#RenameAssiModal"
+                i class="fas fa-pen"
+              div id="RenameAssiModal" class="modal fade" role="dialog"
+                div class="modal-dialog"
+                  div class="modal-content"
+                    form role="form" action="/assignments/#{assignment.id}/rename_assignment" method='post' id='rename-assi-form'
+                      div class="modal-body text-start"
+                        div class="form-group"
+                          input type="hidden" name="redirect_route" value="/assignment/#{assignment.id}" 
+                          label.mb-2 for='rename_input' Rename assignment
+                          input type='text' name='new_name' id='rename_assi_input' class="form-control form-control-sm" placeholder="new assignment name"
+                          button.my-2.float-end type='submit' class="btn btn-outline-primary main-btn btn-sm" value='submit' Rename
+            - if assignment.policies.can_edit
+              button type="button" class="btn btn-outline-primary btn-sm action-btn" id="dropdownCourses" data-bs-toggle="dropdown"
+                i class="fas fa-folder"
+              ul class="dropdown-menu" aria-labelledby="dropdownCourses"
+                li
+                  - courses.all.each_with_index do |course, index|
+                    a class="dropdown-item" href="#changeCrs_#{index}" #{course.course_name}
+                    form role="form" action="/courses/#{course.id}/assignments/#{assignment.id}/move_course" method='post' id="changeCrs_#{index}"
+                      div class="form-group"
+                        input type="hidden" name="redirect_route" value="/assignments/#{assignment.id}" 
+                        button type='submit' class="btn btn-outline-primary main-btn" id='change-course-form-submit' value='submit' Move
+            - if assignment.policies.can_edit
+              button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="dropdown"
+                i class="fas fa-clipboard"
+              ul class="dropdown-menu" aria-labelledby="dropdownShareBoards"
+                li
+                  - share_boards.all.each_with_index do |share_board, index|
+                    a class="dropdown-item" href="#AddtoSrb_#{index}" #{share_board.share_board_name}
+                    form role="form" action="/share_boards/#{share_board.id}/assignments/#{assignment.id}" method='post' id="AddtoSrb_#{index}"
+                      div class="form-group"
+                        input type="hidden" name="redirect_route" value="/assignments/#{assignment.id}" 
+                        button type='submit' class="btn btn-outline-primary main-btn" id='add2srb-form-submit' value='submit' Add
+            - if assignment.policies.can_delete
+              button type="button" class="btn btn-outline-danger btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#DeleteAssiModal"
+                i class="fas fa-trash-alt"
+              div id="DeleteAssiModal" class="modal fade" role="dialog"
+                div class="modal-dialog"
+                  div class="modal-content"
+                    form role="form" action="/assignments/#{assignment.id}/deletion" method='post' id='delete-assi-form'
+                        .container 
+                          .row.my-3 
+                            .col.text-start
+                              label.mb-2 class="form-label" Delete #{assignment.assignment_name}?
+                              input type="hidden" name="redirect_route" value="/courses" 
+                          .row.my-3
+                            .col.text-end
+                              button type='submit' class="btn btn-outline-danger btn-sm main-btn mx-2" value='submit' Delete
+                              button type="button" class="btn btn-outline-primary btn-sm main-btn" data-bs-dismiss="modal" Keep 
+        tbody
+          tr
+          th scope="row" Author: 
+          td.align-middle #{assignment.owner.username}
+          tr
+          th scope="row" Course: 
+          - if assignment.course 
+            td.align-middle #{assignment.course.course_name}
+          - else 
+            td.align-middle
+          tr
+          th scope="row" ShareBoards: 
+          - if assignment.share_boards
+            td.align-middle
+              - assignment.share_boards.each do |srb|
+                == srb.share_board_name + ", "
+          - else 
+            td.align-middle
+          tr
+          th scope="row" Upload at: 
+          td.align-middle #{assignment.upload_time}
+div class="row mt-3"
+  div class="col"
+    .card.assi-block
+      textarea id="htmeditor"
         == assignment.content
+      script src="https://htmeditor.com/js/htmeditor.min.js" htmeditor_textarea="htmeditor" full_screen="no" editor_height="1080"
 

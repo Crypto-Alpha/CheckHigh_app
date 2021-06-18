@@ -22,7 +22,8 @@ describe 'Test Service Objects' do
              .to_return(body: @api_account.to_json,
                         headers: { 'content-type' => 'application/json' })
 
-      account = CheckHigh::AuthenticateAccount.new(app.config).call(**@credentials)
+      auth = CheckHigh::AuthenticateAccount.new.call(**@credentials)
+      account = auth[:account]['attributes']
       _(account).wont_be_nil
       _(account['username']).must_equal @api_account[:attributes][:username]
       _(account['email']).must_equal @api_account[:attributes][:email]
@@ -31,10 +32,10 @@ describe 'Test Service Objects' do
     it 'BAD: should not find a false authenticated account' do
       WebMock.stub_request(:post, "#{API_URL}/auth/authenticate")
              .with(body: @mal_credentials.to_json)
-             .to_return(status: 403)
+             .to_return(status: 401)
       _(proc {
-        CheckHigh::AuthenticateAccount.new(app.config).call(**@mal_credentials)
-      }).must_raise CheckHigh::AuthenticateAccount::UnauthorizedError
+        CheckHigh::AuthenticateAccount.new.call(**@mal_credentials)
+      }).must_raise CheckHigh::AuthenticateAccount::NotAuthenticatedError
     end
   end
 end

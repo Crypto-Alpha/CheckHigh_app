@@ -6,16 +6,24 @@ div class="row"
         div class="row my-2"
           div class="col-sm"
             h3 class="text-center main-color" Create an Account
-        form action='/auth/register' method='post' id='register-form'
-          div class="form-group"
-            label for='username_input' Username
-            input type='text' name='username' id='username_input' class="form-control"
-          div class="form-group"
-            label for='email_input' Email
-            input type='text' name='email' id='email_input' class="form-control"
+        form action='/auth/register' method='post' id='register-form' class="main-color"
+          div class="row my-2"
+            div class="col-sm"
+              div class="form-group"
+                label for='username_input' Username
+                input type='text' name='username' id='username_input' class="form-control"
+              div class="form-group"
+                label for='email_input' Email
+                input type='text' name='email' id='email_input' class="form-control"
           div class="row"
             div class="col-sm d-grid"
-              button type='submit' id='registration-form-submit' class='submit btn btn-light main-btn my-2' value='submit' class="btn btn-primary btn-block" register
-              a href='/auth/login' class="mb-3 mt-1 text-center main-color" I already have an account
+              button type='submit' id='registration-form-submit' class='submit btn btn-light main-btn mt-2 mb-1' value='submit' register with email
+              a href="go_oauth_url" class="disabled btn btn-light my-1" style="border-radius: 5rem; border-color: gray;"
+                i class="fab fa-google"
+                == "  register with Google"
+              a href=gh_oauth_url class="btn btn-dark mt-1 mb-2" style="border-radius: 5rem;"
+                i class="fab fa-github"
+                == "  register with Github"
+              a href='/auth/login' class="mb-3 mt-1 text-center main-color" I already have an account. Let's go login!
       div class="col-sm-4"
   
