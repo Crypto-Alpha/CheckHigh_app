@@ -144,7 +144,6 @@ module CheckHigh
         # POST /courses
         routing.post do
           routing.redirect '/auth/login' unless @current_account.logged_in?
-          puts "COURSE: #{routing.params}"
           course_data = Form::NewCourse.new.call(routing.params)
           if course_data.failure?
             flash[:error] = Form.message_values(course_data)

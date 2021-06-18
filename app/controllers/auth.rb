@@ -98,7 +98,7 @@ module CheckHigh
         routing.is do
           # GET /auth/register
           routing.get do
-            view :register
+            view :register, locals: { gh_oauth_url: gh_oauth_url(App.config) }
           end
 
           # POST /auth/register
