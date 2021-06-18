@@ -44,7 +44,7 @@ module CheckHigh
           flash[:notice] = "Welcome back #{current_account.username}!"
           routing.redirect '/'
         rescue AuthenticateAccount::NotAuthenticatedError
-          flash.now[:error] = 'Username and password did not match our records'
+          flash[:error] = 'Username and password did not match our records'
           response.status = 401
           routing.redirect @login_route
         rescue StandardError => e
@@ -72,7 +72,7 @@ module CheckHigh
           flash[:notice] = "Welcome #{current_account.username}!"
           routing.redirect '/'
         rescue AuthorizeGithubAccount::UnauthorizedError
-          flash[:error] = 'Could not login with Github'
+          flash[:error] = 'Could not login with Github. Please check your GitHub public email.'
           response.status = 403
           routing.redirect @login_route
         rescue StandardError => e
@@ -98,7 +98,7 @@ module CheckHigh
         routing.is do
           # GET /auth/register
           routing.get do
-            view :register
+            view :register, locals: { gh_oauth_url: gh_oauth_url(App.config) }
           end
 
           # POST /auth/register
