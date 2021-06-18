@@ -13,8 +13,8 @@ module CheckHigh
       response = HTTP.post("#{ENV['API_URL']}/auth/authenticate",
                            json: { username: username, password: password })
 
-      raise(NotAuthenticatedError) if response.code == 401
-      raise(ApiServerError) if response.code != 200
+      raise NotAuthenticatedError if response.code == 401
+      raise ApiServerError if response.code != 200
 
       account_info = JSON.parse(response.to_s)['data']['attributes']
       {

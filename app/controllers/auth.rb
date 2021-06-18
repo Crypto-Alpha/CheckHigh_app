@@ -44,7 +44,7 @@ module CheckHigh
           flash[:notice] = "Welcome back #{current_account.username}!"
           routing.redirect '/'
         rescue AuthenticateAccount::NotAuthenticatedError
-          flash.now[:error] = 'Username and password did not match our records'
+          flash[:error] = 'Username and password did not match our records'
           response.status = 401
           routing.redirect @login_route
         rescue StandardError => e
