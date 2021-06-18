@@ -8,7 +8,7 @@ module CheckHigh
     # Errors emanating from Github
     class UnauthorizedError < StandardError
       def message
-        'Could not login with Github'
+        'Could not login with Github. Please check your GitHub public email.'
       end
     end
 
@@ -39,7 +39,7 @@ module CheckHigh
       response =
         HTTP.post("#{@config.API_URL}/auth/sso",
                   json: { access_token: access_token })
-      raise if response.code >= 400
+      raise UnauthorizedError if response.code >= 400
 
       account_info = JSON.parse(response)['data']['attributes']
 

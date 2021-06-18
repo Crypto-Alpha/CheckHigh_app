@@ -72,7 +72,7 @@ module CheckHigh
           flash[:notice] = "Welcome #{current_account.username}!"
           routing.redirect '/'
         rescue AuthorizeGithubAccount::UnauthorizedError
-          flash[:error] = 'Could not login with Github'
+          flash[:error] = 'Could not login with Github. Please check your GitHub public email.'
           response.status = 403
           routing.redirect @login_route
         rescue StandardError => e
