@@ -110,13 +110,13 @@ module CheckHigh
               routing.redirect @register_route
             end
 
-            raise VerifyRegistration.new(App.config).call(registration.to_h).to_s
+            VerifyRegistration.new(App.config).call(registration.to_h)
 
             flash[:notice] = 'Please check your email for a verification link'
-            #routing.redirect '/'
-          #rescue StandardError => e
-            #puts "ERROR VERIFYING REGISTRATION: #{routing.params}\n#{e.inspect}"
-            #flash[:error] = 'Please use English characters for username only'
+            routing.redirect '/'
+          rescue StandardError => e
+            puts "ERROR VERIFYING REGISTRATION: #{routing.params}\n#{e.inspect}"
+            flash[:error] = 'Please use English characters for username only'
             routing.redirect @register_route
           end
         end
