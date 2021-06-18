@@ -1,43 +1,40 @@
 div class="row"
   div class="col-sm-6"
     h5.title-font #{share_board.share_board_name}
-  div class="col-sm-6 text-end"
+  div class="col-sm-6 text-end main-color"
     - if share_board.policies.can_edit
       button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#RenameSrbModal"
         i class="fas fa-pen"
       div id="RenameSrbModal" class="modal fade" role="dialog"
         div class="modal-dialog"
           div class="modal-content"
-            div class="modal-header"
-              h4 Rename your share board
-              button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
             form role="form" action="/share_boards/#{share_board.id}" method='post' id='rename-srb-form'
-              div class="modal-body"
+              div class="modal-body text-start"
                 div class="form-group"
                   input type="hidden" name="redirect_route" value="/share_boards/#{share_board.id}" 
-                    label for='rename_input' New share board name:
-                    input type='text' name='new_name' id='rename_srb_input' class="form-control" placeholder="New name of share board"
-              div class="modal-footer"
-                button type='submit' class="btn btn-primary submit" value='submit' Rename
-                button type="button" class="btn btn-secondary" data-bs-dismiss="modal" Cancel
+                  label.mb-2 for='rename_input' Rename your share board
+                  input type='text' name='new_name' id='rename_srb_input' class="form-control form-control-sm" placeholder="new share board name"
+                  button.my-2.float-end type='submit' class="btn btn-outline-primary btn-sm main-btn" value='submit' Rename
     - if share_board.policies.can_add_collaborators
       button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#newCollaboratorModal"
         i class="fas fa-user-plus"
       include :collaborator_new_partial
     - if share_board.policies.can_delete
-      button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#DeleteSrbModal"
+      button type="button" class="btn btn-outline-danger btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#DeleteSrbModal"
         i class="fas fa-trash-alt"
       div id="DeleteSrbModal" class="modal fade" role="dialog"
         div class="modal-dialog"
           div class="modal-content"
-            div class="modal-header"
-              h4 Delete #{share_board.share_board_name}?  
-              button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
             form role="form" action="/share_boards/#{share_board.id}/deletion" method='post' id='delete-srb-form'
-              div class="modal-footer"
-                input type="hidden" name="redirect_route" value="/share_boards" 
-                button type='submit' class="btn btn-primary submit" value='submit' Delete
-                button type="button" class="btn btn-secondary" data-bs-dismiss="modal" Cancel
+              .container 
+                .row.my-3 
+                  .col.text-start
+                    label.mb-2 for='formFile' class="form-label" Delete #{share_board.share_board_name}? 
+                    input type="hidden" name="redirect_route" value="/share_boards" 
+                .row.my-3
+                  .col.text-end
+                    button type='submit' class="btn btn-outline-danger btn-sm main-btn mx-2" value='submit' Delete
+                    button type="button" class="btn btn-outline-primary btn-sm main-btn" data-bs-dismiss="modal" Keep 
   
 div class="row mt-2"
   div class="col-sm-8" 
@@ -48,7 +45,7 @@ div class="row mt-2"
         th scope="col" filename
         th scope="col" author
         th scope="col" upload time
-        / th scope="col" 
+        th scope="col" 
       tbody
         - share_board.assignments.each_with_index do |assi, index|
           tr
@@ -64,18 +61,13 @@ div class="row mt-2"
               div id="RenameAssiModal" class="modal fade" role="dialog"
                 div class="modal-dialog"
                   div class="modal-content"
-                    div class="modal-header"
-                      h4 Rename your assignment
-                      button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                     form role="form" action="/assignments/#{assi.id}/rename_assignment" method='post' id='rename-assi-form'
-                      div class="modal-body"
+                      div class="modal-body text-start"
                         div class="form-group"
                           input type="hidden" name="redirect_route" value="/share_boards/#{share_board.id}" 
-                          label for='rename_input' New assignment name:
-                          input type='text' name='new_name' id='rename_assi_input' class="form-control" placeholder="New name of assignment"
-                      div class="modal-footer"
-                        button type='submit' class="btn btn-primary submit" value='submit' Rename
-                        button type="button" class="btn btn-secondary" data-bs-dismiss="modal" Cancel
+                          label.mb-2 for='rename_input' Rename your assignment
+                          input type='text' name='new_name' id='rename_assi_input' class="form-control form-control-sm" placeholder="new assignment name"
+                          button.my-2.float-end type='submit' class="btn btn-outline-primary btn-sm main-btn" value='submit' Rename
               
               button type="button" class="btn btn-outline-primary btn-sm action-btn" id="dropdownCourses" data-bs-toggle="dropdown"
                 i class="fas fa-folder"
@@ -86,9 +78,8 @@ div class="row mt-2"
                     form role="form" action="/courses/#{course.id}/assignments/#{assi.id}/move_course" method='post' id="changeCrs_#{index}"
                       div class="form-group"
                         input type="hidden" name="redirect_route" value="/share_boards/#{share_board.id}" 
-                        button type='submit' class="btn btn-primary submit" id='change-course-form-submit' value='submit' Move
-                        button type="button" class="btn btn-secondary" data-bs-dismiss="modal" Cancel
-              button type="button" class="btn btn-outline-danger btn-sm action-btn" data-bs-toggle="dropdown"
+                        button type='submit' class="btn btn-outline-primary main-btn" id='change-course-form-submit' value='submit' Move
+              button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="dropdown"
                 i class="fas fa-clipboard"
               ul class="dropdown-menu" aria-labelledby="dropdownShareBoards"
                 li
@@ -99,25 +90,27 @@ div class="row mt-2"
                       form role="form" action="/share_boards/#{srb.id}/assignments/#{assi.id}" method='post' id="AddtoSrb_#{index}"
                         div class="form-group"
                           input type="hidden" name="redirect_route" value="/share_boards/#{share_board.id}" 
-                          button type='submit' class="btn btn-primary submit" id='add2srb-form-submit' value='submit' Add
-                          button type="button" class="btn btn-secondary" data-bs-dismiss="modal" Cancel
+                          button type='submit' class="btn btn-outline-primary main-btn" id='add2srb-form-submit' value='submit' Add
                
-              button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#DeleteAssiModal"
+              button type="button" class="btn btn-outline-danger btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#DeleteAssiModal"
                 i class="fas fa-trash-alt"
               div id="DeleteAssiModal" class="modal fade" role="dialog"
                 div class="modal-dialog"
                   div class="modal-content"
-                    div class="modal-header"
-                      h4 Delete #{assi.assignment_name}?  
-                      button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                     form role="form" action="/assignments/#{assi.id}/deletion" method='post' id='delete-assi-form'
-                      div class="modal-footer"
-                        input type="hidden" name="redirect_route" value="/share_boards/#{share_board.id}" 
-                        button type='submit' class="btn btn-primary submit" value='submit' Delete
-                        button type="button" class="btn btn-secondary" data-bs-dismiss="modal" Cancel
+                      .container 
+                        .row.my-3 
+                          .col.text-start
+                            label.mb-2 for='formFile' class="form-label" Delete #{assi.assignment_name}?
+                            input type="hidden" name="redirect_route" value="/share_boards/#{share_board.id}" 
+                        .row.my-3
+                          .col.text-end
+                            button type='submit' class="btn btn-outline-danger btn-sm main-btn mx-2" value='submit' Delete
+                            button type="button" class="btn btn-outline-primary btn-sm main-btn" data-bs-dismiss="modal" Keep 
       tfoot
         tr
         th 
+        td
         td
         td
         td.text-end
