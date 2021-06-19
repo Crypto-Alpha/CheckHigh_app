@@ -10,7 +10,7 @@ div class='container'
       - if share_board.policies.can_add_collaborators
         button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#newCollaboratorModal"
           i class="fas fa-user-plus"
-        include :collaborator_new_partial
+        include :partial_add_collaborator
       - if share_board.policies.can_delete
         button type="button" class="btn btn-outline-danger btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#DeleteSrbModal"
           i class="fas fa-trash-alt"
@@ -77,12 +77,9 @@ div class='container'
             td.align-middle #{collaborator.username}
             td.text-end 
               - if share_board.policies.can_remove_collaborators
-                span class="float-end"
-                  form role="form" method="post" action="/share_boards/#{share_board.id}/collaborators"
-                    input type="hidden" name="action" value="remove"
-                    input type="hidden" name="email" value="#{collaborator.email}"
-                    button type="submit" class="btn btn-outline-danger btn-sm action-btn"
-                      span class="fas fa-user-slash"
+                button type="submit" class="btn btn-outline-danger btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#RemoveCollaboratorModal"
+                  i class="fas fa-user-slash"
+                == render :partial_remove_collaborator, locals:{collaborator: collaborator, share_board: share_board}
 
   button type="button" class="btn btn-primary modal-btn" data-bs-toggle="modal" data-bs-target="#newAssiForSrbModal"
     i class="fas fa-plus"
