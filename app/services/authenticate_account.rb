@@ -5,26 +5,21 @@ require 'http'
 module CheckHigh
   # Returns an authenticated user, or nil
   class AuthenticateAccount
-    class UnauthorizedError < StandardError; end
+    class NotAuthenticatedError < StandardError; end
 
     class ApiServerError < StandardError; end
 
-    def initialize(config)
-      @config = config
-    end
-
     def call(username:, password:)
-      response = HTTP.post("#{@config.API_URL}/auth/authenticate",
-                           json: { username: username, password: password })
+      credentials = { username: username, password: password }
+      response = HTTP.post("#{ENV['API_URL']}/auth/authenticate",
+                           json: SignedMessage.sign(credentials))
 
-      raise(UnauthorizedError) if response.code == 403
-      raise(ApiServerError) if response.code != 200
+      raise NotAuthenticatedError if response.code == 401
+      raise ApiServerError if response.code != 200
 
-      # response.parse['attributes']
-      account_info = JSON.parse(response.to_s)['attributes']
-
+      account_info = JSON.parse(response.to_s)['data']['attributes']
       {
-        account: account_info['account']['attributes'],
+        account: account_info['account'],
         auth_token: account_info['auth_token']
       }
     end

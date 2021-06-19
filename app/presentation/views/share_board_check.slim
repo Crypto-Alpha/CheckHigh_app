@@ -1,5 +1,22 @@
-div class="row mb-3" 
-    - assignments.all.each do |assi|
+div.container-fluid
+  div class="row mb-3"
+    - if assignments.all.length > 2
+      - assignments.all.each do |assi|
         div class="col-sm-6 d-grid my-2"
-            .card.srb-4-block
-                div.p-2.srb-overflow #{assi.content}
+          .card.srb-4-block
+            div.p-2.srb-overflow
+              == assi.content
+
+    - elsif assignments.all.length == 2
+      - assignments.all.each do |assi|
+        div class="col-sm-6 d-grid my-2"
+          .card.srb-2-block
+            div.p-2.srb-overflow
+              == assi.content
+
+    - else 
+      - assignments.all.each do |assi|
+        div class="col-sm d-grid my-2"
+          .card.srb-2-block
+            div.p-2.srb-overflow 
+              == assi.content

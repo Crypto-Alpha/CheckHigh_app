@@ -14,11 +14,12 @@ module CheckHigh
     def call(registration_data)
       # register token will expire after 5 minutes
       registration_token = RegisterToken.create(registration_data)
-      registration_data['verification_url'] =
+      
+      registration_data['verification_url'] = 
         "#{@config.APP_URL}/auth/register/#{registration_token}"
 
       response = HTTP.post("#{@config.API_URL}/auth/register",
-                           json: registration_data)
+                           json: SignedMessage.sign(registration_data))
       raise(VerificationError) unless response.code == 202
 
       JSON.parse(response.to_s)

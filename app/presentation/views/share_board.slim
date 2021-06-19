@@ -1,85 +1,153 @@
-div class="row"
+div class='container'
+  div class="row"
     div class="col-sm-6"
-        h5.title-font Riley ShareBoard1
-    div class="col-sm-6 text-end"
-        button type="button" class="btn btn-outline-primary btn-sm main-color" style="border-color:transparent;border-radius:50%;"
-            i class="fas fa-pen"
-        button type="button" class="btn btn-outline-primary btn-sm main-color" style="border-color:transparent;border-radius:50%;"
-            i class="fas fa-user-plus"
-        button type="button" class="btn btn-outline-danger btn-sm main-color" style="border-color:transparent;border-radius:50%;"
-            i class="fas fa-trash-alt"
-
-
-div class="row mt-2"
+      h5.title-font #{share_board.share_board_name}
+    div class="col-sm-6 text-end main-color"
+      - if share_board.policies.can_edit
+        button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#RenameSrbModal"
+          i class="fas fa-pen"
+        div id="RenameSrbModal" class="modal fade" role="dialog"
+          div class="modal-dialog"
+            div class="modal-content"
+              form role="form" action="/share_boards/#{share_board.id}" method='post' id='rename-srb-form'
+                div class="modal-body text-start"
+                  div class="form-group"
+                    input type="hidden" name="redirect_route" value="/share_boards/#{share_board.id}" 
+                    label.mb-2 for='rename_input' Rename your share board
+                    input type='text' name='new_name' id='rename_srb_input' class="form-control form-control-sm" placeholder="new share board name"
+                    button.my-2.float-end type='submit' class="btn btn-outline-primary btn-sm main-btn" value='submit' Rename
+      - if share_board.policies.can_add_collaborators
+        button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#newCollaboratorModal"
+          i class="fas fa-user-plus"
+        include :collaborator_new_partial
+      - if share_board.policies.can_delete
+        button type="button" class="btn btn-outline-danger btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#DeleteSrbModal"
+          i class="fas fa-trash-alt"
+        div id="DeleteSrbModal" class="modal fade" role="dialog"
+          div class="modal-dialog"
+            div class="modal-content"
+              form role="form" action="/share_boards/#{share_board.id}/deletion" method='post' id='delete-srb-form'
+                .container 
+                  .row.my-3 
+                    .col.text-start
+                      label.mb-2 for='formFile' class="form-label" Delete #{share_board.share_board_name}? 
+                      input type="hidden" name="redirect_route" value="/share_boards" 
+                  .row.my-3
+                    .col.text-end
+                      button type='submit' class="btn btn-outline-danger btn-sm main-btn mx-2" value='submit' Delete
+                      button type="button" class="btn btn-outline-primary btn-sm main-btn" data-bs-dismiss="modal" Keep 
+    
+  div class="row mt-2"
     div class="col-sm-8" 
-        table class="table table-striped main-table"
-            thead
-                tr
-                th scope="col" #
-                th scope="col" filename
-                th scope="col" author
-                th scope="col" 
-            tbody
-                - assignments.all.each_with_index do |assi, index|
-                    tr
-                    th.align-middle scope="row" #{index+1}
-                    td.align-middle 
-                        a.main-color href="/assignment/#{assi.id}" #{assi.assignment_name}
-                    td.align-middle assi.author
-                    td.text-end 
-                        button type="button" class="btn btn-outline-primary btn-sm main-color" style="border-color:transparent;border-radius:50%;"
-                            i class="fas fa-pen"
-                        button type="button" class="btn btn-outline-primary btn-sm main-color" style="border-color:transparent;border-radius:50%;"
-                            i class="fas fa-folder"
-                        button type="button" class="btn btn-outline-primary btn-sm main-color" style="border-color:transparent;border-radius:50%;"
-                            i class="fas fa-clipboard"
-                        button type="button" class="btn btn-outline-danger btn-sm main-color" style="border-color:transparent;border-radius:50%;"
-                            i class="fas fa-trash-alt"
-            tfoot
-                tr
-                th 
-                td
-                td
-                td.text-end
-                    a type="button" class="btn btn-outline-primary main-btn" href="/share_board/25" style="border-color:transparent;"
-                        i class="fas fa-check-double" 
-                        span  go Check to High
+      table class="table table-striped main-table"
+        thead
+          tr
+          th scope="col" #
+          th scope="col" filename
+          th scope="col" author
+          th scope="col" upload time
+          th scope="col" 
+        tbody
+          - share_board.assignments.each_with_index do |assi, index|
+            tr
+            th.align-middle scope="row" #{index+1}
+            td.align-middle 
+              a.main-color href="/assignments/#{assi.id}" #{assi.assignment_name}
+            td.align-middle #{assi.owner.username}
+            td.align-middle #{assi.upload_time}
+            - if @current_account.username == assi.owner.username
+              td.text-end 
+                button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#RenameAssiModal"
+                  i class="fas fa-pen"
+                div id="RenameAssiModal" class="modal fade" role="dialog"
+                  div class="modal-dialog"
+                    div class="modal-content"
+                      form role="form" action="/assignments/#{assi.id}/rename_assignment" method='post' id='rename-assi-form'
+                        div class="modal-body text-start"
+                          div class="form-group"
+                            input type="hidden" name="redirect_route" value="/share_boards/#{share_board.id}" 
+                            label.mb-2 for='rename_input' Rename your assignment
+                            input type='text' name='new_name' id='rename_assi_input' class="form-control form-control-sm" placeholder="new assignment name"
+                            button.my-2.float-end type='submit' class="btn btn-outline-primary btn-sm main-btn" value='submit' Rename
+                
+                button type="button" class="btn btn-outline-primary btn-sm action-btn" id="dropdownCourses" data-bs-toggle="dropdown"
+                  i class="fas fa-folder"
+                ul class="dropdown-menu" aria-labelledby="dropdownCourses"
+                  li
+                    - courses.all.each_with_index do |course, index|
+                      a class="dropdown-item" href="#changeCrs_#{index}" #{course.course_name}
+                      form role="form" action="/courses/#{course.id}/assignments/#{assi.id}/move_course" method='post' id="changeCrs_#{index}"
+                        div class="form-group"
+                          input type="hidden" name="redirect_route" value="/share_boards/#{share_board.id}" 
+                          button type='submit' class="btn btn-outline-primary main-btn" id='change-course-form-submit' value='submit' Move
+                button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="dropdown"
+                  i class="fas fa-clipboard"
+                ul class="dropdown-menu" aria-labelledby="dropdownShareBoards"
+                  li
+                    - share_boards.all.each_with_index do |srb, index|
+                      - if share_board.share_board_name == srb.share_board_name then next
+                      - else
+                        a class="dropdown-item" href="#AddtoSrb_#{index}" #{srb.share_board_name}
+                        form role="form" action="/share_boards/#{srb.id}/assignments/#{assi.id}" method='post' id="AddtoSrb_#{index}"
+                          div class="form-group"
+                            input type="hidden" name="redirect_route" value="/share_boards/#{share_board.id}" 
+                            button type='submit' class="btn btn-outline-primary main-btn" id='add2srb-form-submit' value='submit' Add
+                
+                button type="button" class="btn btn-outline-danger btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#DeleteAssiModal"
+                  i class="fas fa-trash-alt"
+                div id="DeleteAssiModal" class="modal fade" role="dialog"
+                  div class="modal-dialog"
+                    div class="modal-content"
+                      form role="form" action="/assignments/#{assi.id}/deletion" method='post' id='delete-assi-form'
+                        .container 
+                          .row.my-3 
+                            .col.text-start
+                              label.mb-2 for='formFile' class="form-label" Delete #{assi.assignment_name}?
+                              input type="hidden" name="redirect_route" value="/share_boards/#{share_board.id}" 
+                          .row.my-3
+                            .col.text-end
+                              button type='submit' class="btn btn-outline-danger btn-sm main-btn mx-2" value='submit' Delete
+                              button type="button" class="btn btn-outline-primary btn-sm main-btn" data-bs-dismiss="modal" Keep 
+            - else 
+              td
+        tfoot
+          tr
+          th 
+          td
+          td
+          td
+          td.text-end
+            a type="button" class="btn btn-outline-primary main-btn" href="/share_boards/#{share_board.id}/check"
+                i class="fas fa-check-double" 
+                span  go Check to High
 
-    div class="col-sm-4" style="background-color: #F5F9FF;"
-        table class="table table-striped main-table" 
-            thead
-                tr
-                th scope="col" role
-                th scope="col" name
-                th scope="col" 
-            tbody
-                tr
-                th scope="row" owner 
-                td.align-middle Soumya
-                td.text-end 
-                tr
-                th scope="row" collaborator 
-                td.align-middle Yan-Yu
-                td.text-end 
-                        button type="button" class="btn btn-outline-danger btn-sm main-color" style="border-color:transparent;border-radius:50%;"
-                            i class="fas fa-user-slash"
-                tr
-                th scope="row" collaborator 
-                td.align-middle Yan-Yu
-                td.text-end
-                        button type="button" class="btn btn-outline-danger btn-sm main-color" style="border-color:transparent;border-radius:50%;"
-                            i class="fas fa-user-slash"
+    div class="col-sm-4 second-bg"
+      - if share_board.collaborators.empty?
+        span class="small" There are no collaborators yet
+      table class="table table-striped main-table" 
+        thead
+          tr
+          th scope="col" role
+          th scope="col" name
+          th scope="col" 
+        tbody
+          tr
+          th scope="row" owner 
+          td.align-middle #{share_board.owner.username}
+          td.text-end 
+          - share_board.collaborators.each do |collaborator|
+            tr
+            th scope="row" collaborator 
+            td.align-middle #{collaborator.username}
+            td.text-end 
+              - if share_board.policies.can_remove_collaborators
+                span class="float-end"
+                  form role="form" method="post" action="/share_boards/#{share_board.id}/collaborators"
+                    input type="hidden" name="action" value="remove"
+                    input type="hidden" name="email" value="#{collaborator.email}"
+                    button type="submit" class="btn btn-outline-danger btn-sm action-btn"
+                      span class="fas fa-user-slash"
 
-button type="button" class="btn btn-primary main-btn" data-bs-toggle="modal" data-bs-target="#newAssiModal" style="border-radius:50%; border-color:transparent; height: 3.5rem; width: 3.5rem; position: fixed; bottom: 5vh; right: 5vh;"
+  button type="button" class="btn btn-primary modal-btn" data-bs-toggle="modal" data-bs-target="#newAssiForSrbModal"
     i class="fas fa-plus"
-
-div class="modal fade" id="newAssiModal" tabindex="-1" aria-labelledby="newAssiModalLabel" aria-hidden="true"
-  div class="modal-dialog"
-    div class="modal-content"
-      div class="modal-header"
-        h5 class="modal-title" id="newAssiModalLabel" Upload Assignment
-        button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-      div class="modal-body" ...
-      div class="modal-footer"
-        button type="button" class="btn btn-secondary" data-bs-dismiss="modal" Close
-        button type="button" class="btn btn-primary" Upload
+  include :assignment_new_partial_srb
