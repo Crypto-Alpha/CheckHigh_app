@@ -38,16 +38,6 @@ div class='container'
                 button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#RenameAssiModal_#{index}"
                   i class="fas fa-pen"
                 == render :partial_rename, locals: { action:"/assignments/#{assi.id}/rename_assignment", id:"RenameAssiModal_#{index}", ori_name: "#{assi.assignment_name}", reroute: "/share_boards/#{share_board.id}", type: 'assignment' }
-                button type="button" class="btn btn-outline-primary btn-sm action-btn" id="dropdownCourses" data-bs-toggle="dropdown"
-                  i class="fas fa-folder"
-                ul class="dropdown-menu" aria-labelledby="dropdownCourses"
-                  li
-                    - courses.all.each_with_index do |course, index|
-                      a class="dropdown-item" href="#changeCrs_#{index}" #{course.course_name}
-                      form role="form" action="/courses/#{course.id}/assignments/#{assi.id}/move_course" method='post' id="changeCrs_#{index}"
-                        div class="form-group"
-                          input type="hidden" name="redirect_route" value="/share_boards/#{share_board.id}" 
-                          button type='submit' class="btn btn-outline-primary main-btn" id='change-course-form-submit' value='submit' Move
                 button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="dropdown"
                   i class="fas fa-clipboard"
                 ul class="dropdown-menu" aria-labelledby="dropdownShareBoards"

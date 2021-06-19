@@ -51,6 +51,25 @@ module CheckHigh
           routing.redirect redirect_route
         end
 
+        # POST /assignments/[assignment_id]/move_assignment
+        routing.post('move_assignment') do
+          redirect_route = routing.params['redirect_route']
+          course_id = routing.params['course_id']
+          remove_course_id = routing.params['remove_course_id']
+          if remove_course_id
+            RemoveAssiFromCourse.new(App.config).call(@current_account, assignment_id, remove_course_id)
+          else
+            MoveAssiToCourse.new(App.config).call(@current_account, assignment_id, course_id)
+          end
+
+          flash[:notice] = "You've moved your assignment"
+        rescue StandardError => e
+          puts "FAILURE Moving an assignment: #{e.inspect}"
+          flash[:error] = 'Could not move an assignment'
+        ensure
+          routing.redirect redirect_route
+        end
+
         # GET /assignments/[assignment_id]
         routing.get do
           assignment = GetAssignmentDetail.new(App.config).call(@current_account, assignment_id)
