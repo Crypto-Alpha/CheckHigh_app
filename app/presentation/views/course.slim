@@ -11,33 +11,36 @@ div class='container'
       == render :partial_delete, locals: { action:"/courses/#{course.id}/deletion", id:"DeleteCrsModal", reroute: "/courses", obj: "#{course.course_name}" }
   div class="row"
     div class="col"
-      table class="table table-striped main-table"
-        thead
-          tr
-          th scope="col" #
-          th scope="col" filename
-          th scope="col" upload time
-          th scope="col" 
-        tbody
-          - course.assignments.each_with_index do |assi, index|
+      - if course.assignments.empty?
+        div.main-color.my-4 No files yet. Press right-bottom side plus button to upload a file!
+      - else
+        table class="table table-striped main-table"
+          thead
             tr
-            th.align-middle scope="row" #{index+1}
-            td.align-middle 
-              a.main-color target="_blank" href="/assignments/#{assi.id}" #{assi.assignment_name}
-            td.align-middle #{assi.upload_time}
-            td.text-end 
-              button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#RenameAssiModal_#{index}"
-                i class="fas fa-pen"
-              == render :partial_rename, locals: { action:"/assignments/#{assi.id}/rename_assignment", id:"RenameAssiModal_#{index}", ori_name: "#{assi.assignment_name}", reroute: "/courses/#{course.id}", type: 'assignment' }
-              button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#MoveAssiCrsModal_#{index}"
-                i class="fas fa-folder"
-              == render :partial_move_assi_to_crs, locals: { action:"/assignments/#{assi.id}/move_assignment_to_course", id:"MoveAssiCrsModal_#{index}", reroute:"/courses/#{course.id}", courses: courses, assignment: assi, in_course_id: course.id}
-              button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#MoveAssiSrbModal_#{index}"
-                i class="fas fa-clipboard"
-              == render :partial_move_assi_to_srb, locals: { action:"/assignments/#{assi.id}/move_assignment_to_share_board", id:"MoveAssiSrbModal_#{index}", reroute:"/courses/#{course.id}", all_share_boards: share_boards, assignment: assi, in_share_board: [], type: 2}
-              button type="button" class="btn btn-outline-danger btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#DeleteAssiModal_#{index}"
-                i class="fas fa-trash-alt"
-              == render :partial_delete, locals: { action:"/assignments/#{assi.id}/deletion", id:"DeleteAssiModal_#{index}", reroute: "/courses/#{course.id}", obj: "#{assi.assignment_name}" }
+            th scope="col" #
+            th scope="col" filename
+            th scope="col" upload time
+            th scope="col" 
+          tbody            
+            - course.assignments.each_with_index do |assi, index|
+              tr
+              th.align-middle scope="row" #{index+1}
+              td.align-middle 
+                a.main-color target="_blank" href="/assignments/#{assi.id}" #{assi.assignment_name}
+              td.align-middle #{assi.upload_time}
+              td.text-end 
+                button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#RenameAssiModal_#{index}"
+                  i class="fas fa-pen"
+                == render :partial_rename, locals: { action:"/assignments/#{assi.id}/rename_assignment", id:"RenameAssiModal_#{index}", ori_name: "#{assi.assignment_name}", reroute: "/courses/#{course.id}", type: 'assignment' }
+                button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#MoveAssiCrsModal_#{index}"
+                  i class="fas fa-folder"
+                == render :partial_move_assi_to_crs, locals: { action:"/assignments/#{assi.id}/move_assignment_to_course", id:"MoveAssiCrsModal_#{index}", reroute:"/courses/#{course.id}", courses: courses, assignment: assi, in_course_id: course.id}
+                button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#MoveAssiSrbModal_#{index}"
+                  i class="fas fa-clipboard"
+                == render :partial_move_assi_to_srb, locals: { action:"/assignments/#{assi.id}/move_assignment_to_share_board", id:"MoveAssiSrbModal_#{index}", reroute:"/courses/#{course.id}", all_share_boards: share_boards, assignment: assi, in_share_board: [], type: 2}
+                button type="button" class="btn btn-outline-danger btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#DeleteAssiModal_#{index}"
+                  i class="fas fa-trash-alt"
+                == render :partial_delete, locals: { action:"/assignments/#{assi.id}/deletion", id:"DeleteAssiModal_#{index}", reroute: "/courses/#{course.id}", obj: "#{assi.assignment_name}" }
   button type="button" class="btn btn-primary modal-btn" data-bs-toggle="modal" data-bs-target="#newAssiForCrsModal"
     i class="fas fa-plus"
   == render :partial_upload_assi, locals: { action: "/courses/#{course.id}/assignments", id: 'newAssiForCrsModal'}
