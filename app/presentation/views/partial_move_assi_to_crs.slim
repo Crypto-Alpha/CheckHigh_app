@@ -5,7 +5,7 @@ div id="#{id}" class="modal fade" role="dialog"
           div class="modal-body text-start"
             div class="form-group"
               input type="hidden" name="redirect_route" value="#{reroute}"
-              label.mb-2 for='assignment_name_input' Move #{assignment.assignment_name} to ...
+              label.mb-2 for='assignment_name_input' Move #{assignment.assignment_name} to another Course
               - courses.all.each_with_index do |course, index|
                 - unless course.id == in_course_id
                   div.form-check

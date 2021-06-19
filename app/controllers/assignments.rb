@@ -51,8 +51,8 @@ module CheckHigh
           routing.redirect redirect_route
         end
 
-        # POST /assignments/[assignment_id]/move_assignment
-        routing.post('move_assignment') do
+        # POST /assignments/[assignment_id]/move_assignment_to_course
+        routing.post('move_assignment_to_course') do
           redirect_route = routing.params['redirect_route']
           course_id = routing.params['course_id']
           remove_course_id = routing.params['remove_course_id']
@@ -66,6 +66,30 @@ module CheckHigh
         rescue StandardError => e
           puts "FAILURE Moving an assignment: #{e.inspect}"
           flash[:error] = 'Could not move an assignment'
+        ensure
+          routing.redirect redirect_route
+        end
+
+        # POST /assignments/[assignment_id]/move_assignment_to_share_board
+        routing.post('move_assignment_to_share_board') do
+          redirect_route = routing.params['redirect_route']
+          share_board_id = routing.params['share_board_id']
+          remove_share_board_id = routing.params['remove_share_board_id']
+          binding.irb
+          if remove_share_board_id
+            RemoveAssiFromShareBoard.new(App.config).call(@current_account, assignment_id, remove_share_board_id)
+          else
+            CreateNewAssignment.new(App.config).add_exist_assi_to_shareboard(
+              current_account: @current_account,
+              share_board_id: share_board_id,
+              assignment_id: assignment_id
+            )
+          end
+
+          flash[:notice] = 'Your assignment was added'
+        rescue StandardError => e
+          puts "FAILURE Creating Assignment: #{e.inspect}"
+          flash[:error] = 'Could not add assignment. You might have already added this assignment before.'
         ensure
           routing.redirect redirect_route
         end
