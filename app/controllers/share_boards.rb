@@ -175,7 +175,7 @@ module CheckHigh
         end
 
         # POST /share_boards
-        routing.post do 
+        routing.post do
           routing.redirect '/auth/login' unless @current_account.logged_in?
           puts "SHAREBOARD: #{routing.params}"
           # TODO: form data
