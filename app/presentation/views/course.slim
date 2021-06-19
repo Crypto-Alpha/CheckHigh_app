@@ -8,20 +8,7 @@ div class='container'
       == render :partial_rename, locals: { action:"/courses/#{course.id}", id:"RenameCrsModal", ori_name: "#{course.course_name}", reroute: "/courses/#{course.id}", type: 'course' }
       button type="button" class="btn btn-outline-danger btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#DeleteCrsModal"
         i class="fas fa-trash-alt"
-      div id="DeleteCrsModal" class="modal fade" role="dialog"
-        div class="modal-dialog"
-          div class="modal-content"
-            form role="form" action="/courses/#{course.id}/deletion" method='post' id='delete-crs-form'
-              .container 
-                .row.my-3 
-                  .col.text-start
-                    label.mb-2 for='formFile' class="form-label" Delete #{course.course_name}?
-                    input type="hidden" name="redirect_route" value="/courses" 
-                .row.my-3
-                  .col.text-end
-                    button type='submit' class="btn btn-outline-danger btn-sm main-btn mx-2" value='submit' Delete
-                    button type="button" class="btn btn-outline-primary btn-sm main-btn" data-bs-dismiss="modal" Keep 
-
+      == render :partial_delete, locals: { action:"/courses/#{course.id}/deletion", id:"DeleteCrsModal", reroute: "/courses", obj: "#{course.course_name}" }
   div class="row"
     div class="col"
       table class="table table-striped main-table"
@@ -81,20 +68,7 @@ div class='container'
                             button type="button" class="btn btn-outline-primary btn-sm main-btn" data-bs-dismiss="modal" Keep 
               button type="button" class="btn btn-outline-danger btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#DeleteAssiModal_#{index}"
                 i class="fas fa-trash-alt"
-              div id="DeleteAssiModal_#{index}" class="modal fade" role="dialog"
-                div class="modal-dialog"
-                  div class="modal-content"
-                    form role="form" action="/assignments/#{assi.id}/deletion" method='post' id='delete-assi-form'
-                      .container 
-                        .row.my-3 
-                          .col.text-start
-                            label.mb-2 for='formFile' class="form-label" Delete #{assi.assignment_name}?
-                            input type="hidden" name="redirect_route" value="/courses/#{course.id}" 
-                        .row.my-3
-                          .col.text-end
-                            button type='submit' class="btn btn-outline-danger btn-sm main-btn mx-2" value='submit' Delete
-                            button type="button" class="btn btn-outline-primary btn-sm main-btn" data-bs-dismiss="modal" Keep 
+              == render :partial_delete, locals: { action:"/assignments/#{assi.id}/deletion", id:"DeleteAssiModal_#{index}", reroute: "/courses/#{course.id}", obj: "#{assi.assignment_name}" }
   button type="button" class="btn btn-primary modal-btn" data-bs-toggle="modal" data-bs-target="#newAssiForCrsModal"
     i class="fas fa-plus"
-
   == render :partial_upload_assi, locals: { action: "/courses/#{course.id}/assignments", id: 'newAssiForCrsModal'}

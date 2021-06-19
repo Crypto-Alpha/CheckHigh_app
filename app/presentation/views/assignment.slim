@@ -36,19 +36,7 @@ div class='container'
               - if assignment.policies.can_delete
                 button type="button" class="btn btn-outline-danger btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#DeleteAssiModal"
                   i class="fas fa-trash-alt"
-                div id="DeleteAssiModal" class="modal fade" role="dialog"
-                  div class="modal-dialog"
-                    div class="modal-content"
-                      form role="form" action="/assignments/#{assignment.id}/deletion" method='post' id='delete-assi-form'
-                          .container 
-                            .row.my-3 
-                              .col.text-start
-                                label.mb-2 class="form-label" Delete #{assignment.assignment_name}?
-                                input type="hidden" name="redirect_route" value="/courses" 
-                            .row.my-3
-                              .col.text-end
-                                button type='submit' class="btn btn-outline-danger btn-sm main-btn mx-2" value='submit' Delete
-                                button type="button" class="btn btn-outline-primary btn-sm main-btn" data-bs-dismiss="modal" Keep 
+                == render :partial_delete, locals: { action:"/assignments/#{assignment.id}/deletion", id:"DeleteAssiModal", reroute: "/courses", obj: "#{assignment.assignment_name}" }
           tbody
             tr
             th scope="row" Author: 

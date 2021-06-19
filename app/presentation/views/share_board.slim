@@ -14,20 +14,7 @@ div class='container'
       - if share_board.policies.can_delete
         button type="button" class="btn btn-outline-danger btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#DeleteSrbModal"
           i class="fas fa-trash-alt"
-        div id="DeleteSrbModal" class="modal fade" role="dialog"
-          div class="modal-dialog"
-            div class="modal-content"
-              form role="form" action="/share_boards/#{share_board.id}/deletion" method='post' id='delete-srb-form'
-                .container 
-                  .row.my-3 
-                    .col.text-start
-                      label.mb-2 for='formFile' class="form-label" Delete #{share_board.share_board_name}? 
-                      input type="hidden" name="redirect_route" value="/share_boards" 
-                  .row.my-3
-                    .col.text-end
-                      button type='submit' class="btn btn-outline-danger btn-sm main-btn mx-2" value='submit' Delete
-                      button type="button" class="btn btn-outline-primary btn-sm main-btn" data-bs-dismiss="modal" Keep 
-    
+        == render :partial_delete, locals: { action:"/share_boards/#{share_board.id}/deletion", id:'DeleteSrbModal', reroute: '/share_boards', obj: "#{share_board.share_board_name}" }
   div class="row mt-2"
     div class="col-sm-8" 
       table class="table table-striped main-table"
@@ -76,19 +63,7 @@ div class='container'
                 
                 button type="button" class="btn btn-outline-danger btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#DeleteAssiModal"
                   i class="fas fa-trash-alt"
-                div id="DeleteAssiModal" class="modal fade" role="dialog"
-                  div class="modal-dialog"
-                    div class="modal-content"
-                      form role="form" action="/assignments/#{assi.id}/deletion" method='post' id='delete-assi-form'
-                        .container 
-                          .row.my-3 
-                            .col.text-start
-                              label.mb-2 for='formFile' class="form-label" Delete #{assi.assignment_name}?
-                              input type="hidden" name="redirect_route" value="/share_boards/#{share_board.id}" 
-                          .row.my-3
-                            .col.text-end
-                              button type='submit' class="btn btn-outline-danger btn-sm main-btn mx-2" value='submit' Delete
-                              button type="button" class="btn btn-outline-primary btn-sm main-btn" data-bs-dismiss="modal" Keep 
+                == render :partial_delete, locals: { action:"/assignments/#{assi.id}/deletion", id:"DeleteAssiModal", reroute: "/share_boards/#{share_board.id}", obj: "#{assi.assignment_name}" }
             - else 
               td
         tfoot

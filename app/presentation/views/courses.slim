@@ -50,19 +50,7 @@ div class='container'
                         button type='submit' class="btn btn-outline-primary main-btn" id='add2srb-form-submit' value='submit' Add
               button type="button" class="btn btn-outline-danger btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#DeleteAssiModal_#{index}"
                 i class="fas fa-trash-alt"
-              div id="DeleteAssiModal_#{index}" class="modal fade" role="dialog"
-                div class="modal-dialog"
-                  div class="modal-content"
-                    form role="form" action="/assignments/#{assi.id}/deletion" method='post' id='delete-assi-form'
-                      .container 
-                        .row.my-3 
-                          .col.text-start
-                            label.mb-2 class="form-label" Delete #{assi.assignment_name}?
-                            input type="hidden" name="redirect_route" value="/courses" 
-                        .row.my-3
-                          .col.text-end
-                            button type='submit' class="btn btn-outline-danger btn-sm main-btn mx-2" value='submit' Delete
-                            button type="button" class="btn btn-outline-primary btn-sm main-btn" data-bs-dismiss="modal" Keep 
+              == render :partial_delete, locals: { action:"/assignments/#{assi.id}/deletion", id:"DeleteAssiModal_#{index}", reroute: "/courses", obj: "#{assi.assignment_name}" }
   button type="button" class="btn btn-primary modal-btn" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"
     i class="fas fa-plus"
   ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1"
