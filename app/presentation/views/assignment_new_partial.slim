@@ -1,10 +1,9 @@
-div class="modal fade" id="newAssiModal" tabindex="-1" aria-labelledby="newAssiModalLabel" aria-hidden="true"
+div class="modal fade" id="#{id}" tabindex="-1" aria-labelledby="#{id}" aria-hidden="true"
   div class="modal-dialog"
     div class="modal-content"
-      form role="form" enctype="multipart/form-data" action="/assignments" method='post' id='new-assignment-form'
+      form role="form" enctype="multipart/form-data" action="#{routing}" method='post'
         div class="modal-body"
             div class="form-group main-color"
               label for='formFile' class="form-label" Upload Assignment
               input class='form-control form-control-sm' name="file" type="file" id='formFile' accept="text/html" placeholder="Upload Assignment is required"
-              button.my-2.float-end type="submit" class="btn btn-outline-primary btn-sm main-btn" id="assignment-form-submit" value="submit" Upload
-
+              button.my-2.float-end type="submit" class="btn btn-outline-primary btn-sm main-btn" value="submit" Upload

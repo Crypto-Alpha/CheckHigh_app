@@ -150,4 +150,4 @@ div class='container'
 
   button type="button" class="btn btn-primary modal-btn" data-bs-toggle="modal" data-bs-target="#newAssiForSrbModal"
     i class="fas fa-plus"
-  include :assignment_new_partial_srb
+  == render :assignment_new_partial, locals: { routing: "/share_boards/#{share_board.id}/assignments", id: 'newAssiForSrbModal'}
