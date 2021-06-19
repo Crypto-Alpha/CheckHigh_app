@@ -115,4 +115,4 @@ div class='container'
   button type="button" class="btn btn-primary modal-btn" data-bs-toggle="modal" data-bs-target="#newAssiForCrsModal"
     i class="fas fa-plus"
 
-  == render :assignment_new_partial, locals: { routing: "/courses/#{course.id}/assignments", id: 'newAssiForCrsModal'}
+  == render :partial_upload_assi, locals: { action: "/courses/#{course.id}/assignments", id: 'newAssiForCrsModal'}

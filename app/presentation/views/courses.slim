@@ -79,5 +79,5 @@ div class='container'
       a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#newCourseModal"add a new course 
       a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#newAssiModal"add a new assignment 
       
-  include :course_new_partial
-  == render :assignment_new_partial, locals: { routing: '/assignments', id: 'newAssiModal'}
+  == render :partial_create_crs_srb, locals: { action:'/courses', id: 'newCourseModal', type:'course', name:'course_name'}
+  == render :partial_upload_assi, locals: { action: '/assignments', id: 'newAssiModal'}
