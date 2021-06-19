@@ -109,10 +109,7 @@ module CheckHigh
           courses = Courses.new(courses_list)
           share_boards = ShareBoards.new(share_board_list)
 
-          in_srb = []
-          assignment_detail.share_boards.each do |srb|
-            in_srb.push(srb.id)
-          end
+          in_srb = assignment_detail.share_boards.map(&:id)
 
           view :assignment, locals: {
             current_user: @current_account,

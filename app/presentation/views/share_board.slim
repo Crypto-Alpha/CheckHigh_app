@@ -30,7 +30,7 @@ div class='container'
             tr
             th.align-middle scope="row" #{index+1}
             td.align-middle 
-              a.main-color href="/assignments/#{assi.id}" #{assi.assignment_name}
+              a.main-color target="_blank" href="/assignments/#{assi.id}" #{assi.assignment_name}
             td.align-middle #{assi.owner.username}
             td.align-middle #{assi.upload_time}
             - if @current_account.username == assi.owner.username
@@ -40,7 +40,7 @@ div class='container'
                 == render :partial_rename, locals: { action:"/assignments/#{assi.id}/rename_assignment", id:"RenameAssiModal_#{index}", ori_name: "#{assi.assignment_name}", reroute: "/share_boards/#{share_board.id}", type: 'assignment' }
                 button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#MoveAssiSrbModal_#{assi.id}"
                   i class="fas fa-clipboard"
-                == render :partial_move_assi_to_srb, locals: { action:"/assignments/#{assi.id}/move_assignment_to_share_board", id:"MoveAssiSrbModal_#{assi.id}", reroute:"/share_boards/#{share_board.id}", all_share_boards: share_boards, assignment: assi, in_share_board: [share_board.id] }
+                == render :partial_move_assi_to_srb, locals: { action:"/assignments/#{assi.id}/move_assignment_to_share_board", id:"MoveAssiSrbModal_#{assi.id}", reroute:"/share_boards/#{share_board.id}", all_share_boards: share_boards, assignment: assi, in_share_board: [share_board.id], type: 3 }
                 button type="button" class="btn btn-outline-danger btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#DeleteAssiModal"
                   i class="fas fa-trash-alt"
                 == render :partial_delete, locals: { action:"/assignments/#{assi.id}/deletion", id:"DeleteAssiModal", reroute: "/share_boards/#{share_board.id}", obj: "#{assi.assignment_name}" }
