@@ -58,11 +58,13 @@ module CheckHigh
           remove_course_id = routing.params['remove_course_id']
           if remove_course_id
             RemoveAssiFromCourse.new(App.config).call(@current_account, assignment_id, remove_course_id)
+            notice = 'Your assignment has removed from the course'
           else
             MoveAssiToCourse.new(App.config).call(@current_account, assignment_id, course_id)
+            notice = 'You have moved you assignment to the course'
           end
 
-          flash[:notice] = "You've moved your assignment"
+          flash[:notice] = notice 
         rescue StandardError => e
           puts "FAILURE Moving an assignment: #{e.inspect}"
           flash[:error] = 'Could not move an assignment'
@@ -78,15 +80,17 @@ module CheckHigh
           binding.irb
           if remove_share_board_id
             RemoveAssiFromShareBoard.new(App.config).call(@current_account, assignment_id, remove_share_board_id)
+            notice = 'Your assignment has removed from the share board'
           else
             CreateNewAssignment.new(App.config).add_exist_assi_to_shareboard(
               current_account: @current_account,
               share_board_id: share_board_id,
               assignment_id: assignment_id
             )
+            notice = 'Your assignment was added'
           end
 
-          flash[:notice] = 'Your assignment was added'
+          flash[:notice] = notice
         rescue StandardError => e
           puts "FAILURE Creating Assignment: #{e.inspect}"
           flash[:error] = 'Could not add assignment. You might have already added this assignment before.'

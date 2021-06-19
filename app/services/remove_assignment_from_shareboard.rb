@@ -13,7 +13,7 @@ class RemoveAssiFromShareBoard
   end
 
   def call(current_account, assignment_id, share_board_id)
-    config_url = "#{api_url}/share_board/#{share_board_id}/assignments/#{assignment_id}"
+    config_url = "#{api_url}/share_boards/#{share_board_id}/assignments/#{assignment_id}"
     response = HTTP.auth("Bearer #{current_account.auth_token}")
                    .delete(config_url)
 
