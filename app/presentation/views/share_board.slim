@@ -6,16 +6,7 @@ div class='container'
       - if share_board.policies.can_edit
         button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#RenameSrbModal"
           i class="fas fa-pen"
-        div id="RenameSrbModal" class="modal fade" role="dialog"
-          div class="modal-dialog"
-            div class="modal-content"
-              form role="form" action="/share_boards/#{share_board.id}" method='post' id='rename-srb-form'
-                div class="modal-body text-start"
-                  div class="form-group"
-                    input type="hidden" name="redirect_route" value="/share_boards/#{share_board.id}" 
-                    label.mb-2 for='rename_input' Rename your share board
-                    input type='text' name='new_name' id='rename_srb_input' class="form-control form-control-sm" placeholder="new share board name"
-                    button.my-2.float-end type='submit' class="btn btn-outline-primary btn-sm main-btn" value='submit' Rename
+        == render :partial_rename, locals: { action:"/share_boards/#{share_board.id}", id:"RenameSrbModal", ori_name: "#{share_board.share_board_name}", reroute: "/share_boards/#{share_board.id}", type: 'shareboard' }
       - if share_board.policies.can_add_collaborators
         button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#newCollaboratorModal"
           i class="fas fa-user-plus"
@@ -57,19 +48,9 @@ div class='container'
             td.align-middle #{assi.upload_time}
             - if @current_account.username == assi.owner.username
               td.text-end 
-                button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#RenameAssiModal"
+                button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#RenameAssiModal_#{index}"
                   i class="fas fa-pen"
-                div id="RenameAssiModal" class="modal fade" role="dialog"
-                  div class="modal-dialog"
-                    div class="modal-content"
-                      form role="form" action="/assignments/#{assi.id}/rename_assignment" method='post' id='rename-assi-form'
-                        div class="modal-body text-start"
-                          div class="form-group"
-                            input type="hidden" name="redirect_route" value="/share_boards/#{share_board.id}" 
-                            label.mb-2 for='rename_input' Rename your assignment
-                            input type='text' name='new_name' id='rename_assi_input' class="form-control form-control-sm" placeholder="new assignment name"
-                            button.my-2.float-end type='submit' class="btn btn-outline-primary btn-sm main-btn" value='submit' Rename
-                
+                == render :partial_rename, locals: { action:"/assignments/#{assi.id}/rename_assignment", id:"RenameAssiModal_#{index}", ori_name: "#{assi.assignment_name}", reroute: "/share_boards/#{share_board.id}", type: 'assignment' }
                 button type="button" class="btn btn-outline-primary btn-sm action-btn" id="dropdownCourses" data-bs-toggle="dropdown"
                   i class="fas fa-folder"
                 ul class="dropdown-menu" aria-labelledby="dropdownCourses"
@@ -119,7 +100,7 @@ div class='container'
           td.text-end
             a type="button" class="btn btn-outline-primary main-btn" href="/share_boards/#{share_board.id}/check"
                 i class="fas fa-check-double" 
-                span  go Check to High
+                span  CheckHigh!
 
     div class="col-sm-4 second-bg"
       - if share_board.collaborators.empty?

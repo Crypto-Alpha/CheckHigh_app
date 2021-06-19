@@ -5,16 +5,7 @@ div class='container'
     div class="col-sm-4 text-end main-color"
       button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#RenameCrsModal"
         i class="fas fa-pen"
-      div id="RenameCrsModal" class="modal fade" role="dialog"
-        div class="modal-dialog"
-          div class="modal-content"
-            form role="form" action="/courses/#{course.id}" method='post' id='rename-crs-form'
-              div class="modal-body text-start"
-                div class="form-group"
-                  input type="hidden" name="redirect_route" value="/courses/#{course.id}" 
-                  label.mb-2 for='rename_input' Rename your course
-                  input type='text' name='new_name' id='rename_crs_input' class="form-control form-control-sm" placeholder="new course name"
-                  button.my-2.float-end type='submit' class="btn btn-outline-primary btn-sm main-btn" value='submit' Rename
+      == render :partial_rename, locals: { action:"/courses/#{course.id}", id:"RenameCrsModal", ori_name: "#{course.course_name}", reroute: "/courses/#{course.id}", type: 'course' }
       button type="button" class="btn btn-outline-danger btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#DeleteCrsModal"
         i class="fas fa-trash-alt"
       div id="DeleteCrsModal" class="modal fade" role="dialog"
@@ -50,16 +41,7 @@ div class='container'
             td.text-end 
               button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#RenameAssiModal_#{index}"
                 i class="fas fa-pen"
-              div id="RenameAssiModal_#{index}" class="modal fade" role="dialog"
-                div class="modal-dialog"
-                  div class="modal-content"
-                    form role="form" action="/assignments/#{assi.id}/rename_assignment" method='post' id='rename-assi-form'
-                      div class="modal-body text-start"
-                        div class="form-group"
-                          input type="hidden" name="redirect_route" value="/courses/#{course.id}" 
-                          label.mb-2 for='rename_input' Rename your assignment
-                          input type='text' name='new_name' id='rename_assi_input' class="form-control form-control-sm" placeholder="new assignment name"
-                          button.my-2.float-end type='submit' class="btn btn-outline-primary btn-sm main-btn" value='submit' Rename
+              == render :partial_rename, locals: { action:"/assignments/#{assi.id}/rename_assignment", id:"RenameAssiModal_#{index}", ori_name: "#{assi.assignment_name}", reroute: "/courses/#{course.id}", type: 'assignment' }
               button type="button" class="btn btn-outline-primary btn-sm action-btn" id="dropdownCourses" data-bs-toggle="dropdown"
                 i class="fas fa-folder"
               ul class="dropdown-menu" aria-labelledby="dropdownCourses"

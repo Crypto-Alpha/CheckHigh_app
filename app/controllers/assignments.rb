@@ -26,7 +26,7 @@ module CheckHigh
             routing.halt
           end
 
-          new_name = { "new_name" => routing.params['new_name'] }
+          new_name = { 'new_name' => routing.params['new_name'] }
           RenameAssignment.new(App.config).call(@current_account, assignment_id, new_name)
 
           flash[:notice] = "You've renamed an assignment"
@@ -40,7 +40,7 @@ module CheckHigh
         # POST /assignments/[assignment_id]/deletion
         # form didn't enable put method
         routing.post('deletion') do
-          redirect_route = routing.params["redirect_route"]
+          redirect_route = routing.params['redirect_route']
           RemoveAssignment.new(App.config).call(@current_account, assignment_id)
 
           flash[:notice] = "You've removed an assignment"
@@ -61,7 +61,12 @@ module CheckHigh
           courses = Courses.new(courses_list)
           share_boards = ShareBoards.new(share_board_list)
 
-          view :assignment, locals: { current_user: @current_account, assignment: assignment_detail , courses: courses, share_boards: share_boards}
+          view :assignment, locals: {
+            current_user: @current_account,
+            assignment: assignment_detail,
+            courses: courses,
+            share_boards: share_boards
+          }
         rescue StandardError => e
           puts "#{e.inspect}\n#{e.backtrace}"
           flash[:error] = 'Assignment not found'
