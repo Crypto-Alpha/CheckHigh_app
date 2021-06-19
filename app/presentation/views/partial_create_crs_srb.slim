@@ -1,0 +1,10 @@
+div class="modal fade" id="#{id}" tabindex="-1" aria-labelledby="#{id}" aria-hidden="true"
+  div class="modal-dialog"
+    div class="modal-content"
+      form role="form" action="#{action}" method='post'
+        div class="modal-body main-color"
+          div class="form-group"
+            label.mb-2 for='name_input' Create a new #{type}!
+            input class='form-control form-control-sm' name="#{name}" type="text" placeholder="#{type} name"
+            button.my-2.float-end type="submit" class="btn btn-outline-primary btn-sm main-btn" value="submit" Create
+

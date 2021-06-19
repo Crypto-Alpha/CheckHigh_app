@@ -1,20 +1,12 @@
 div class='container'
   div class="row"
-      - share_boards.all.each_with_index do |srb, index|
-          div class="col-sm-3 d-grid my-2"
-              a href="/share_boards/#{srb.id}" type="button" class="btn btn-primary to-detail-btn"
-                  i class="fas fa-clipboard srb-icon" 
-                  div.mt-3 #{srb.share_board_name}
+    - if share_boards.all.empty?
+      div.col.main-color.my-4 No shareboards yet. Press right-bottom side plus button to create a new shareboard!
+    - share_boards.all.each_with_index do |srb, index|
+      div class="col-sm-3 d-grid my-2"
+        a href="/share_boards/#{srb.id}" type="button" class="btn btn-primary to-detail-btn"
+          i class="fas fa-clipboard srb-icon" 
+          div.mt-3 #{srb.share_board_name}
   button type="button" class="btn btn-primary modal-btn" data-bs-toggle="modal" data-bs-target="#newSrbModal"
-      i class="fas fa-plus"
-
-  div class="modal fade" id="newSrbModal" tabindex="-1" aria-labelledby="newSrbModalLabel" aria-hidden="true"
-    div class="modal-dialog"
-      div class="modal-content"
-        form role="form" action="/share_boards" method='post' id='new-shareboard-form'
-          div class="modal-body main-color"
-            div class="form-group"
-              label.mb-2 for='name_input' Add a new ShareBoard!
-              input class='form-control form-control-sm' name="share_board_name" type="text" placeholder="shareboard name"
-              button.my-2.float-end type="submit" class="btn btn-outline-primary btn-sm main-btn" id="shareboard-add-submit" value="submit" Create
-
+    i class="fas fa-plus"
+  == render :partial_create_crs_srb, locals: { action:'/share_boards', id: 'newSrbModal', type:'shareboard', name:'share_board_name'}
