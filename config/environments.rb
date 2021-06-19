@@ -35,7 +35,7 @@ module CheckHigh
     end
 
     configure :production do
-
+    
       use Rack::Session::Redis,
           expire_after: ONE_MONTH,
           httponly: true,

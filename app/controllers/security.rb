@@ -8,7 +8,7 @@ require 'secure_headers'
 module CheckHigh
     # Security configuration for the API
   class App < Roda
-    plugin :environments 
+    plugin :environments
     plugin :multi_route
 
     configure :production do
@@ -35,6 +35,7 @@ module CheckHigh
       config.x_xss_protection = '1' 
       config.x_permitted_cross_domain_policies = 'none' 
       config.referrer_policy = 'origin-when-cross-origin'
+      
       config.csp = {
         report_only: false,
         preserve_schemes: true,
