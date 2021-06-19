@@ -32,6 +32,7 @@ module CheckHigh
     configure do
       SecureSession.setup(ENV['REDIS_URL']) # REDIS_URL used again below
       SecureMessage.setup(ENV.delete('MSG_KEY'))
+      SignedMessage.setup(config)
     end
 
     configure :production do
