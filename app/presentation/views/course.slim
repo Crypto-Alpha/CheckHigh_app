@@ -32,16 +32,9 @@ div class='container'
               button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#MoveAssiCrsModal_#{index}"
                 i class="fas fa-folder"
               == render :partial_move_assi_to_crs, locals: { action:"/assignments/#{assi.id}/move_assignment_to_course", id:"MoveAssiCrsModal_#{index}", reroute:"/courses/#{course.id}", courses: courses, assignment: assi, in_course_id: course.id}
-              button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="dropdown"
+              button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#MoveAssiSrbModal_#{index}"
                 i class="fas fa-clipboard"
-              ul class="dropdown-menu" aria-labelledby="dropdownShareBoards"
-                li
-                  - share_boards.all.each_with_index do |share_board, idx|
-                    a class="dropdown-item" href="#AddtoSrb_#{idx}" #{share_board.share_board_name}
-                    form role="form" action="/share_boards/#{share_board.id}/assignments/#{assi.id}" method='post' id="AddtoSrb_#{idx}"
-                      div class="form-group"
-                        input type="hidden" name="redirect_route" value="/courses/#{course.id}" 
-                        button type='submit' class="btn btn-outline-primary main-btn" id='add2srb-form-submit' value='submit' Add
+              == render :partial_move_assi_to_srb, locals: { action:"/assignments/#{assi.id}/move_assignment_to_share_board", id:"MoveAssiSrbModal_#{index}", reroute:"/courses/#{course.id}", all_share_boards: share_boards, assignment: assi, in_share_board: []}
               button type="button" class="btn btn-outline-danger btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#DeleteAssiModal_#{index}"
                 i class="fas fa-trash-alt"
               == render :partial_delete, locals: { action:"/assignments/#{assi.id}/deletion", id:"DeleteAssiModal_#{index}", reroute: "/courses/#{course.id}", obj: "#{assi.assignment_name}" }

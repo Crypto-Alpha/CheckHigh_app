@@ -6,14 +6,14 @@ div id="#{id}" class="modal fade" role="dialog"
             div class="form-group"
               input type="hidden" name="redirect_route" value="#{reroute}"
               label.mb-2 for='assignment_name_input' Move #{assignment.assignment_name} to another Course
-              - courses.all.each_with_index do |course, index|
+              - courses.all.each do |course|
                 - unless course.id == in_course_id
                   div.form-check
                     input class="form-check-input" type="radio" name="course_id" value="#{course.id}"
                     label.mb-2 for='course_name_input' #{course.course_name}
-              - courses.all.each_with_index do |course, index|
+              - courses.all.each do |course|
                 - if course.id == in_course_id
                   div.form-check
-                    input class="form-check-input" type="radio" name="remove_course_id" value="#{course.id}"
+                    input class="form-check-input" type="radio" name="course_id" value="#{course.id}_r"
                     label.text-danger for='course_name_input' remove #{assignment.assignment_name} from #{course.course_name}
               button.my-2.float-end type='submit' class="btn btn-outline-primary btn-sm main-btn" value='submit' Move

@@ -15,13 +15,13 @@ div class='container'
                 button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#MoveAssiCrsModal"
                   i class="fas fa-folder"
                 - if assignment.course 
-                  == render :partial_move_assi_to_crs, locals: { action:"/assignments/#{assignment.id}/move_assignment_to_course", id:"MoveAssiCrsModal", reroute:"/assignments/#{assignment.id}", courses: courses, assignment: assignment, in_course_id: assignment.course.id}
+                  == render :partial_move_assi_to_crs, locals: { action:"/assignments/#{assignment.id}/move_assignment_to_course", id:"MoveAssiCrsModal", reroute:"/assignments/#{assignment.id}", courses: all_courses, assignment: assignment, in_course_id: assignment.course.id}
                 - else 
-                  == render :partial_move_assi_to_crs, locals: { action:"/assignments/#{assignment.id}/move_assignment_to_course", id:"MoveAssiCrsModal", reroute:"/assignments/#{assignment.id}", courses: courses, assignment: assignment, in_course_id: ""}
+                  == render :partial_move_assi_to_crs, locals: { action:"/assignments/#{assignment.id}/move_assignment_to_course", id:"MoveAssiCrsModal", reroute:"/assignments/#{assignment.id}", courses: all_courses, assignment: assignment, in_course_id: ""}
               - if assignment.policies.can_edit
-                button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#MoveAssiSrbModal"
+                button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#MoveAssiSrbModal_#{assignment.id}"
                   i class="fas fa-clipboard"
-                == render :partial_move_assi_to_srb, locals: { action:"/assignments/#{assignment.id}/move_assignment_to_share_board", id:"MoveAssiSrbModal", reroute:"/assignments/#{assignment.id}", share_boards: share_boards, assignment: assignment}
+                == render :partial_move_assi_to_srb, locals: { action:"/assignments/#{assignment.id}/move_assignment_to_share_board", id:"MoveAssiSrbModal_#{assignment.id}", reroute:"/assignments/#{assignment.id}", all_share_boards: all_share_boards, assignment: assignment, in_share_board: in_srb}
               - if assignment.policies.can_delete
                 button type="button" class="btn btn-outline-danger btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#DeleteAssiModal"
                   i class="fas fa-trash-alt"

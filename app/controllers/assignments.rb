@@ -55,16 +55,17 @@ module CheckHigh
         routing.post('move_assignment_to_course') do
           redirect_route = routing.params['redirect_route']
           course_id = routing.params['course_id']
-          remove_course_id = routing.params['remove_course_id']
-          if remove_course_id
-            RemoveAssiFromCourse.new(App.config).call(@current_account, assignment_id, remove_course_id)
+
+          if course_id.include? '_r'
+            course_id.sub!('_r', '')
+            RemoveAssiFromCourse.new(App.config).call(@current_account, assignment_id, course_id)
             notice = 'Your assignment has removed from the course'
           else
             MoveAssiToCourse.new(App.config).call(@current_account, assignment_id, course_id)
             notice = 'You have moved you assignment to the course'
           end
 
-          flash[:notice] = notice 
+          flash[:notice] = notice
         rescue StandardError => e
           puts "FAILURE Moving an assignment: #{e.inspect}"
           flash[:error] = 'Could not move an assignment'
@@ -76,10 +77,10 @@ module CheckHigh
         routing.post('move_assignment_to_share_board') do
           redirect_route = routing.params['redirect_route']
           share_board_id = routing.params['share_board_id']
-          remove_share_board_id = routing.params['remove_share_board_id']
-          binding.irb
-          if remove_share_board_id
-            RemoveAssiFromShareBoard.new(App.config).call(@current_account, assignment_id, remove_share_board_id)
+
+          if share_board_id.include? '_r'
+            share_board_id.sub!('_r', '')
+            RemoveAssiFromShareBoard.new(App.config).call(@current_account, assignment_id, share_board_id)
             notice = 'Your assignment has removed from the share board'
           else
             CreateNewAssignment.new(App.config).add_exist_assi_to_shareboard(
@@ -108,11 +109,17 @@ module CheckHigh
           courses = Courses.new(courses_list)
           share_boards = ShareBoards.new(share_board_list)
 
+          in_srb = []
+          assignment_detail.share_boards.each do |srb|
+            in_srb.push(srb.id)
+          end
+
           view :assignment, locals: {
             current_user: @current_account,
             assignment: assignment_detail,
-            courses: courses,
-            share_boards: share_boards
+            all_courses: courses,
+            all_share_boards: share_boards,
+            in_srb: in_srb
           }
         rescue StandardError => e
           puts "#{e.inspect}\n#{e.backtrace}"

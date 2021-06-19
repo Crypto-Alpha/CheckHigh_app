@@ -6,23 +6,13 @@ div id="#{id}" class="modal fade" role="dialog"
             div class="form-group"
               input type="hidden" name="redirect_route" value="#{reroute}"
               label.mb-2 for='assignment_name_input' Move #{assignment.assignment_name} to ShareBoards
-              - if assignment.share_boards
-                - share_boards.all.each_with_index do |srb, index|
-                  - assignment.share_boards.each_with_index do |in_srb, index|
-                    - unless srb.id == in_srb.id
-                      div.form-check
-                        input class="form-check-input" type="radio" name="share_board_id" value="#{srb.id}"
-                        label.mb-2 for='share_board_name_input' #{srb.share_board_name}
-                - share_boards.all.each_with_index do |srb, index|
-                  - assignment.share_boards.each_with_index do |in_srb, index|
-                    - if srb.id == in_srb.id      
-                      div.form-check
-                        input class="form-check-input" type="radio" name="remove_share_board_id" value="#{in_srb.id}"
-                        label.text-danger for='share_board_name_input' remove from #{in_srb.share_board_name}
-              - else
-                - share_boards.all.each_with_index do |srb, index|
+              - all_share_boards.all.each do |srb|
+                - if in_share_board.include?(srb.id)
+                  div.form-check
+                    input class="form-check-input" type="radio" name="share_board_id" value="#{srb.id}_r"
+                    label.text-danger.mb-2 for='share_board_name_input' remove from #{srb.share_board_name}
+                - else
                   div.form-check
                     input class="form-check-input" type="radio" name="share_board_id" value="#{srb.id}"
                     label.mb-2 for='share_board_name_input' #{srb.share_board_name}
-                div style="font-size: .8rem;font-style:italic;" Here cannot remove assignment from shareboard
               button.my-2.float-end type='submit' class="btn btn-outline-primary btn-sm main-btn" value='submit' Submit

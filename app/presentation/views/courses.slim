@@ -33,7 +33,7 @@ div class='container'
               == render :partial_move_assi_to_crs, locals: { action:"/assignments/#{assi.id}/move_assignment_to_course", id:"MoveAssiCrsModal_#{index}", reroute:"/courses", courses: courses, assignment: assi, in_course_id: nil}
               button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#MoveAssiSrbModal_#{index}"
                 i class="fas fa-clipboard"
-              == render :partial_move_assi_to_srb, locals: { action:"/assignments/#{assi.id}/move_assignment_to_share_board", id:"MoveAssiSrbModal_#{index}", reroute:"/courses", share_boards: share_boards, assignment: assi}
+              == render :partial_move_assi_to_srb, locals: { action:"/assignments/#{assi.id}/move_assignment_to_share_board", id:"MoveAssiSrbModal_#{index}", reroute:"/courses", all_share_boards: share_boards, assignment: assi, in_share_board: []}
               button type="button" class="btn btn-outline-danger btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#DeleteAssiModal_#{index}"
                 i class="fas fa-trash-alt"
               == render :partial_delete, locals: { action:"/assignments/#{assi.id}/deletion", id:"DeleteAssiModal_#{index}", reroute: "/courses", obj: "#{assi.assignment_name}" }
