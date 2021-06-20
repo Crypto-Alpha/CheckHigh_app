@@ -5,6 +5,7 @@ require_relative './app'
 
 module CheckHigh
   # Web controller for CheckHigh App
+  # rubocop:disable Matrics/ClassLength
   class App < Roda
     def gh_oauth_url(config)
       url = config.GH_OAUTH_URL
@@ -163,15 +164,70 @@ module CheckHigh
         # GET /auth/register/<token>
         routing.get(String) do |registration_token|
           # verify register token expire or not
-          new_account = RegisterToken.payload(registration_token)
+          new_account = VerifyToken.payload(registration_token)
+          action_route = "/account/#{registration_token}"
+
           flash.now[:notice] = 'Email Verified! Please choose a new password'
-          view :register_confirm, locals: { new_account: new_account, registration_token: registration_token }
-        rescue RegisterToken::ExpiredTokenError
+          view :account_confirm, locals: { account: new_account,
+                                           action_route: action_route }
+        rescue VerifyToken::ExpiredTokenError
           flash[:error] = 'The register token has expired, please register again.'
           response.status = 403
           routing.redirect @register_route
         end
+
+        @resetpwd_route = '/auth/resetpwd'
+        routing.on 'resetpwd' do
+          routing.is do
+            # GET /auth/resetpwd
+            routing.get do
+              view :resetpwd
+            end
+  
+            # POST /auth/resetpwd
+            routing.post do
+              resetpwd = Form::ResetPwd.new.call(routing.params)
+  
+              if resetpwd.failure?
+                flash[:error] = Form.validation_errors(resetpwd)
+                routing.redirect @resetpwd_route
+              end
+  
+              VerifyResetPwd.new(App.config).call(resetpwd.to_h)
+  
+              flash[:notice] = 'Please check your email for a verification link'
+              routing.redirect '/'
+            rescue StandardError => e
+              puts "ERROR VERIFYING RESET PWD: #{routing.params}\n#{e.inspect}"
+              flash[:error] = 'Please use a valid email address'
+              routing.redirect @resetpwd_route
+            end
+          end
+  
+          # GET /auth/resetpwd/<token>
+          routing.get(String) do |resetpwd_token|
+            # verify reset token expire or not and get the account email
+            email = VerifyToken.payload(resetpwd_token)
+  
+            # TODO: get username or not
+            # get the account username
+            username = GetUsername.new.call(email)
+            account = email.merge(username)
+  
+            # route to post the pwd
+            action_route = "/account/resetpwd/#{resetpwd_token}"
+  
+            flash.now[:notice] = 'Email Verified! Please choose a new password'
+            view :account_confirm, locals: { account: account,
+                                             action_route: action_route }
+          rescue VerifyToken::ExpiredTokenError
+            flash[:error] = 'The reset password token has expired, please try again.'
+            response.status = 403
+            routing.redirect @resetpwd_route
+          end
+        end  
       end
     end
   end
+  # rubocop:enable Matrics/ClassLength
 end

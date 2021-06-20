@@ -1,0 +1,21 @@
+div class='container'
+  div class="row"
+    div class="col-sm-3"
+    div class="col-sm-6"
+      div class="card second-bg border-light"
+        div class="container"
+          div class="row my-2"
+            div class="col-sm"
+              h3 class="text-center main-color" Get Back Your Account
+          form action='/auth/resetpwd' method='post' id='register-form' class="main-color"
+            div class="row my-2"
+              div class="col-sm"
+                div class="form-group"
+                  label for='email_input' Email
+                  input type='text' name='email' id='email_input' class="form-control"
+            div class="row"
+              div class="col-sm d-grid"
+                button type='submit' id='registration-form-submit' class='submit btn btn-light main-btn mt-2 mb-2' value='submit' send verification by email
+                a href='/auth/login' class="mb-3 text-center main-color" Remember your account? Let's go login!
+        div class="col-sm-4"
+    
