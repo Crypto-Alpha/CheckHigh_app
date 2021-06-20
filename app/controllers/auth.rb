@@ -15,6 +15,7 @@ module CheckHigh
       "#{url}?client_id=#{client_id}&scope=#{scope}"
     end
 
+    # rubocop: disable Layout/LineLength
     def google_oauth_url(config, call_back_uri)
       url = config.GOOGLE_OAUTH_URL
       client_id = config.GOOGLE_CLIENT_ID
@@ -22,6 +23,7 @@ module CheckHigh
 
       "#{url}?client_id=#{client_id}&scope=#{scope}&response_type=code&access_type=offline&include_granted_scopes=true&redirect_uri=#{call_back_uri}"
     end
+    # rubocop: enable Layout/LineLength
 
     route('auth') do |routing|
       @oauth_callback = '/auth/github_sso_callback'
@@ -30,7 +32,8 @@ module CheckHigh
       routing.is 'login' do
         # GET /auth/login
         routing.get do
-          view :login, locals: { gh_oauth_url: gh_oauth_url(App.config), google_oauth_url: google_oauth_url(App.config, @google_callback_uri) }
+          view :login, locals: { gh_oauth_url: gh_oauth_url(App.config),
+                                 google_oauth_url: google_oauth_url(App.config, @google_callback_uri) }
         end
 
         # POST /auth/login
@@ -137,7 +140,8 @@ module CheckHigh
         routing.is do
           # GET /auth/register
           routing.get do
-            view :register, locals: { gh_oauth_url: gh_oauth_url(App.config) }
+            view :register, locals: { gh_oauth_url: gh_oauth_url(App.config),
+                                      google_oauth_url: google_oauth_url(App.config, @google_callback_uri) }
           end
 
           # POST /auth/register
@@ -219,7 +223,7 @@ module CheckHigh
 
           flash.now[:notice] = 'Email Verified! Please choose a new password'
           view :account_confirm, locals: { account: account,
-                                            action_route: action_route }
+                                           action_route: action_route }
         rescue VerifyToken::ExpiredTokenError
           flash[:error] = 'The reset password token has expired, please try again.'
           response.status = 403

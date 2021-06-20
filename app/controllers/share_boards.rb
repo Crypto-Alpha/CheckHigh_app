@@ -5,6 +5,7 @@ require_relative './app'
 
 module CheckHigh
   # Web controller for CheckHigh API
+  # rubocop:disable Matrics/ClassLength
   class App < Roda
     route('share_boards') do |routing|
       routing.on do
@@ -23,9 +24,12 @@ module CheckHigh
               courses_list = GetAllCourses.new(App.config).call(@current_account)
               share_board_list = GetAllShareBoards.new(App.config).call(@current_account)
               courses = Courses.new(courses_list)
-              share_boards = ShareBoards.new(share_board_list) 
+              share_boards = ShareBoards.new(share_board_list)
 
-              view :share_board, locals: { current_user: @current_account, share_board: srb , share_boards: share_boards, courses: courses}
+              view :share_board, locals: { current_user: @current_account,
+                                           share_board: srb,
+                                           share_boards: share_boards,
+                                           courses: courses }
             rescue StandardError => e
               puts "#{e.inspect}\n#{e.backtrace}"
               flash[:error] = 'ShareBoard not found'
@@ -56,7 +60,7 @@ module CheckHigh
 
           # GET /share_boards/[share_board_id]/check
           routing.on('check') do
-            srb_assi_list = GetAllAssignments.new(App.config).call(@current_account, "share_boards", share_board_id)
+            srb_assi_list = GetAllAssignments.new(App.config).call(@current_account, 'share_boards', share_board_id)
             srb_assi = AssignmentsDetail.new(srb_assi_list)
 
             view :share_board_check, locals: { current_user: @current_account, assignments: srb_assi }
@@ -157,7 +161,7 @@ module CheckHigh
         routing.post do
           routing.redirect '/auth/login' unless @current_account.logged_in?
           puts "SHAREBOARD: #{routing.params}"
-          # TODO: form data
+
           share_board_data = Form::NewShareBoard.new.call(routing.params)
           if share_board_data.failure?
             flash[:error] = Form.message_values(share_board_data)
@@ -178,4 +182,5 @@ module CheckHigh
       end
     end
   end
+  # rubocop:enable Matrics/ClassLength
 end
