@@ -71,35 +71,8 @@ module CheckHigh
           end
 
           routing.on('assignments') do
-            routing.on(String) do |assignment_id|
-              # POST /courses/[course_id]/assignments/[assignment_id]/move_course
-              routing.post('move_course') do
-                redirect_route = routing.params["redirect_route"]
-                MoveAssiToCourse.new(App.config).call(@current_account, assignment_id, course_id)
-                flash[:notice] = "You've moved your assignment to new course."
-              rescue StandardError => e
-                puts "FAILURE Moving an assignment to a new course: #{e.inspect}"
-                flash[:error] = 'Could not move an assignment to new course'
-              ensure
-                routing.redirect redirect_route
-              end
-
-              # POST /courses/[course_id]/assignments/[assignment_id]/move_lonely_assignment
-              # remove assignment from this course
-              routing.post('move_lonely_assignment') do
-                redirect_route = routing.params["redirect_route"]
-                RemoveAssiFromCourse.new(App.config).call(@current_account, assignment_id, course_id)
-                flash[:notice] = "You've removed your assignment from this course."
-              rescue StandardError => e
-                puts "FAILURE Moving an assignment to lonely assingments: #{e.inspect}"
-                flash[:error] = 'Could not move an assignment to lonely assignments'
-              ensure
-                routing.redirect redirect_route
-              end
-            end
-
             # POST /courses/[course_id]/assignments/
-            routing.post do 
+            routing.post do
               params = routing.params['file']
               assignment_data = Form::NewAssignmentDetail.new.call(params)
               if assignment_data.failure?
