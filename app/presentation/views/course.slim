@@ -5,114 +5,42 @@ div class='container'
     div class="col-sm-4 text-end main-color"
       button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#RenameCrsModal"
         i class="fas fa-pen"
-      div id="RenameCrsModal" class="modal fade" role="dialog"
-        div class="modal-dialog"
-          div class="modal-content"
-            form role="form" action="/courses/#{course.id}" method='post' id='rename-crs-form'
-              div class="modal-body text-start"
-                div class="form-group"
-                  input type="hidden" name="redirect_route" value="/courses/#{course.id}" 
-                  label.mb-2 for='rename_input' Rename your course
-                  input type='text' name='new_name' id='rename_crs_input' class="form-control form-control-sm" placeholder="new course name"
-                  button.my-2.float-end type='submit' class="btn btn-outline-primary btn-sm main-btn" value='submit' Rename
+      == render :partial_rename, locals: { action:"/courses/#{course.id}", id:"RenameCrsModal", ori_name: "#{course.course_name}", reroute: "/courses/#{course.id}", type: 'course' }
       button type="button" class="btn btn-outline-danger btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#DeleteCrsModal"
         i class="fas fa-trash-alt"
-      div id="DeleteCrsModal" class="modal fade" role="dialog"
-        div class="modal-dialog"
-          div class="modal-content"
-            form role="form" action="/courses/#{course.id}/deletion" method='post' id='delete-crs-form'
-              .container 
-                .row.my-3 
-                  .col.text-start
-                    label.mb-2 for='formFile' class="form-label" Delete #{course.course_name}?
-                    input type="hidden" name="redirect_route" value="/courses" 
-                .row.my-3
-                  .col.text-end
-                    button type='submit' class="btn btn-outline-danger btn-sm main-btn mx-2" value='submit' Delete
-                    button type="button" class="btn btn-outline-primary btn-sm main-btn" data-bs-dismiss="modal" Keep 
-
+      == render :partial_delete, locals: { action:"/courses/#{course.id}/deletion", id:"DeleteCrsModal", reroute: "/courses", obj: "#{course.course_name}" }
   div class="row"
     div class="col"
-      table class="table table-striped main-table"
-        thead
-          tr
-          th scope="col" #
-          th scope="col" filename
-          th scope="col" upload time
-          th scope="col" 
-        tbody
-          - course.assignments.each_with_index do |assi, index|
+      - if course.assignments.empty?
+        div.main-color.my-4 No files yet. Press right-bottom side plus button to upload a file!
+      - else
+        table class="table table-striped main-table"
+          thead
             tr
-            th.align-middle scope="row" #{index+1}
-            td.align-middle 
-              a.main-color href="/assignments/#{assi.id}" #{assi.assignment_name}
-            td.align-middle #{assi.upload_time}
-            td.text-end 
-              button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#RenameAssiModal_#{index}"
-                i class="fas fa-pen"
-              div id="RenameAssiModal_#{index}" class="modal fade" role="dialog"
-                div class="modal-dialog"
-                  div class="modal-content"
-                    form role="form" action="/assignments/#{assi.id}/rename_assignment" method='post' id='rename-assi-form'
-                      div class="modal-body text-start"
-                        div class="form-group"
-                          input type="hidden" name="redirect_route" value="/courses/#{course.id}" 
-                          label.mb-2 for='rename_input' Rename your assignment
-                          input type='text' name='new_name' id='rename_assi_input' class="form-control form-control-sm" placeholder="new assignment name"
-                          button.my-2.float-end type='submit' class="btn btn-outline-primary btn-sm main-btn" value='submit' Rename
-              button type="button" class="btn btn-outline-primary btn-sm action-btn" id="dropdownCourses" data-bs-toggle="dropdown"
-                i class="fas fa-folder"
-              ul class="dropdown-menu" aria-labelledby="dropdownCourses"
-                li
-                  - courses.all.each_with_index do |crs, index|
-                    - if course.course_name == crs.course_name then next
-                    - else
-                      a class="dropdown-item" href="#changeCrs_#{index}" #{crs.course_name}
-                      form role="form" action="/courses/#{crs.id}/assignments/#{assi.id}/move_course" method='post' id="changeCrs_#{index}"
-                        div class="form-group"
-                          input type="hidden" name="redirect_route" value="/courses/#{course.id}" 
-                          button type='submit' class="btn btn-outline-primary main-btn" id='change-course-form-submit' value='submit' Move
-              button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="dropdown"
-                i class="fas fa-clipboard"
-              ul class="dropdown-menu" aria-labelledby="dropdownShareBoards"
-                li
-                  - share_boards.all.each_with_index do |share_board, idx|
-                    a class="dropdown-item" href="#AddtoSrb_#{idx}" #{share_board.share_board_name}
-                    form role="form" action="/share_boards/#{share_board.id}/assignments/#{assi.id}" method='post' id="AddtoSrb_#{idx}"
-                      div class="form-group"
-                        input type="hidden" name="redirect_route" value="/courses/#{course.id}" 
-                        button type='submit' class="btn btn-outline-primary main-btn" id='add2srb-form-submit' value='submit' Add
-              button type="button" class="btn btn-outline-danger btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#MoveLonelyAssiModal_#{index}"
-                i class="fas fa-minus"
-              div id="MoveLonelyAssiModal_#{index}" class="modal fade" role="dialog"
-                div class="modal-dialog"
-                  div class="modal-content"
-                    form role="form" action="/courses/#{course.id}/assignments/#{assi.id}/move_lonely_assignment" method='post' id='move-lonely-assi-form'
-                      .container 
-                        .row.my-3 
-                          .col.text-start
-                            label.mb-2 class="form-label" Remove your assignment from #{course.course_name}?
-                            input type="hidden" name="redirect_route" value="/courses/#{course.id}" 
-                        .row.my-3
-                          .col.text-end
-                            button type='submit' class="btn btn-outline-danger btn-sm main-btn mx-2" value='submit' Remove
-                            button type="button" class="btn btn-outline-primary btn-sm main-btn" data-bs-dismiss="modal" Keep 
-              button type="button" class="btn btn-outline-danger btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#DeleteAssiModal_#{index}"
-                i class="fas fa-trash-alt"
-              div id="DeleteAssiModal_#{index}" class="modal fade" role="dialog"
-                div class="modal-dialog"
-                  div class="modal-content"
-                    form role="form" action="/assignments/#{assi.id}/deletion" method='post' id='delete-assi-form'
-                      .container 
-                        .row.my-3 
-                          .col.text-start
-                            label.mb-2 for='formFile' class="form-label" Delete #{assi.assignment_name}?
-                            input type="hidden" name="redirect_route" value="/courses/#{course.id}" 
-                        .row.my-3
-                          .col.text-end
-                            button type='submit' class="btn btn-outline-danger btn-sm main-btn mx-2" value='submit' Delete
-                            button type="button" class="btn btn-outline-primary btn-sm main-btn" data-bs-dismiss="modal" Keep 
+            th scope="col" #
+            th scope="col" filename
+            th scope="col" upload time
+            th scope="col" 
+          tbody            
+            - course.assignments.each_with_index do |assi, index|
+              tr
+              th.align-middle scope="row" #{index+1}
+              td.align-middle 
+                a.main-color target="_blank" href="/assignments/#{assi.id}" #{assi.assignment_name}
+              td.align-middle #{assi.upload_time}
+              td.text-end 
+                button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#RenameAssiModal_#{index}"
+                  i class="fas fa-pen"
+                == render :partial_rename, locals: { action:"/assignments/#{assi.id}/rename_assignment", id:"RenameAssiModal_#{index}", ori_name: "#{assi.assignment_name}", reroute: "/courses/#{course.id}", type: 'assignment' }
+                button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#MoveAssiCrsModal_#{index}"
+                  i class="fas fa-folder"
+                == render :partial_move_assi_to_crs, locals: { action:"/assignments/#{assi.id}/move_assignment_to_course", id:"MoveAssiCrsModal_#{index}", reroute:"/courses/#{course.id}", courses: courses, assignment: assi, in_course_id: course.id}
+                button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#MoveAssiSrbModal_#{index}"
+                  i class="fas fa-clipboard"
+                == render :partial_move_assi_to_srb, locals: { action:"/assignments/#{assi.id}/move_assignment_to_share_board", id:"MoveAssiSrbModal_#{index}", reroute:"/courses/#{course.id}", all_share_boards: share_boards, assignment: assi, in_share_board: [], type: 2}
+                button type="button" class="btn btn-outline-danger btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#DeleteAssiModal_#{index}"
+                  i class="fas fa-trash-alt"
+                == render :partial_delete, locals: { action:"/assignments/#{assi.id}/deletion", id:"DeleteAssiModal_#{index}", reroute: "/courses/#{course.id}", obj: "#{assi.assignment_name}" }
   button type="button" class="btn btn-primary modal-btn" data-bs-toggle="modal" data-bs-target="#newAssiForCrsModal"
     i class="fas fa-plus"
-
-  include :assignment_new_partial_crs
+  == render :partial_upload_assi, locals: { action: "/courses/#{course.id}/assignments", id: 'newAssiForCrsModal'}
