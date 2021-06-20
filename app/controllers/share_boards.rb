@@ -42,7 +42,7 @@ module CheckHigh
                 routing.halt
               end
 
-              new_name = { "new_name" => routing.params['new_name'] }
+              new_name = { 'new_name' => routing.params['new_name'] }
               RenameShareBoard.new(App.config).call(@current_account, share_board_id, new_name)
 
               flash[:notice] = "You've renamed a share board"
@@ -53,7 +53,6 @@ module CheckHigh
               routing.redirect redirect_route
             end
           end
-
 
           # GET /share_boards/[share_board_id]/check
           routing.on('check') do
@@ -68,10 +67,10 @@ module CheckHigh
           end
 
           # POST /share_boards/[share_board_id]/deletion
-          # remove a share board 
+          # remove a share board
           routing.on('deletion') do
             routing.post do
-              redirect_route = routing.params["redirect_route"]
+              redirect_route = routing.params['redirect_route']
               RemoveShareBoard.new(App.config).call(@current_account, share_board_id)
 
               flash[:notice] = "You've removed a shrae board"
@@ -82,7 +81,6 @@ module CheckHigh
               routing.redirect redirect_route
             end
           end
-
 
           # POST /share_boards/[share_board_id]/collaborators
           routing.post('collaborators') do
@@ -115,25 +113,6 @@ module CheckHigh
           end
 
           routing.on('assignments') do
-            routing.on(String) do |assignment_id|
-              routing.post do
-                redirect_route = routing.params["redirect_route"]
-                # POST /share_boards/[share_board_id]/assignments/[assignment_id]
-                CreateNewAssignment.new(App.config).add_exist_assi_to_shareboard(
-                  current_account: @current_account,
-                  share_board_id: share_board_id,
-                  assignment_id: assignment_id
-                )
-
-                flash[:notice] = 'Your assignment was added'
-              rescue StandardError => e
-                puts "FAILURE Creating Assignment: #{e.inspect}"
-                flash[:error] = 'Could not add assignment, you might have already added this assignment before.'
-              ensure
-                routing.redirect redirect_route 
-              end
-            end
-
             # POST /share_boards/[share_board_id]/assignments
             routing.post do
               params = routing.params['file']

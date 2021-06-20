@@ -1,0 +1,32 @@
+div id="#{id}" class="modal fade" role="dialog"
+  div class="modal-dialog"
+    div class="modal-content"
+      form role="form" action="#{action}" method='post'
+          div class="modal-body text-start"
+            div class="form-group"
+              input type="hidden" name="redirect_route" value="#{reroute}"
+              label.mb-2 for='assignment_name_input' Move #{assignment.assignment_name} to ShareBoards
+              - if type == 1
+                - all_share_boards.all.each do |srb|
+                  - if in_share_board.include?(srb.id)
+                    div.form-check
+                      input class="form-check-input" type="radio" name="share_board_id" value="#{srb.id}_r"
+                      label.text-danger.mb-2 for='share_board_name_input' remove from #{srb.share_board_name}
+                  - else
+                    div.form-check
+                      input class="form-check-input" type="radio" name="share_board_id" value="#{srb.id}"
+                      label.mb-2 for='share_board_name_input' #{srb.share_board_name}
+              - elsif type == 2
+                - all_share_boards.all.each do |srb|
+                  div.form-check
+                    input class="form-check-input" type="radio" name="share_board_id" value="#{srb.id}"
+                    label.mb-2 for='share_board_name_input' #{srb.share_board_name}
+                div style="font-size: .7rem;font-style:italic;" Only ADD assignment to shareboard here
+              - else
+                - all_share_boards.all.each do |srb|
+                 - if srb.id == in_share_board[0]
+                  div.form-check
+                    input class="form-check-input" type="radio" name="share_board_id" value="#{srb.id}_r"
+                    label.text-danger.mb-2 for='share_board_name_input' remove from #{srb.share_board_name}
+                div style="font-size: .7rem;font-style:italic;" Only REMOVE assignment from shareboard here
+              button.my-2.float-end type='submit' class="btn btn-outline-primary btn-sm main-btn" value='submit' Move

@@ -1,8 +1,9 @@
-- if flash[:error]
-  div class="alert alert-danger alert-dismissible fade show" role="alert" id="flash_bar_danger"
-    = flash[:error]
-    button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
-- if flash[:notice]
-  div class="alert alert-success alert-dismissible fade show" role="alert" id="flash_bar_success"
-    = flash[:notice]
-    button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
+div.container
+  - if flash[:error]
+    div class="alert alert-danger alert-dismissible fade show" role="alert" id="flash_bar_danger"
+      = flash[:error]
+      button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
+  - if flash[:notice]
+    div class="alert alert-success alert-dismissible fade show" role="alert" id="flash_bar_success"
+      = flash[:notice]
+      button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
