@@ -5,9 +5,9 @@ require_relative 'secure_message'
 
 ## Token and Detokenize Authorization Information for register token
 # Usage examples:
-#  token = RegisterToken.create({ key: 'value', key2: 12 }, RegisterToken::ONE_MONTH)
-#  RegisterToken.payload(token)   # => {"key"=>"value", "key2"=>12}
-class RegisterToken
+#  token = VerifyToken.create({ key: 'value', key2: 12 }, VerifyToken::ONE_MONTH)
+#  VerifyToken.payload(token)   # => {"key"=>"value", "key2"=>12}
+class VerifyToken
   # five minutes for debug testing
   FIVE_MINS = 5 * 60
 

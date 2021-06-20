@@ -42,6 +42,3 @@ end
 group :development, :test do
   gem 'rerun'
 end
-
-# Oauth
-gem 'googleauth'

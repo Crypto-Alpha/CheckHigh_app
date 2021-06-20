@@ -25,7 +25,7 @@ module CheckHigh
           passwords = Form::Passwords.new.call(routing.params)
           raise Form.message_values(passwords) if passwords.failure?
 
-          new_account = RegisterToken.payload(registration_token)
+          new_account = VerifyToken.payload(registration_token)
           CreateAccount.new(App.config).call(
             email: new_account['email'],
             username: new_account['username'],
@@ -41,6 +41,32 @@ module CheckHigh
           routing.redirect(
             "#{App.config.APP_URL}/auth/register/#{registration_token}"
           )
+        end
+
+        # POST /account/resetpwd/<resetpwd_token>
+        routing.on 'resetpwd' do
+          routing.post String do |resetpwd_token|
+            passwords = Form::Passwords.new.call(routing.params)
+            raise Form.message_values(passwords) if passwords.failure?
+
+            resetpwd_account = VerifyToken.payload(resetpwd_token)
+
+            ResetPwd.new(App.config).call(
+              email: resetpwd_account['email'],
+              password: passwords['password']
+            )
+
+            flash[:notice] = 'Account get back! Please login'
+            routing.redirect '/auth/login'
+          rescue ResetPwd::InvalidAccount => e
+            flash[:error] = e.message
+            routing.redirect '/auth/resetpwd'
+          rescue StandardError => e
+            flash[:error] = e.message
+            routing.redirect(
+              "#{App.config.APP_URL}/auth/resetpwd/#{resetpwd_token}"
+            )
+          end
         end
       end
     end

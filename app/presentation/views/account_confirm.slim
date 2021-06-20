@@ -7,17 +7,17 @@ div class='container'
           div class="row my-2"
             div class="col-sm"
               h3 class="text-center main-color" Create your password
-          form action="/account/#{registration_token}" method='post' id='user-form'
+          form action="#{action_route}" method='post' id='user-form'
             div class="form-group"
               div.row
-                  div class="col-sm-3" Username
-                  div class="col-sm-9"
-                    == new_account['username']
+                div class="col-sm-3" Username
+                div class="col-sm-9"
+                  == account['username']
             div class="form-group"
               div.row
-                  div class="col-sm-3" Email
-                  div class="col-sm-9"
-                    == new_account['email']
+                div class="col-sm-3" Email
+                div class="col-sm-9"
+                  == account['email']
             div class="form-group"
               label for='password_input' Password
               input type='password' name='password' id='password_input' class="form-control"
