@@ -8,9 +8,9 @@ module CheckHigh
   class App < Roda
     route('assignments') do |routing|
       routing.redirect '/auth/login' unless @current_account.logged_in?
-        @home_route = '/'
-        @assignments_route = '/assignments'
-        @courses_route = '/courses'
+      @home_route = '/'
+      @assignments_route = '/assignments'
+      @courses_route = '/courses'
 
       routing.on(String) do |assignment_id|
         @assignment_route = "#{@assignments_route}/#{assignment_id}"
@@ -99,29 +99,51 @@ module CheckHigh
           routing.redirect redirect_route
         end
 
-        # GET /assignments/[assignment_id]
-        routing.get do
+        # GET /assignments/[assignment_id]/export
+        routing.get('export') do
           assignment = GetAssignmentDetail.new(App.config).call(@current_account, assignment_id)
           assignment_detail = AssignmentDetail.new(assignment)
+          # export to pdf
+          export_service = ExportPDF.new(assignment_detail)
+          file = export_service.export
 
-          courses_list = GetAllCourses.new(App.config).call(@current_account)
-          share_board_list = GetAllShareBoards.new(App.config).call(@current_account)
-          courses = Courses.new(courses_list)
-          share_boards = ShareBoards.new(share_board_list)
-
-          in_srb = assignment_detail.share_boards.map(&:id)
-
-          view :assignment, locals: {
-            current_user: @current_account,
-            assignment: assignment_detail,
-            all_courses: courses,
-            all_share_boards: share_boards,
-            in_srb: in_srb
-          }
+          response['Content-Type'] = 'application/pdf'
+          response['Content-Disposition'] = 'attachment'
+          response.write(file)
         rescue StandardError => e
-          puts "#{e.inspect}\n#{e.backtrace}"
-          flash[:error] = 'Assignment not found'
-          routing.redirect @home_route
+          puts "FAILURE Exporting pdf file: #{e.inspect}"
+          flash[:error] = 'Could not export your assignment.'
+        end
+
+        routing.is do
+          # GET /assignments/[assignment_id]
+          routing.get do
+            assignment = GetAssignmentDetail.new(App.config).call(@current_account, assignment_id)
+            assignment_detail = AssignmentDetail.new(assignment)
+
+            courses_list = GetAllCourses.new(App.config).call(@current_account)
+            share_board_list = GetAllShareBoards.new(App.config).call(@current_account)
+            courses = Courses.new(courses_list)
+            share_boards = ShareBoards.new(share_board_list)
+
+            in_srb = assignment_detail.share_boards.map(&:id)
+
+            # export to pdf
+            pdf_file_name = ExportPDF.get_file_name(assignment_detail)
+
+            view :assignment, locals: {
+              current_user: @current_account,
+              assignment: assignment_detail,
+              all_courses: courses,
+              all_share_boards: share_boards,
+              in_srb: in_srb,
+              pdf_file_name: pdf_file_name
+            }
+          rescue StandardError => e
+            puts "#{e.inspect}\n#{e.backtrace}"
+            flash[:error] = 'Assignment not found'
+            routing.redirect @home_route
+          end
         end
       end
 

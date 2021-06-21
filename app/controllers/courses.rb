@@ -23,9 +23,10 @@ module CheckHigh
               courses_list = GetAllCourses.new(App.config).call(@current_account)
               share_board_list = GetAllShareBoards.new(App.config).call(@current_account)
               courses = Courses.new(courses_list)
-              share_boards = ShareBoards.new(share_board_list) 
+              share_boards = ShareBoards.new(share_board_list)
 
-              view :course, locals: { current_user: @current_account, course: crs, courses: courses, share_boards: share_boards }
+              view :course,
+                   locals: { current_user: @current_account, course: crs, courses: courses, share_boards: share_boards }
             rescue StandardError => e
               puts "#{e.inspect}\n#{e.backtrace}"
               flash[:error] = 'Course not found'
@@ -42,7 +43,7 @@ module CheckHigh
                 routing.halt
               end
 
-              new_name = { "new_name" => routing.params['new_name'] }
+              new_name = { 'new_name' => routing.params['new_name'] }
               RenameCourse.new(App.config).call(@current_account, course_id, new_name)
 
               flash[:notice] = "You've renamed a course"
@@ -58,7 +59,7 @@ module CheckHigh
           # remove a course
           routing.on('deletion') do
             routing.post do
-              redirect_route = routing.params["redirect_route"]
+              redirect_route = routing.params['redirect_route']
               RemoveCourse.new(App.config).call(@current_account, course_id)
 
               flash[:notice] = "You've removed a course"
@@ -105,13 +106,15 @@ module CheckHigh
         # GET /courses
         routing.get do
           courses_list = GetAllCourses.new(App.config).call(@current_account)
-          share_board_list = GetAllShareBoards.new(App.config).call(@current_account) 
+          share_board_list = GetAllShareBoards.new(App.config).call(@current_account)
           not_belong_assignments_list = GetNotBelongAssignments.new(App.config).call(@current_account)
           courses = Courses.new(courses_list)
           not_belong_assi = Assignments.new(not_belong_assignments_list)
-          share_boards = ShareBoards.new(share_board_list) 
+          share_boards = ShareBoards.new(share_board_list)
 
-          view :courses, locals: { current_user: @current_account, courses: courses, assignments: not_belong_assi, share_boards: share_boards }
+          view :courses,
+               locals: { current_user: @current_account, courses: courses, assignments: not_belong_assi,
+                         share_boards: share_boards }
         end
 
         # POST /courses

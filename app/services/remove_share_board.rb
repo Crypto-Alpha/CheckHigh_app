@@ -2,7 +2,7 @@
 
 require 'http'
 
-# Remove a share_board 
+# Remove a share_board
 class RemoveShareBoard
   def initialize(config)
     @config = config
