@@ -44,7 +44,7 @@ group :development, :test do
 end
 
 # PDF exporting
-group :production
+group :production do
   gem 'wkhtmltopdf-heroku'
 end
 gem 'pdfkit'
