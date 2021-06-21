@@ -5,7 +5,7 @@ require_relative './app'
 
 module CheckHigh
   # Web controller for CheckHigh App
-  # rubocop:disable Matrics/ClassLength
+  # rubocop:disable Metrics/ClassLength
   class App < Roda
     def gh_oauth_url(config)
       url = config.GH_OAUTH_URL
@@ -235,5 +235,4 @@ module CheckHigh
       end
     end
   end
-  # rubocop:enable Matrics/ClassLength
 end
