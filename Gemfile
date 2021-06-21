@@ -46,6 +46,7 @@ end
 # PDF exporting
 group :production do
   gem 'wkhtmltopdf-heroku'
+  gem 'wkhtmltopdf-binary'
 end
 gem 'pdfkit'
 
