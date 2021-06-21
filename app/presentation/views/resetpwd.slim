@@ -1,7 +1,7 @@
 div class='container'
   div class="row"
-    div class="col-sm-3"
-    div class="col-sm-6"
+    div class="col-sm-4"
+    div class="col-sm-4"
       div class="card second-bg border-light"
         div class="container"
           div class="row my-2"
@@ -12,11 +12,14 @@ div class='container'
               div class="col-sm"
                 div class="form-group"
                   label for='email_input' Email
-                  input type='text' name='email' id='email_input' class="form-control"
+                  input type='email' name='email' id='email_input' class="form-control"
             div class="row"
               div class="col-sm d-grid"
                 button type='submit' id='registration-form-submit' class='submit btn btn-light main-btn mt-2 mb-2' value='submit' send verification by email
-                a href='/auth/login' class="mt-3 text-center main-color" Remember your account? Let's go login!
-                a href='/auth/register' class="mt-1 mb-3 text-center main-color" Have no account? Let's go register!
-        div class="col-sm-4"
+            div class="row"
+              div class="col-sm text-center d-inline my-3"
+                a href='/auth/login' class="main-color"Log in?
+                span  or
+                a href='/auth/register' class="main-color"  Sign in?
+    div class="col-sm-4"
     
