@@ -40,7 +40,7 @@ module CheckHigh
         .then { |sso_info| SignedMessage.sign(sso_info) }
 
       response = HTTP.post(
-        "#{@config.API_URL}/auth/sso",
+        "#{@config.API_URL}/auth/github_sso",
         json: signed_sso_info
       )
       raise UnauthorizedError if response.code >= 400

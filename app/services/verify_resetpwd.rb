@@ -4,22 +4,22 @@ require 'http'
 
 module CheckHigh
   # Returns an authenticated user, or nil
-  class VerifyRegistration
+  class VerifyResetPwd
     class VerificationError < StandardError; end
 
     def initialize(config)
       @config = config
     end
 
-    def call(registration_data)
+    def call(resetpwd_data)
       # register token will expire after an hour
-      registration_token = VerifyToken.create(registration_data)
+      resetpwd_token = VerifyToken.create(resetpwd_data)
 
-      registration_data['verification_url'] =
-        "#{@config.APP_URL}/auth/register/#{registration_token}"
+      resetpwd_data['verification_url'] =
+        "#{@config.APP_URL}/auth/resetpwd/#{resetpwd_token}"
 
-      response = HTTP.post("#{@config.API_URL}/auth/register",
-                           json: SignedMessage.sign(registration_data))
+      response = HTTP.post("#{@config.API_URL}/auth/resetpwd",
+                           json: SignedMessage.sign(resetpwd_data))
       raise(VerificationError) unless response.code == 202
 
       JSON.parse(response.to_s)
