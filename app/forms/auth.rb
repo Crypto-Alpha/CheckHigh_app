@@ -24,7 +24,7 @@ module CheckHigh
 
     # reset pwd form
     class ResetPwd < Dry::Validation::Contract
-      config.messages.load_paths << File.join(__dir__, 'errors/account_details.yml')
+      config.messages.load_paths << File.join(__dir__, 'errors/reset_details.yml')
 
       params do
         required(:email).filled(format?: EMAIL_REGEX)

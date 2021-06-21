@@ -20,9 +20,8 @@ module CheckHigh
 
       response = HTTP.post("#{@config.API_URL}/auth/resetpwd",
                            json: SignedMessage.sign(resetpwd_data))
-      raise(VerificationError) unless response.code == 202
-
-      JSON.parse(response.to_s)
+      res = JSON.parse(response.to_s)
+      raise(VerificationError, res['message']) unless response.code == 202
     end
   end
 end

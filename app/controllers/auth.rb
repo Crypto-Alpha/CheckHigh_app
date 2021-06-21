@@ -29,6 +29,7 @@ module CheckHigh
       @oauth_callback = '/auth/github_sso_callback'
       @google_callback_uri = "#{App.config.APP_URL}/auth/google_sso_callback"
       @login_route = '/auth/login'
+
       routing.is 'login' do
         # GET /auth/login
         routing.get do
@@ -68,6 +69,7 @@ module CheckHigh
         end
       end
 
+      # github oauth
       routing.is 'github_sso_callback' do
         # GET /auth/github_sso_callback
         routing.get do
@@ -96,7 +98,7 @@ module CheckHigh
         end
       end
 
-      # GET google oauth
+      # google oauth
       routing.is 'google_sso_callback' do
         # GET /auth/google_sso_callback
         routing.get do
@@ -157,6 +159,9 @@ module CheckHigh
 
             flash[:notice] = 'Please check your email for a verification link'
             routing.redirect '/'
+          rescue VerifyRegistration::VerificationError => e
+            flash[:error] = e.message
+            routing.redirect @register_route
           rescue StandardError => e
             puts "ERROR VERIFYING REGISTRATION: #{routing.params}\n#{e.inspect}"
             flash[:error] = 'Please use English characters for username only'
@@ -201,9 +206,12 @@ module CheckHigh
 
             flash[:notice] = 'Please check your email for a verification link'
             routing.redirect '/'
+          rescue VerifyResetPwd::VerificationError => e
+            flash[:error] = e.message
+            routing.redirect @resetpwd_route
           rescue StandardError => e
             puts "ERROR VERIFYING RESET PWD: #{routing.params}\n#{e.inspect}"
-            flash[:error] = 'Please use a valid email address'
+            flash[:error] = 'Please use a valid email address.'
             routing.redirect @resetpwd_route
           end
         end
