@@ -14,6 +14,7 @@ module CheckHigh
     def call(email:, password:)
       account = { email: email,
                   password: password }
+
       response = HTTP.post(
         "#{@config.API_URL}/accounts/resetpwd",
         json: SignedMessage.sign(account)
