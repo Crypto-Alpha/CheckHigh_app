@@ -8,9 +8,9 @@ module CheckHigh
   class App < Roda
     route('assignments') do |routing|
       routing.redirect '/auth/login' unless @current_account.logged_in?
-        @home_route = '/'
-        @assignments_route = '/assignments'
-        @courses_route = '/courses'
+      @home_route = '/'
+      @assignments_route = '/assignments'
+      @courses_route = '/courses'
 
       routing.on(String) do |assignment_id|
         @assignment_route = "#{@assignments_route}/#{assignment_id}"
@@ -115,7 +115,7 @@ module CheckHigh
           flash[:error] = 'Could not export your assignment.'
         end
 
-        routing.is do 
+        routing.is do
           # GET /assignments/[assignment_id]
           routing.get do
             assignment = GetAssignmentDetail.new(App.config).call(@current_account, assignment_id)
@@ -129,7 +129,7 @@ module CheckHigh
             in_srb = assignment_detail.share_boards.map(&:id)
 
             # export to pdf
-            pdf_file_name = ExportPDF.get_file_name(assignment_detail) 
+            pdf_file_name = ExportPDF.get_file_name(assignment_detail)
 
             view :assignment, locals: {
               current_user: @current_account,
