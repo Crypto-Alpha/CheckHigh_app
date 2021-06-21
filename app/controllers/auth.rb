@@ -42,7 +42,7 @@ module CheckHigh
           credentials = Form::LoginCredentials.new.call(routing.params)
 
           if credentials.failure?
-            flash[:error] = 'Please enter both username and password'
+            flash[:error] = 'Please enter both email and password'
             routing.redirect @login_route
           end
 
@@ -219,12 +219,7 @@ module CheckHigh
         # GET /auth/resetpwd/<token>
         routing.get(String) do |resetpwd_token|
           # verify reset token expire or not and get the account email
-          email = VerifyToken.payload(resetpwd_token)
-
-          # TODO: get username or not
-          # get the account username
-          username = GetUsername.new.call(email)
-          account = email.merge(username)
+          account = VerifyToken.payload(resetpwd_token)
 
           # route to post the pwd
           action_route = "/account/resetpwd/#{resetpwd_token}"

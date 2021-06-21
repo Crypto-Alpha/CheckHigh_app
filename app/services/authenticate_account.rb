@@ -9,8 +9,8 @@ module CheckHigh
 
     class ApiServerError < StandardError; end
 
-    def call(username:, password:)
-      credentials = { username: username, password: password }
+    def call(email:, password:)
+      credentials = { email: email, password: password }
       response = HTTP.post("#{ENV['API_URL']}/auth/authenticate",
                            json: SignedMessage.sign(credentials))
 

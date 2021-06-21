@@ -7,7 +7,7 @@ module CheckHigh
     # login form
     class LoginCredentials < Dry::Validation::Contract
       params do
-        required(:username).filled
+        required(:email).filled(format?: EMAIL_REGEX)
         required(:password).filled
       end
     end
