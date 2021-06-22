@@ -5,7 +5,7 @@ require_relative './app'
 
 module CheckHigh
   # Web controller for CheckHigh API
-  # rubocop:disable Matrics/ClassLength
+  # rubocop:disable Metrics/ClassLength
   class App < Roda
     route('share_boards') do |routing|
       routing.on do
@@ -182,5 +182,4 @@ module CheckHigh
       end
     end
   end
-  # rubocop:enable Matrics/ClassLength
 end

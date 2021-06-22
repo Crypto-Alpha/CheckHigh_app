@@ -2,7 +2,7 @@
 
 require 'http'
 
-# Rename an assignment 
+# Rename an assignment
 class RenameAssignment
   def initialize(config)
     @config = config

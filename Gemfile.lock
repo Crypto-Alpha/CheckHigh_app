@@ -72,6 +72,7 @@ GEM
     parallel (1.20.1)
     parser (3.0.1.1)
       ast (~> 2.4.1)
+    pdfkit (0.8.5)
     pry (0.14.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -116,6 +117,7 @@ GEM
       rubocop (>= 1.7.0, < 2.0)
       rubocop-ast (>= 0.4.0)
     ruby-progressbar (1.11.0)
+    secure_headers (6.3.2)
     slim (4.1.0)
       temple (>= 0.7.6, < 0.9)
       tilt (>= 2.0.6, < 2.1)
@@ -130,6 +132,7 @@ GEM
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
+    wkhtmltopdf-binary (0.12.6.5)
 
 PLATFORMS
   x86_64-darwin-18
@@ -142,6 +145,7 @@ DEPENDENCIES
   http
   minitest
   minitest-rg
+  pdfkit
   pry
   puma (~> 5.3.1)
   rack-ssl-enforcer
@@ -154,8 +158,10 @@ DEPENDENCIES
   roda
   rubocop
   rubocop-performance
+  secure_headers
   slim
   webmock
+  wkhtmltopdf-binary
 
 RUBY VERSION
    ruby 3.0.1p64
