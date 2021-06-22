@@ -22,6 +22,17 @@ module CheckHigh
       end
     end
 
+    # invitation registration form
+    class InvitationRegistration < Dry::Validation::Contract
+      config.messages.load_paths << File.join(__dir__, 'errors/invitation_details.yml')
+
+      params do
+        required(:username).filled(format?: USERNAME_REGEX, min_size?: 4)
+        required(:password).filled
+        required(:password_confirm).filled
+      end
+    end
+
     # reset pwd form
     class ResetPwd < Dry::Validation::Contract
       config.messages.load_paths << File.join(__dir__, 'errors/reset_details.yml')
