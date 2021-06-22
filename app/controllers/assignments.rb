@@ -99,20 +99,20 @@ module CheckHigh
           routing.redirect redirect_route
         end
 
-        # GET /assignments/[assignment_id]/export
-        routing.get('export') do
+        # GET /assignments/[assignment_id]/render
+        routing.get('render') do
+          #TODO: should be converted in API, so app don't need to convert every time (not suitable) 
           assignment = GetAssignmentDetail.new(App.config).call(@current_account, assignment_id)
           assignment_detail = AssignmentDetail.new(assignment)
-          # export to pdf
-          export_service = ExportPDF.new(assignment_detail)
-          file = export_service.export
+          # convert to pdf
+          convert_service = ConvertPDF.new(assignment_detail)
+          file = convert_service.convert
 
           response['Content-Type'] = 'application/pdf'
-          response['Content-Disposition'] = 'attachment'
           response.write(file)
         rescue StandardError => e
-          puts "FAILURE Exporting pdf file: #{e.inspect}"
-          flash[:error] = 'Could not export your assignment.'
+          puts "FAILURE Rendering pdf file: #{e.inspect}"
+          flash[:error] = 'Could not render your assignment.'
         end
 
         routing.is do
@@ -128,16 +128,12 @@ module CheckHigh
 
             in_srb = assignment_detail.share_boards.map(&:id)
 
-            # export to pdf
-            pdf_file_name = ExportPDF.get_file_name(assignment_detail)
-
             view :assignment, locals: {
               current_user: @current_account,
               assignment: assignment_detail,
               all_courses: courses,
               all_share_boards: share_boards,
-              in_srb: in_srb,
-              pdf_file_name: pdf_file_name
+              in_srb: in_srb
             }
           rescue StandardError => e
             puts "#{e.inspect}\n#{e.backtrace}"

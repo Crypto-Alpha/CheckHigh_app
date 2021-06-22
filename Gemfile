@@ -44,8 +44,6 @@ group :development, :test do
 end
 
 # PDF exporting
-group :production do
-  gem 'wkhtmltopdf-binary'
-end
+gem 'wkhtmltopdf-binary'
 gem 'pdfkit'
 

@@ -3,13 +3,13 @@
 require 'pdfkit'
 
 module CheckHigh
-  # export html file to pdf file in tmp folder
-  class ExportPDF
+  # convert html file to pdf inline codes
+  class ConvertPDF
     def initialize(assignment_detail)
       @assignment_detail = assignment_detail
     end
 
-    def export
+    def convert 
       content = @assignment_detail.content
       kit = PDFKit.new(content, page_size: 'Letter')
       kit.to_pdf
