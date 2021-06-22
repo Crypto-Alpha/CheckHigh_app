@@ -68,6 +68,32 @@ module CheckHigh
             )
           end
         end
+
+        # POST /account/invitation/<invitation_token>
+        routing.on 'invitation' do
+          routing.post String do |invitation_token|
+            new_account = Form::InvitationRegistration.new.call(routing.params)
+            raise Form.message_values(new_account) if new_account.failure?
+
+            new_account_email = VerifyToken.payload(invitation_token)
+
+            CreateAccount.new(App.config).call(
+              email: new_account_email['email'],
+              username: new_account['username'],
+              password: new_account['password']
+            )
+            flash[:notice] = 'Account created! Please login'
+            routing.redirect '/auth/login'
+          rescue CreateAccount::InvalidAccount => e
+            flash[:error] = e.message
+            routing.redirect "/auth/register/#{invitation_token}"
+          rescue StandardError => e
+            flash[:error] = e.message
+            routing.redirect(
+              "#{App.config.APP_URL}/auth/register/#{invitation_token}"
+            )
+          end
+        end
       end
     end
   end

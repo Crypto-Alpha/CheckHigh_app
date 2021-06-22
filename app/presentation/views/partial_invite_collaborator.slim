@@ -1,0 +1,10 @@
+div id="inviteCollaboratorModal" class="modal fade" role="dialog"
+  div class="modal-dialog"
+    div class="modal-content"
+      form role="form" action="/share_boards/#{share_board.id}/collaborators" method='post'
+        div class="modal-body text-start"
+          div class="form-group"
+            input type='hidden' name='action' value='invite'
+            label.mb-2 for='email_input' Invite a New User as a Collaborator by Sending Email
+            input type='email' name='email' id='email_input' class="form-control form-control-sm" placeholder="Email of collaborator"
+            button.my-2.float-end type='submit' class="btn btn-outline-primary btn-sm main-btn" id='registration-form-submit' value='submit' Send
