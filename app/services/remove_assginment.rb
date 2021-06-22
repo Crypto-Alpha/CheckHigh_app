@@ -2,7 +2,7 @@
 
 require 'http'
 
-# Remove an assignment 
+# Remove an assignment
 class RemoveAssignment
   def initialize(config)
     @config = config

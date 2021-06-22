@@ -50,7 +50,5 @@ div class='container'
   div class="row mt-3"
     div class="col"
       .card.assi-block
-        textarea id="htmeditor"
-          == assignment.content
-        script src="https://htmeditor.com/js/htmeditor.min.js" htmeditor_textarea="htmeditor" full_screen="no" editor_height="1080"
+        embed src="/assignments/#{assignment.id}/render#view=FitH" height=1080 width="100%" frameBorder=0 
 
