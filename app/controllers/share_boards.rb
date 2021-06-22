@@ -86,34 +86,40 @@ module CheckHigh
             end
           end
 
-          # POST /share_boards/[share_board_id]/collaborators
-          routing.post('collaborators') do
-            action = routing.params['action']
+          routing.on('collaborators') do
+            # POST /share_boards/[share_board_id]/collaborators
+            routing.post do
+              action = routing.params['action']
 
-            collaborator_info = Form::CollaboratorEmail.new.call(routing.params)
-            if collaborator_info.failure?
-              flash[:error] = Form.validation_errors(collaborator_info)
-              routing.halt
+              collaborator_info = Form::CollaboratorEmail.new.call(routing.params)
+              if collaborator_info.failure?
+                flash[:error] = Form.validation_errors(collaborator_info)
+                routing.halt
+              end
+
+              task_list = {
+                'add' => { service: AddCollaborator,
+                           message: 'Added new collaborator to shareboard' },
+                'remove' => { service: RemoveCollaborator,
+                              message: 'Removed collaborator from shareboard' },
+                'invite' => { service: InviteCollaborator,
+                              message: 'Invitation Email Sent' }
+              }
+
+              task = task_list[action]
+              task[:service].new(App.config).call(
+                current_account: @current_account,
+                collaborator: collaborator_info,
+                share_board_id: share_board_id
+              )
+              flash[:notice] = task[:message]
+            rescue InviteCollaborator::CollaboratorNotInvited
+              flash[:error] = 'You might invited an user already registered in CheckHigh.'
+            rescue StandardError
+              flash[:error] = 'Could not find collaborator. You can send an invitation email.'
+            ensure
+              routing.redirect @share_board_route
             end
-
-            task_list = {
-              'add' => { service: AddCollaborator,
-                         message: 'Added new collaborator to share_board' },
-              'remove' => { service: RemoveCollaborator,
-                            message: 'Removed collaborator from share_board' }
-            }
-
-            task = task_list[action]
-            task[:service].new(App.config).call(
-              current_account: @current_account,
-              collaborator: collaborator_info,
-              share_board_id: share_board_id
-            )
-            flash[:notice] = task[:message]
-          rescue StandardError
-            flash[:error] = 'Could not find collaborator'
-          ensure
-            routing.redirect @share_board_route
           end
 
           routing.on('assignments') do
