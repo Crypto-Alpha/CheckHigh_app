@@ -20,8 +20,8 @@ module CheckHigh
         "#{@config.API_URL}/accounts/",
         json: SignedMessage.sign(account)
       )
-
-      raise InvalidAccount unless response.code == 201
+      res = JSON.parse(response.to_s)
+      raise(InvalidAccount, res['message']) unless response.code == 201
     end
   end
 end
