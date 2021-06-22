@@ -17,9 +17,11 @@ nav.navbar.navbar-expand-lg.navbar-light class="main-bg"
             a.nav-link aria-current="page" href="/share_boards"
               span class="main-color"
                 | ShareBoards
+        ul class="nav navbar-nav navbar-right"
           li class="nav-item dropdown"
-            a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"
-              = "#{@current_account.username}"
+            a class="nav-link main-color" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
+              i class="far fa-user-circle mr-2 main-color"
+              span.main-color =" #{@current_account.username}"
 
             div class=-"dropdown-menu"
               a class="dropdown-item" href="/account/#{@current_account.username}" account

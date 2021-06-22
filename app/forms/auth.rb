@@ -4,13 +4,15 @@ require_relative 'form_base'
 
 module CheckHigh
   module Form
+    # login form
     class LoginCredentials < Dry::Validation::Contract
       params do
-        required(:username).filled
+        required(:email).filled(format?: EMAIL_REGEX)
         required(:password).filled
       end
     end
 
+    # registration form
     class Registration < Dry::Validation::Contract
       config.messages.load_paths << File.join(__dir__, 'errors/account_details.yml')
 
@@ -20,6 +22,16 @@ module CheckHigh
       end
     end
 
+    # reset pwd form
+    class ResetPwd < Dry::Validation::Contract
+      config.messages.load_paths << File.join(__dir__, 'errors/reset_details.yml')
+
+      params do
+        required(:email).filled(format?: EMAIL_REGEX)
+      end
+    end
+
+    # password form
     class Passwords < Dry::Validation::Contract
       config.messages.load_paths << File.join(__dir__, 'errors/password.yml')
 
@@ -33,15 +45,11 @@ module CheckHigh
       end
 
       rule(:password) do
-        unless enough_entropy?(value)
-          key.failure('Password must be more complex')
-        end
+        key.failure('Password must be more complex') unless enough_entropy?(value)
       end
 
       rule(:password, :password_confirm) do
-        unless values[:password].eql?(values[:password_confirm])
-          key.failure('Passwords do not match')
-        end
+        key.failure('Passwords do not match') unless values[:password].eql?(values[:password_confirm])
       end
     end
   end

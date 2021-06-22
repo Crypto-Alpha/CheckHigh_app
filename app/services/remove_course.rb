@@ -2,7 +2,7 @@
 
 require 'http'
 
-# Remove a course 
+# Remove a course
 class RemoveCourse
   def initialize(config)
     @config = config

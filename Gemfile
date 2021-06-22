@@ -43,3 +43,8 @@ end
 group :development, :test do
   gem 'rerun'
 end
+
+# PDF exporting
+gem 'wkhtmltopdf-binary'
+gem 'pdfkit'
+
