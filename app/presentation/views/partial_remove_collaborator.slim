@@ -8,6 +8,7 @@ div id="RemoveCollaboratorModal" class="modal fade" role="dialog"
               label.mb-2 class="form-label" Remove #{collaborator.username} as a collaborator from #{share_board.share_board_name}?
               input type="hidden" name="action" value="remove"
               input type="hidden" name="email" value="#{collaborator.email}"
+              div.text-danger style="font-size: .7rem;font-style:italic;" His/Hers assignments are going to remove as well.
           .row.my-3
             .col.text-end
               button type='submit' class="btn btn-outline-danger btn-sm main-btn mx-2" value='submit' Remove
