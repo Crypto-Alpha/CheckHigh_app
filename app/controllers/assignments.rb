@@ -99,17 +99,12 @@ module CheckHigh
           routing.redirect redirect_route
         end
 
-        # GET /assignments/[assignment_id]/render
-        routing.get('render') do
-          #TODO: should be converted in API, so app don't need to convert every time (not suitable) 
-          assignment = GetAssignmentDetail.new(App.config).call(@current_account, assignment_id)
-          assignment_detail = AssignmentDetail.new(assignment)
-          # convert to pdf
-          convert_service = ConvertPDF.new(assignment_detail)
-          file = convert_service.convert
+        # GET /assignments/[assignment_id]/assignment_content
+        routing.get('assignment_content') do
+          content = GetAssignmentDetail.new(App.config).call_content(@current_account, assignment_id)
 
           response['Content-Type'] = 'application/pdf'
-          response.write(file)
+          response.write(content)
         rescue StandardError => e
           puts "FAILURE Rendering pdf file: #{e.inspect}"
           flash[:error] = 'Could not render your assignment.'
@@ -154,11 +149,7 @@ module CheckHigh
           routing.halt
         end
 
-        # read the content out
-        assignment_details = {
-          assignment_name: assignment_data[:filename],
-          content: assignment_data[:tempfile].read.force_encoding('UTF-8')
-        }
+        assignment_details = ExtractContent.new(assignment_data).extract
 
         CreateNewAssignment.new(App.config).call(
           current_account: @current_account,

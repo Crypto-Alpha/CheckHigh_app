@@ -126,11 +126,7 @@ module CheckHigh
                 routing.halt
               end
 
-              # read the content out
-              assignment_details = {
-                assignment_name: assignment_data[:filename],
-                content: assignment_data[:tempfile].read.force_encoding('UTF-8')
-              }
+              assignment_details = ExtractContent.new(assignment_data).extract
 
               CreateNewAssignment.new(App.config).call_for_shareboard(
                 current_account: @current_account,
