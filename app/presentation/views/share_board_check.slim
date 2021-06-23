@@ -3,20 +3,17 @@ div.container-fluid
     - if assignments.all.length > 2
       - assignments.all.each do |assi|
         div class="col-sm-6 d-grid my-2"
-          .card.srb-4-block
-            div.p-2.srb-overflow
-              == assi.content
+          div.p-2.srb-overflow
+            embed src="/assignments/#{assi.id}/assignment_content#view=FitH" height=1080 width="100%" frameBorder=0 
 
     - elsif assignments.all.length == 2
       - assignments.all.each do |assi|
         div class="col-sm-6 d-grid my-2"
-          .card.srb-2-block
-            div.p-2.srb-overflow
-              == assi.content
+          div.p-2.srb-overflow
+            embed src="/assignments/#{assi.id}/assignment_content#view=FitH" height=1080 width="100%" frameBorder=0 
 
     - else 
       - assignments.all.each do |assi|
         div class="col-sm d-grid my-2"
-          .card.srb-2-block
-            div.p-2.srb-overflow 
-              == assi.content
+          div.p-2.srb-overflow 
+            embed src="/assignments/#{assi.id}/assignment_content#view=FitH" height=1080 width="100%" frameBorder=0 
