@@ -1,10 +1,16 @@
 div id="newCollaboratorModal" class="modal fade" role="dialog"
   div class="modal-dialog"
     div class="modal-content"
-      form role="form" action="/share_boards/#{share_board.id}/collaborators" method='post' id='new-collaborator-form'
-        div class="modal-body text-start"
+      div class="modal-body pb-0 text-start"
+        form role="form" action="/share_boards/#{share_board.id}/collaborators" method='post' id='new-collaborator-form'
           div class="form-group"
             input type='hidden' name='action' value='add'
             label.mb-2 for='email_input' Add a Collaborator Email Address
             input type='email' name='email' id='email_input' class="form-control form-control-sm" placeholder="Email of collaborator"
-            button.my-2.float-end type='submit' class="btn btn-outline-primary btn-sm main-btn" id='registration-form-submit' value='submit' Add
+            button.my-2.float-end type='submit' class="btn btn-outline-primary btn-sm main-btn" value='submit' Add
+        a class="my-2 main-color" style="font-size: .75rem;" data-bs-toggle="modal" data-bs-target="#inviteCollaboratorModal"
+          i class="fas fa-envelope"
+          sapn.my-2  invite a new user to join CheckHigh
+        include :partial_invite_collaborator
+            
+        

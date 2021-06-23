@@ -15,9 +15,6 @@ div class='container'
         button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#newCollaboratorModal"
           i class="fas fa-user-plus"
         include :partial_add_collaborator
-        button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#inviteCollaboratorModal"
-          i class="fas fa-envelope"
-        include :partial_invite_collaborator
       - if share_board.policies.can_delete
         button type="button" class="btn btn-outline-danger btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#DeleteSrbModal"
           i class="fas fa-trash-alt"

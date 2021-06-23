@@ -114,7 +114,7 @@ module CheckHigh
               )
               flash[:notice] = task[:message]
             rescue InviteCollaborator::CollaboratorNotInvited
-              flash[:error] = 'You might invited an user already registered in CheckHigh.'
+              flash[:error] = 'You might invite an user already registered in CheckHigh.'
             rescue StandardError
               flash[:error] = 'Could not find collaborator. You can send an invitation email.'
             ensure
