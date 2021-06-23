@@ -6,7 +6,7 @@ require 'rack/ssl-enforcer'
 require 'secure_headers'
 
 module CheckHigh
-    # Security configuration for the API
+  # Security configuration for the API
   class App < Roda
     plugin :environments
     plugin :multi_route
@@ -26,12 +26,12 @@ module CheckHigh
         }
       }
 
-      FONT_SRC = %w[https://cdn.jsdelivr.net].freeze 
-      SCRIPT_SRC = %w[https://cdn.jsdelivr.net].freeze 
+      FONT_SRC = %w[https://cdn.jsdelivr.net].freeze
+      SCRIPT_SRC = %w[https://cdn.jsdelivr.net].freeze
       STYLE_SRC = %w[https://bootswatch.com
                      https://pro.fontawesome.com
                      https://cdn.jsdelivr.net
-                     https://code.jquery.com 
+                     https://code.jquery.com
                      https://maxcdn.bootstrapcdn.com
                      https://mycdn.com].freeze
 
@@ -54,7 +54,7 @@ module CheckHigh
         font_src: %w['self' data:] + STYLE_SRC,
         script_src: %w['self'] + STYLE_SRC,
         style_src: %W['self' 'unsafe-inline'] + STYLE_SRC,
-        style_src_elem: %W['self' 'unsafe-inline']+ STYLE_SRC,
+        style_src_elem: %W['self' 'unsafe-inline'] + STYLE_SRC,
         form_action: %w['self'], # valid endpoints for form actions
         frame_ancestors: %w['self'], # valid parents that may embed a page using the <frame> and <iframe> elements
         object_src: %w['self'],

@@ -5,8 +5,8 @@ require 'webmock/minitest'
 
 describe 'Test Service Objects' do
   before do
-    @credentials = { username: 'soumya.ray', password: 'mypa$$w0rd' }
-    @mal_credentials = { username: 'soumya.ray', password: 'wrongpassword' }
+    @credentials = { email: 'sray@nthu.edu.tw', password: 'mypa$$w0rd' }
+    @mal_credentials = { email: 'sray@nthu.edu.tw', password: 'wrongpassword' }
     @api_account = { username: 'soumya.ray', email: 'sray@nthu.edu.tw' }
   end
 
