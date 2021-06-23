@@ -12,7 +12,7 @@ module CheckHigh
     end
 
     def call(resetpwd_data)
-      # register token will expire after an hour
+      # reset pwd token will expire after an hour
       resetpwd_token = VerifyToken.create(resetpwd_data)
 
       resetpwd_data['verification_url'] =
