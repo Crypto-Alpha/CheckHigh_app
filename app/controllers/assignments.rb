@@ -46,7 +46,7 @@ module CheckHigh
           flash[:notice] = "You've removed an assignment"
         rescue StandardError => e
           puts "FAILURE Removing a Lonely Assignment: #{e.inspect}"
-          flash[:error] = 'Could not remove a Lonely Assignment'
+          flash[:error] = 'Could not remove an Assignment'
         ensure
           routing.redirect redirect_route
         end
@@ -156,10 +156,10 @@ module CheckHigh
           assignment_data: assignment_details
         )
 
-        flash[:notice] = 'Add new lonely assignments'
+        flash[:notice] = 'Add new a assignment'
       rescue StandardError => e
         puts "FAILURE Creating Lonely Assignment: #{e.inspect}"
-        flash[:error] = 'Could not create Lonely Assignment'
+        flash[:error] = 'Could not create an Assignment'
       ensure
         routing.redirect @courses_route
       end

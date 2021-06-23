@@ -4,7 +4,6 @@ require 'delegate'
 require 'roda'
 require 'figaro'
 require 'logger'
-require 'rack/ssl-enforcer'
 require 'rack/session/redis'
 require_relative '../require_app'
 
@@ -36,10 +35,11 @@ module CheckHigh
     end
 
     configure :production do
-      use Rack::SslEnforcer, hsts: true
-
+    
       use Rack::Session::Redis,
           expire_after: ONE_MONTH,
+          # httponly: true,
+          # same_site: :strict,
           redis_server: {
             url: ENV.delete('REDIS_TLS_URL'),
             ssl_params: { verify_mode: OpenSSL::SSL::VERIFY_NONE }
@@ -50,8 +50,10 @@ module CheckHigh
       # use Rack::Session::Cookie,
       #     expire_after: ONE_MONTH, secret: config.SESSION_SECRET
 
-      use Rack::Session::Pool,
+      use Rack::Session::Redis,
           expire_after: ONE_MONTH,
+          # httponly: true,
+          # same_site: :strict,
           redis_server: {
             url: ENV.delete('REDIS_URL')
           }

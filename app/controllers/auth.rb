@@ -58,7 +58,7 @@ module CheckHigh
           flash[:notice] = "Welcome back #{current_account.username}!"
           routing.redirect '/'
         rescue AuthenticateAccount::NotAuthenticatedError
-          flash[:error] = 'Username and password did not match our records'
+          flash[:error] = 'Email and password did not match our records'
           response.status = 401
           routing.redirect @login_route
         rescue StandardError => e
@@ -173,11 +173,12 @@ module CheckHigh
         routing.get(String) do |registration_token|
           # verify register token expire or not
           new_account = VerifyToken.payload(registration_token)
-          action_route = "/account/#{registration_token}"
+          new_account[:username].nil? ? action_route = "/account/invitation/#{registration_token}" : action_route = "/account/#{registration_token}"
 
           flash.now[:notice] = 'Email Verified! Please choose a new password'
           view :account_confirm, locals: { account: new_account,
-                                           action_route: action_route }
+                                           action_route: action_route,
+                                           type: 1 }
         rescue VerifyToken::ExpiredTokenError
           flash[:error] = 'The register token has expired, please register again.'
           response.status = 403
@@ -226,7 +227,8 @@ module CheckHigh
 
           flash.now[:notice] = 'Email Verified! Please choose a new password'
           view :account_confirm, locals: { account: account,
-                                           action_route: action_route }
+                                           action_route: action_route,
+                                           type: 2 }
         rescue VerifyToken::ExpiredTokenError
           flash[:error] = 'The reset password token has expired, please try again.'
           response.status = 403

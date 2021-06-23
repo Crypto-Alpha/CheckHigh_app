@@ -6,19 +6,23 @@ div class='container'
         div class="container"
           div class="row my-2"
             div class="col-sm"
-              h3 class="text-center" Create your password
+              h5 class="text-center" Create password
           form action="#{action_route}" method='post' id='user-form'
-            - unless account['username'].nil?
-              div class="form-group"
-                div.row
-                  div class="col-sm-4" Username
-                  div class="col-sm-8"
-                    == account['username']
             div class="form-group"
               div.row
                 div class="col-sm-4" Email
-                div class="col-sm-8"
+                div class="col-sm-8 text-truncate" style="color: gray;"
                   == account['email']
+            - if type == 1
+              - if account['username'].nil?
+                label for='username_input' Username
+                input type='username' name='username' id='username_input' class="form-control"
+              - else
+                div class="form-group"
+                  div.row
+                    div class="col-sm-4" Username
+                    div class="col-sm-8 text-truncate" style="color: gray;"
+                      == account['username']
             div class="form-group"
               label for='password_input' Password
               input type='password' name='password' id='password_input' class="form-control"
