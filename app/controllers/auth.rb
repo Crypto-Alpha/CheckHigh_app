@@ -237,4 +237,5 @@ module CheckHigh
       end
     end
   end
+  # rubocop:enable Metrics/ClassLength
 end
