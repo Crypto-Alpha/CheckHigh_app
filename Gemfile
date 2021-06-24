@@ -47,4 +47,3 @@ end
 # PDF exporting
 gem 'wkhtmltopdf-binary'
 gem 'pdfkit'
-

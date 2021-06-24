@@ -32,7 +32,7 @@ module CheckHigh
           flash[:notice] = "You've renamed an assignment"
         rescue StandardError => e
           puts "FAILURE Renaming Assignment: #{e.inspect}"
-          flash[:error] = 'Could not rename a Assignment'
+          flash[:error] = 'Could not rename an Assignment'
         ensure
           routing.redirect redirect_route
         end

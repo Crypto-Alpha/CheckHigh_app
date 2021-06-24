@@ -3,12 +3,25 @@ div id="RemoveCollaboratorModal" class="modal fade" role="dialog"
     div class="modal-content"
       form role="form" method="post" action="/share_boards/#{share_board.id}/collaborators"
         .container 
-          .row.my-3 
-            .col.text-start
-              label.mb-2 class="form-label" Remove #{collaborator.username} as a collaborator from #{share_board.share_board_name}?
-              input type="hidden" name="action" value="remove"
-              input type="hidden" name="email" value="#{collaborator.email}"
-          .row.my-3
-            .col.text-end
-              button type='submit' class="btn btn-outline-danger btn-sm main-btn mx-2" value='submit' Remove
-              button type="button" class="btn btn-outline-primary btn-sm main-btn" data-bs-dismiss="modal" Keep 
+          - if type == 1
+            .row.my-3 
+              .col.text-start
+                label.mb-2 class="form-label" Remove #{collaborator.username} as a collaborator from #{share_board.share_board_name}?
+                input type="hidden" name="action" value="remove"
+                input type="hidden" name="email" value="#{collaborator.email}"
+                div.text-danger style="font-size: .7rem;font-style:italic;" His/Hers assignments are going to remove as well.
+            .row.my-3
+              .col.text-end
+                button type='submit' class="btn btn-outline-danger btn-sm main-btn mx-2" value='submit' Remove
+                button type="button" class="btn btn-outline-primary btn-sm main-btn" data-bs-dismiss="modal" Keep 
+          - else
+            .row.my-3 
+              .col.text-start
+                label.mb-2 class="form-label" Leave #{share_board.share_board_name}?
+                input type="hidden" name="action" value="remove"
+                input type="hidden" name="email" value="#{collaborator.email}"
+                div.text-danger style="font-size: .7rem;font-style:italic;" Your assignments are going to remove as well.
+            .row.my-3
+              .col.text-end
+                button type='submit' class="btn btn-outline-danger btn-sm main-btn mx-2" value='submit' Leave
+                button type="button" class="btn btn-outline-primary btn-sm main-btn" data-bs-dismiss="modal" Keep 

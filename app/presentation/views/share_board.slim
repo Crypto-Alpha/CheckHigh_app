@@ -7,17 +7,14 @@ div class='container'
         button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#RenameSrbModal"
           i class="fas fa-pen"
         == render :partial_rename, locals: { action:"/share_boards/#{share_board.id}", id:"RenameSrbModal", ori_name: "#{share_board.share_board_name}", reroute: "/share_boards/#{share_board.id}", type: 'shareboard' }
-      / - if share_board.policies.can_edit && !share_board.policies.can_remove_collaborators
+      - if share_board.policies.can_leave
         button type="button" class="btn btn-outline-danger btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#RemoveCollaboratorModal"
-          i class="fas fa-user-slash"
-        == render :partial_remove_collaborator, locals:{collaborator: @current_account, share_board: share_board}
+          i class="fas fa-sign-out-alt"
+        == render :partial_remove_collaborator, locals:{type: 2, collaborator: @current_account, share_board: share_board}
       - if share_board.policies.can_add_collaborators
         button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#newCollaboratorModal"
           i class="fas fa-user-plus"
         include :partial_add_collaborator
-        button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#inviteCollaboratorModal"
-          i class="fas fa-envelope"
-        include :partial_invite_collaborator
       - if share_board.policies.can_delete
         button type="button" class="btn btn-outline-danger btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#DeleteSrbModal"
           i class="fas fa-trash-alt"
@@ -80,13 +77,13 @@ div class='container'
           td.text-end 
             - share_board.collaborators.each do |collaborator|
               tr
-              th scope="row" collaborator 
+              th scope="row" collab. 
               td.align-middle #{collaborator.username}
               td.text-end 
                 - if share_board.policies.can_remove_collaborators
                   button type="button" class="btn btn-outline-danger btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#RemoveCollaboratorModal"
                     i class="fas fa-user-slash"
-                  == render :partial_remove_collaborator, locals:{collaborator: collaborator, share_board: share_board}
+                  == render :partial_remove_collaborator, locals:{type: 1, collaborator: collaborator, share_board: share_board}
       - if share_board.collaborators.empty?
         div.main-color No collaborators yet.
         div.main-color.mb-4 Press above user button to add a collaborator!

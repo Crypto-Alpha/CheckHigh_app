@@ -114,7 +114,7 @@ module CheckHigh
               )
               flash[:notice] = task[:message]
             rescue InviteCollaborator::CollaboratorNotInvited
-              flash[:error] = 'You might invited an user already registered in CheckHigh.'
+              flash[:error] = 'You might invite an user already registered in CheckHigh.'
             rescue StandardError
               flash[:error] = 'Could not find collaborator. You can send an invitation email.'
             ensure
@@ -174,7 +174,7 @@ module CheckHigh
             share_board_data: share_board_data.to_h
           )
 
-          flash[:notice] = 'Add a new share board'
+          flash[:notice] = 'Create a new ShareSoard'
         rescue StandardError => e
           puts "FAILURE Creating share board: #{e.inspect}"
           flash[:error] = 'Could not create share board'
@@ -184,4 +184,5 @@ module CheckHigh
       end
     end
   end
+  # rubocop:enable Metrics/ClassLength
 end
