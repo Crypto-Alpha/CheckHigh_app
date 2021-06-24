@@ -14,15 +14,15 @@ module CheckHigh
     def extract
       if @type == 'text/html'
         origin_content = @file_path.read
-        # convert to pdf 
+        # convert to pdf
         convert_service = ConvertPDF.new(origin_content)
         converted_content = convert_service.convert
         {
           assignment_name: @assignment_name,
-          content: converted_content 
+          content: converted_content
         }
 
-      else 
+      else
         {
           assignment_name: @assignment_name,
           content: @file_path.read

@@ -127,7 +127,7 @@ module CheckHigh
             course_data: course_data.to_h
           )
 
-          flash[:notice] = 'Add a new course'
+          flash[:notice] = 'Create a new course'
         rescue StandardError => e
           puts "FAILURE Creating Course: #{e.inspect}"
           flash[:error] = 'Could not create course'

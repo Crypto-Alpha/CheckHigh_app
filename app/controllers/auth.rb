@@ -56,7 +56,7 @@ module CheckHigh
           CurrentSession.new(session).current_account = current_account
 
           flash[:notice] = "Welcome back #{current_account.username}!"
-          routing.redirect '/'
+          routing.redirect '/courses'
         rescue AuthenticateAccount::NotAuthenticatedError
           flash[:error] = 'Email and password did not match our records'
           response.status = 401
@@ -85,7 +85,7 @@ module CheckHigh
           CurrentSession.new(session).current_account = current_account
 
           flash[:notice] = "Welcome #{current_account.username}!"
-          routing.redirect '/'
+          routing.redirect '/courses'
         rescue AuthorizeGithubAccount::UnauthorizedError
           flash[:error] = 'Could not login with Github. Please check your GitHub public email.'
           response.status = 403
@@ -114,7 +114,7 @@ module CheckHigh
           CurrentSession.new(session).current_account = current_account
 
           flash[:notice] = "Welcome #{current_account.username}!"
-          routing.redirect '/'
+          routing.redirect '/courses'
         rescue AuthorizeGoogleAccount::UnauthorizedError
           flash[:error] = 'Could not login with Google.'
           response.status = 403
@@ -173,7 +173,13 @@ module CheckHigh
         routing.get(String) do |registration_token|
           # verify register token expire or not
           new_account = VerifyToken.payload(registration_token)
-          new_account[:username].nil? ? action_route = "/account/invitation/#{registration_token}" : action_route = "/account/#{registration_token}"
+          if new_account['username']
+            # route to post the register data
+            action_route = "/account/#{registration_token}"
+          else
+            # route to post the invitation register data
+            action_route = "/account/invitation/#{registration_token}"
+          end
 
           flash.now[:notice] = 'Email Verified! Please choose a new password'
           view :account_confirm, locals: { account: new_account,
@@ -237,4 +243,5 @@ module CheckHigh
       end
     end
   end
+  # rubocop:enable Metrics/ClassLength
 end
