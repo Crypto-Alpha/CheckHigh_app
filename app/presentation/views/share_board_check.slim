@@ -2,18 +2,15 @@ div.container-fluid
   div class="row mb-3"
     - if assignments.all.length > 2
       - assignments.all.each do |assi|
-        div class="col-sm-6 d-grid my-2"
-          div.p-2.srb-overflow
-            embed src="/assignments/#{assi.id}/assignment_content#view=FitH" height=1080 width="100%" frameBorder=0 
+        div class="col-sm-6 p-1 d-grid"
+          embed src="/assignments/#{assi.id}/assignment_content#view=FitH" height=1080 width="100%" frameBorder=0 style="height: 47.5vh" 
 
     - elsif assignments.all.length == 2
       - assignments.all.each do |assi|
-        div class="col-sm-6 d-grid my-2"
-          div.p-2.srb-overflow
-            embed src="/assignments/#{assi.id}/assignment_content#view=FitH" height=1080 width="100%" frameBorder=0 
+        div class="col-sm-6 p-1 d-grid my-2"
+          embed src="/assignments/#{assi.id}/assignment_content#view=FitH" height=1080 width="100%" frameBorder=0 style="height: 95vh"
 
     - else 
       - assignments.all.each do |assi|
         div class="col-sm d-grid my-2"
-          div.p-2.srb-overflow 
-            embed src="/assignments/#{assi.id}/assignment_content#view=FitH" height=1080 width="100%" frameBorder=0 
+          embed src="/assignments/#{assi.id}/assignment_content#view=FitH" height=1080 width="100%" frameBorder=0 style="height: 95vh"

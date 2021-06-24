@@ -20,7 +20,7 @@ div class='container'
           i class="fas fa-trash-alt"
         == render :partial_delete, locals: { action:"/share_boards/#{share_board.id}/deletion", id:'DeleteSrbModal', reroute: '/share_boards', obj: "#{share_board.share_board_name}" }
   div class="row mt-2"
-    div class="col-sm-9" 
+    div class="col-sm-8" 
       - if share_board.assignments.empty?
         div.main-color.my-4 No assignments yet. Press right-bottom side plus button to upload a file!
       - else
@@ -63,7 +63,7 @@ div class='container'
               a type="button" class="btn btn-outline-primary main-btn" href="/share_boards/#{share_board.id}/check"
                   i class="fas fa-check-double" 
                   span  CheckHigh
-    div class="col-sm-3 second-bg"
+    div class="col-sm-4 second-bg"
       table class="table table-striped main-table" 
         thead
           tr

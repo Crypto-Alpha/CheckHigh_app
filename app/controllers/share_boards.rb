@@ -174,7 +174,7 @@ module CheckHigh
             share_board_data: share_board_data.to_h
           )
 
-          flash[:notice] = 'Add a new share board'
+          flash[:notice] = 'Create a new ShareSoard'
         rescue StandardError => e
           puts "FAILURE Creating share board: #{e.inspect}"
           flash[:error] = 'Could not create share board'
