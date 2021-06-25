@@ -4,6 +4,7 @@ require 'roda'
 require_relative './app'
 
 module CheckHigh
+  # rubocop:disable Metrics/ClassLength
   # Web controller for CheckHigh API
   class App < Roda
     route('courses') do |routing|
@@ -137,4 +138,5 @@ module CheckHigh
       end
     end
   end
+  # rubocop:enable Metrics/ClassLength
 end
