@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require_relative './app'
+require_relative './app' 
 require 'roda'
-require 'rack/ssl-enforcer'
+require 'rack/ssl-enforcer' 
 require 'secure_headers'
 
 module CheckHigh
@@ -26,7 +26,6 @@ module CheckHigh
         }
       }
 
-      # rubocop:disable Lint/ConstantDefinitionInBlock
       FONT_SRC = %w[https://cdn.jsdelivr.net].freeze
       SCRIPT_SRC = %w[https://cdn.jsdelivr.net].freeze
       STYLE_SRC = %w[https://bootswatch.com
@@ -35,28 +34,23 @@ module CheckHigh
                      https://code.jquery.com
                      https://maxcdn.bootstrapcdn.com
                      https://mycdn.com].freeze
-      # rubocop:enable Lint/ConstantDefinitionInBlock
 
       config.x_frame_options = 'DENY' # Do not let this page be displayed in a frame
       config.x_content_type_options = 'nosniff' # Do not let anyone change HTTPS
       config.x_xss_protection = '1' # Block response if a script found in user input
       config.x_permitted_cross_domain_policies = 'none' # Don't let others embed me
-      config.referrer_policy = 'origin-when-cross-origin'
-      # Only report this site's hostname if user nagivates to other site
+      config.referrer_policy = 'origin-when-cross-origin' # Only report this site's hostname if user nagivates to other site
 
-      # rubocop:disable Lint/PercentStringArray
       config.csp = {
         # "meta" values: these keys will be inserted into header
-        # # false: disable unwanted features; true: report but don't disable
-        # # default: false. Schemes are removed from host sources to save bytes and discourage mixed content
-        report_only: false,
-        preserve_schemes: true,
+        report_only: false,     # false: disable unwanted features; true: report but don't disable
+        preserve_schemes: true, # default: false. Schemes are removed from host sources to save bytes and discourage mixed content
 
         # directive values: these keys + values be inserted into header
         default_src: %w['self'], # Use 'self' if a *_src configuration not defined
-        child_src: %w['self'],
+        child_src: %w['self'], #
         connect_src: %w[wws:], # valid sources for fetch, XMLHttpRequest, WebSocket, and EventSource connections
-        img_src: %w['self' mycdn.com data:],
+        img_src: %w[mycdn.com data:],
         font_src: %w['self' data:] + STYLE_SRC,
         script_src: %w['self'] + STYLE_SRC,
         style_src: %W['self' 'unsafe-inline'] + STYLE_SRC,
@@ -68,14 +62,13 @@ module CheckHigh
 
         report_uri: %w[/security/report_csp_violation] # submit CSP violations by POST method
       }
-      # rubocop:enable Lint/PercentStringArray
     end
 
     route('security') do |routing|
-      # POST security/report_csp_violation
+      # POST security/report_csp_violation 
       routing.post 'report_csp_violation' do
-        puts "CSP VIOLATION: #{request.body.read}"
+        puts "CSP VIOLATION: #{request.body.read}" 
       end
-    end
+    end 
   end
 end
