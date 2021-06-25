@@ -1,7 +1,7 @@
 div class='container'
   div class="row"
     - if courses.all.empty?
-      div.col.main-color.my-4 No courses yet. Press right-bottom side plus button to add a new course!
+      div.col.main-color.my-4 No courses yet. Press right-bottom side plus button to create a new course!
     - courses.all.each_with_index do |course, index|
       div class="col-sm-3 d-grid my-2"
         a href="/courses/#{course.id}" type="button" class="btn btn-primary to-detail-btn"
@@ -46,8 +46,8 @@ div class='container'
     i class="fas fa-plus"
   ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1"
     li
-      a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#newCourseModal"add a new course 
-      a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#newAssiModal"add a new assignment 
+      a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#newCourseModal"create a new course 
+      a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#newAssiModal"upload a new assignment 
       
   == render :partial_create_crs_srb, locals: { action:'/courses', id: 'newCourseModal', type:'course', name:'course_name'}
   == render :partial_upload_assi, locals: { action: '/assignments', id: 'newAssiModal'}

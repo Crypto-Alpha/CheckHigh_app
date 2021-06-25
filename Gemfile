@@ -38,6 +38,8 @@ group :test do
   gem 'minitest'
   gem 'minitest-rg'
   gem 'webmock'
+  gem 'simplecov'
+
 end
 
 group :development, :test do
@@ -47,4 +49,3 @@ end
 # PDF exporting
 gem 'wkhtmltopdf-binary'
 gem 'pdfkit'
-
