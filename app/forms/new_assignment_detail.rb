@@ -11,7 +11,7 @@ module CheckHigh
       params do
         required(:filename).filled(max_size?: 256, format?: FILENAME_REGEX)
         required(:tempfile).filled
-        required(:type).maybe(format?: FILETYPE_REGEX)
+        required(:type).filled(format?: FILETYPE_REGEX)
         # not knowing what to test
       end
     end

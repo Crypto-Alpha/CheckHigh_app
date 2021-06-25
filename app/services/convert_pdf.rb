@@ -10,7 +10,7 @@ module CheckHigh
     end
 
     def convert
-      kit = PDFKit.new(@content, page_size: 'Letter')
+      kit = PDFKit.new(@content, page_size: 'A4')
       kit.to_pdf
     end
   end

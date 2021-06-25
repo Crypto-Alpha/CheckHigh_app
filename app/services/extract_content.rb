@@ -1,6 +1,6 @@
 # frozen_string_literal: true
-require_relative 'convert_pdf'
 
+require_relative 'convert_pdf'
 
 module CheckHigh
   # extract assignment info from upload form file
@@ -12,22 +12,15 @@ module CheckHigh
     end
 
     def extract
-      if @type == 'text/html'
-        origin_content = @file_path.read
-        # convert to pdf
-        convert_service = ConvertPDF.new(origin_content)
-        converted_content = convert_service.convert
-        {
-          assignment_name: @assignment_name,
-          content: converted_content
-        }
-
-      else
-        {
-          assignment_name: @assignment_name,
-          content: @file_path.read
-        }
-      end
+      content = if @type == 'text/html'
+                  ConvertPDF.new(@file_path.read).convert
+                else
+                  @file_path.read
+                end
+      {
+        assignment_name: @assignment_name,
+        content: content
+      }
     end
   end
 end
