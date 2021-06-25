@@ -6,10 +6,10 @@ module CheckHigh
   # convert html file to pdf inline codes
   class ConvertPDF
     def initialize(content)
-      @content = content 
+      @content = content
     end
 
-    def convert 
+    def convert
       kit = PDFKit.new(@content, page_size: 'Letter')
       kit.to_pdf
     end
