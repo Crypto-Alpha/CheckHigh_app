@@ -50,7 +50,7 @@ module CheckHigh
         default_src: %w['self'], # Use 'self' if a *_src configuration not defined
         child_src: %w['self'], #
         connect_src: %w[wws:], # valid sources for fetch, XMLHttpRequest, WebSocket, and EventSource connections
-        img_src: %w[mycdn.com data:],
+        img_src: %w['self' mycdn.com data:],
         font_src: %w['self' data:] + STYLE_SRC,
         script_src: %w['self'] + STYLE_SRC,
         style_src: %W['self' 'unsafe-inline'] + STYLE_SRC,
