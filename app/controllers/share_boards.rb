@@ -90,6 +90,8 @@ module CheckHigh
             # POST /share_boards/[share_board_id]/collaborators
             routing.post do
               action = routing.params['action']
+              redirect_route = routing.params['redirect_route']
+              msg = routing.params['msg']
 
               collaborator_info = Form::CollaboratorEmail.new.call(routing.params)
               if collaborator_info.failure?
@@ -99,11 +101,14 @@ module CheckHigh
 
               task_list = {
                 'add' => { service: AddCollaborator,
-                           message: 'Added new collaborator to shareboard' },
+                           message: 'Added new collaborator to shareboard',
+                           reroute: @share_board_route },
                 'remove' => { service: RemoveCollaborator,
-                              message: 'Removed collaborator from shareboard' },
+                              message: msg,
+                              reroute: redirect_route },
                 'invite' => { service: InviteCollaborator,
-                              message: 'Invitation Email Sent' }
+                              message: 'Invitation Email Sent',
+                              reroute: @share_board_route }
               }
 
               task = task_list[action]
@@ -118,7 +123,7 @@ module CheckHigh
             rescue StandardError
               flash[:error] = 'Could not find collaborator. You can send an invitation email.'
             ensure
-              routing.redirect @share_board_route
+              routing.redirect task[:reroute]
             end
           end
 

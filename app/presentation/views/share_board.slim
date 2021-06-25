@@ -10,7 +10,7 @@ div class='container'
       - if share_board.policies.can_leave
         button type="button" class="btn btn-outline-danger btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#RemoveCollaboratorModal"
           i class="fas fa-sign-out-alt"
-        == render :partial_remove_collaborator, locals:{type: 2, collaborator: @current_account, share_board: share_board}
+        == render :partial_remove_collaborator, locals:{ reroute: "/share_boards", type: 2, collaborator: @current_account, share_board: share_board}
       - if share_board.policies.can_add_collaborators
         button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#newCollaboratorModal"
           i class="fas fa-user-plus"
@@ -83,7 +83,7 @@ div class='container'
                 - if share_board.policies.can_remove_collaborators
                   button type="button" class="btn btn-outline-danger btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#RemoveCollaboratorModal"
                     i class="fas fa-user-slash"
-                  == render :partial_remove_collaborator, locals:{type: 1, collaborator: collaborator, share_board: share_board}
+                  == render :partial_remove_collaborator, locals:{reroute: "/share_boards/#{share_board.id}", type: 1, collaborator: collaborator, share_board: share_board}
       - if share_board.collaborators.empty?
         div.main-color No collaborators yet.
         div.main-color.mb-4 Press above user button to add a collaborator!
