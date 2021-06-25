@@ -26,7 +26,7 @@ div class='container'
               tr
               th.align-middle scope="row" #{index+1}
               td.align-middle 
-                a.main-color target="_blank" href="/assignments/#{assi.id}" #{assi.assignment_name}
+                a.main-color target="_blank" rel="noreferrer noopenner" href="/assignments/#{assi.id}" #{assi.assignment_name}
               td.align-middle #{assi.upload_time}
               td.text-end 
                 button type="button" class="btn btn-outline-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#RenameAssiModal_#{index}"

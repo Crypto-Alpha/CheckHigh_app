@@ -15,8 +15,8 @@ class CreateNewAssignment
   def call_for_course(current_account:, course_id:, assignment_data:)
     config_url = "#{api_url}/courses/#{course_id}/assignments"
     response = HTTP.auth("Bearer #{current_account.auth_token}")
-                   .headers(content_type: "text/plain; charset=us-ascii",
-                           assignment_name: assignment_data[:assignment_name])
+                   .headers(content_type: 'text/plain; charset=us-ascii',
+                            assignment_name: assignment_data[:assignment_name])
                    .post(config_url, body: assignment_data[:content])
 
     response.code == 201 ? JSON.parse(response.body.to_s) : raise
@@ -25,8 +25,8 @@ class CreateNewAssignment
   def call_for_shareboard(current_account:, share_board_id:, assignment_data:)
     config_url = "#{api_url}/share_boards/#{share_board_id}/assignments"
     response = HTTP.auth("Bearer #{current_account.auth_token}")
-                   .headers(content_type: "text/plain; charset=us-ascii",
-                           assignment_name: assignment_data[:assignment_name])
+                   .headers(content_type: 'text/plain; charset=us-ascii',
+                            assignment_name: assignment_data[:assignment_name])
                    .post(config_url, body: assignment_data[:content])
 
     response.code == 201 ? JSON.parse(response.body.to_s) : raise
@@ -35,8 +35,8 @@ class CreateNewAssignment
   def call(current_account:, assignment_data:)
     config_url = "#{api_url}/assignments"
     response = HTTP.auth("Bearer #{current_account.auth_token}")
-                   .headers(content_type: "text/plain; charset=us-ascii",
-                           assignment_name: assignment_data[:assignment_name])
+                   .headers(content_type: 'text/plain; charset=us-ascii',
+                            assignment_name: assignment_data[:assignment_name])
                    .post(config_url, body: assignment_data[:content])
 
     response.code == 201 ? JSON.parse(response.body.to_s) : raise
