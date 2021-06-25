@@ -2,3 +2,7 @@ _*
 config/secrets.yml
 .bundle/
 .DS_Store
+
+# other files
+coverage/*
+!coverage/.resultset.json
