@@ -37,7 +37,7 @@ div class='container'
               tr
               th.align-middle scope="row" #{index+1}
               td.align-middle 
-                a.main-color target="_blank" href="/assignments/#{assi.id}" #{assi.assignment_name}
+                a.main-color target="_blank" rel="noreferrer noopenner" href="/assignments/#{assi.id}" #{assi.assignment_name}
               td.align-middle #{assi.owner.username}
               td.align-middle #{assi.upload_time}
               - if @current_account.username == assi.owner.username
