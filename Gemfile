@@ -37,9 +37,8 @@ end
 group :test do
   gem 'minitest'
   gem 'minitest-rg'
-  gem 'webmock'
   gem 'simplecov'
-
+  gem 'webmock'
 end
 
 group :development, :test do
