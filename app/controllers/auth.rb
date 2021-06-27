@@ -173,13 +173,13 @@ module CheckHigh
         routing.get(String) do |registration_token|
           # verify register token expire or not
           new_account = VerifyToken.payload(registration_token)
-          if new_account['username']
-            # route to post the register data
-            action_route = "/account/#{registration_token}"
-          else
-            # route to post the invitation register data
-            action_route = "/account/invitation/#{registration_token}"
-          end
+          action_route = if new_account['username']
+                           # route to post the register data
+                           "/account/#{registration_token}"
+                         else
+                           # route to post the invitation register data
+                           "/account/invitation/#{registration_token}"
+                         end
 
           flash.now[:notice] = 'Email Verified! Please choose a new password'
           view :account_confirm, locals: { account: new_account,

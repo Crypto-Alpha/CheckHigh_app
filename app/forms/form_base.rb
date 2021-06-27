@@ -9,7 +9,7 @@ module CheckHigh
     EMAIL_REGEX = /@/
     FILENAME_REGEX = %r{^((?![&/\\\{\}|\t]).)*$}
     PATH_REGEX = /^((?![&{}|\t]).)*$/
-    FILETYPE_REGEX = /text\/html|application\/pdf/
+    FILETYPE_REGEX = %r{text/html|application/pdf}
 
     def self.validation_errors(validation)
       validation.errors.to_h.map { |k, v| [k, v].join(' ') }.join('; ')

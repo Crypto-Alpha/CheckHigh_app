@@ -8,6 +8,8 @@ div id="RemoveCollaboratorModal" class="modal fade" role="dialog"
               .col.text-start
                 label.mb-2 class="form-label" Remove #{collaborator.username} as a collaborator from #{share_board.share_board_name}?
                 input type="hidden" name="action" value="remove"
+                input type="hidden" name="redirect_route" value="#{reroute}"
+                input type="hidden" name="msg" value="Removed collaborator from shareboard"
                 input type="hidden" name="email" value="#{collaborator.email}"
                 div.text-danger style="font-size: .7rem;font-style:italic;" His/Hers assignments are going to remove as well.
             .row.my-3
@@ -19,6 +21,8 @@ div id="RemoveCollaboratorModal" class="modal fade" role="dialog"
               .col.text-start
                 label.mb-2 class="form-label" Leave #{share_board.share_board_name}?
                 input type="hidden" name="action" value="remove"
+                input type="hidden" name="redirect_route" value="#{reroute}"
+                input type="hidden" name="msg" value="Leaved #{share_board.share_board_name}"
                 input type="hidden" name="email" value="#{collaborator.email}"
                 div.text-danger style="font-size: .7rem;font-style:italic;" Your assignments are going to remove as well.
             .row.my-3

@@ -4,6 +4,7 @@ require_relative 'form_base'
 
 module CheckHigh
   module Form
+    # create new course form
     class NewCourse < Dry::Validation::Contract
       config.messages.load_paths << File.join(__dir__, 'errors/new_course.yml')
 
