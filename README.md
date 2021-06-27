@@ -1,8 +1,32 @@
 # CheckHigh App
 
-Web application for CheckHigh system that allows teams to share sensitive files such as configuration information, credentials, etc.
+Web application for CheckHigh system that allows teams to share homework assignments and check answers in **PDF/HTML format files**.
 
 Please also note the Web API that it uses: https://github.com/Crypto-Alpha/CheckHigh_api
+
+## Status
+[![Ruby v3.0.1](https://img.shields.io/badge/Ruby-3.0.1-green)](https://www.ruby-lang.org/en/news/2021/04/05/ruby-3-0-1-released/)
+
+## [Website Usage](https://checkhigh-app.herokuapp.com)
+### Home page
+1. You should use your **github account**, **google account** to login in, or **register an account** for CheckHigh and login in.
+2. If you have registered before, but you `forget your password`, you can click on forget password to reset and get your password back.
+
+### Courses Page and a specific Course Page
+1. You can **create your course** on your courses page by the plus button, and arrange your assignments to different course folders. You can also **rename, delete your course folder or remove your assignment from a specific course**.
+2. You can **upload your assignment** to a specific course or to just simply upload it by the plus button. You can also **rename your assignment, delete it, add it to exist shareboard or move it into a course folder**.
+
+### ShareBoards Page and a specific ShareBoard Page
+1. You can **create your own share board** on your shareboards page by the plus button, and **rename, delete your own shareboard or remove your assignment from a specific shareboard**.
+2. You can **upload your assignment** to a specific shareboard by the plus button. You can also **rename your assignment or delete it**.
+3. If you own the shareboard, you can **send invitation link** to those who haven't registered CheckHigh yet but you want to share your assignments with. If your friends have registered CheckHigh, you can invite them by **simply typing their email after clicking the add collaborator button**. You can also **removed collaborators from the shareboard**, and their assignments will be removed as well when you removed them from the shareboard.
+4. You can be invited to several shareboards, and leave the shareboard as long as you want. Your assignments **will be removed from the shareboard as well when you leave the shareboard**. 
+
+### CheckHigh Page
+1. Just Go and CheckHigh!
+2. You can arrange your assignments format by control the numbers of assignments being checked.
+3. Hope you have a fantastic journey using CheckHigh! :)
+
 
 ## Install
 
@@ -20,7 +44,12 @@ bundle install
 
 ## Test
 
-This web app does not contain any tests yet :(
+
+Run the test script:
+
+```shell
+rake spec
+```
 
 ## Execute
 
@@ -36,7 +65,7 @@ The application expects the API application to also be running (see `config/app.
 
 remote control
 ```
-heroku git:remote -a checkhigh-api
+heroku git:remote -a checkhigh-app
 ```
 
 restart
